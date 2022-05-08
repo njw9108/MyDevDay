@@ -115,5 +115,5 @@ h1, h3, p, div {
 
 .pageMove > p > a {
     color: #72C9CD;
-    font-family: 'Noto Sans KR', sans-serif;
+    /*font-family: 'Noto Sans KR', sans-serif;*/
 }
