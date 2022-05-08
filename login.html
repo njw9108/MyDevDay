@@ -3,122 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <!--    구글 폰트-->
-    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100&family=Poppins:wght@100;300;500&display=swap"
+          rel="stylesheet">
     <!--    JQuery-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <!--  부트스트랩-->
-    <!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"-->
-    <!--          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">-->
     <title>Login</title>
+    <!--    css-->
+    <link rel="stylesheet" href="login_UI.css">
 </head>
-<style>
-    * {
-        margin: 0;
-        padding: 0;
-        font-family: 'Nanum Gothic', sans-serif;
-    }
-
-    h1, p, div {
-        margin: 0;
-        padding: 0;
-    }
-
-    a {
-        text-decoration: none;
-        color: white;
-        padding-right: 10px;
-    }
-
-    header {
-        height: 80px;
-        padding: 1rem;
-        background: rgba(64, 224, 208);
-        font-weight: bold;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    nav {
-        align-self: end;
-    }
-
-    .container {
-        padding: 50px;
-        width: auto;
-        height: 75vh;
-        display: flex;
-        flex: 1;
-        justify-content: center;
-        align-items: center;
-    }
-
-    img {
-        width: 45%;
-        height: 80%;
-        border-radius: 20px;
-    }
-
-    .signForm {
-        background-color: beige;
-        width: 0%;
-        min-width: 400px;
-        height: 40%;
-        min-height: 200px;
-        padding: 50px 0px;
-        margin-left: 40px;
-        text-align: center;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
-
-    h3 {
-        margin-bottom: 20px;
-        font-size: 2rem;
-    }
-
-    .inputBox > p {
-        line-height: 300%;
-        font-weight: 600;
-        font-size: 20px;
-    }
-
-    .inputBox > p > input {
-        border: white;
-        border-bottom: mediumturquoise 1px solid;
-        padding: 5px;
-        font-size: 18px;
-        width: 300px;
-    }
-
-    #loginBtn {
-        width: 100px;
-        min-height: 40px;
-        margin-top: 15px;
-        font-size: 16px;
-    }
-</style>
 <body>
-<header>
-    <a href="/"><h1>MyDevDay</h1></a>
-    <nav>
-        <a href="/write">글 쓰기</a>
-        <a href="/read">일지 목록</a>
-        <a href="/login">로그인</a>
-        <a href="/sign">회원가입</a>
-    </nav>
-</header>
 <div class="container">
-    <img src="https://cdn.pixabay.com/photo/2016/11/19/16/48/notebook-1840276_960_720.jpg">
-    <div class="signForm">
-        <h3>Login</h3>
-        <div class="inputBox">
-            <p> ID : <input id="idInput" type="text" placeholder="hi"></p>
-            <p> PW : <input id="pwInput" type="password" placeholder="hi"></p>
+    <div class="imgBox">
+        <div class="titleBox">
+            <img src="/img/logo.png" id="logoimg">
+            <h1 id="title">MyDevDay</h1>
         </div>
-        <button id="loginBtn" onclick="">login</button>
+        <img src="/img/diary.jpg" id="diaryimg">
+    </div>
+    <div class="signForm">
+        <h2 id="inputTitle">Login</h2>
+        <div class="inputBox">
+            <input id="idInput" type="text" placeholder="User ID">
+            <input id="pwInput" type="password" placeholder="Password">
+            <button id="saveBtn" onclick="">Create</button>
+        </div>
+        <div class="pageMove">
+            <p>아직 회원이 아니신가요? <a href="/"> 간단 회원가입 하러가기</a></p>
+            <p>비회원으로 볼래요! <a href="/">비회원으로 시작하기</a></p>
+        </div>
     </div>
 </div>
 </body>
