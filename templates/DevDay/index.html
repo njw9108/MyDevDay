@@ -54,7 +54,7 @@
 
             $.ajax({
                 type: 'POST',
-                url: './userislogin',
+                url: './user/islogin',
                 data: {},
                 success: function (response) {
                     let result = response['result'];
@@ -76,7 +76,7 @@
 
             $.ajax({
                 type: 'POST',
-                url: './userinfo',
+                url: './user/info',
                 data: {},
                 success: function (response) {
                     let result = response['result'];
@@ -106,6 +106,7 @@
     <h1>메인화면 : 전체 공개 DevDay</h1>
     <hr>
     <a href="./user">로그인 페이지로 이동</a><br>
+    <a href="./user/signup">가입 페이지로 이동</a><br>
     <a href="./mydev">MyDevDay 페이지로 이동</a><br>
 </div>
 <br>

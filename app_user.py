@@ -10,8 +10,13 @@ user = Blueprint('user', __name__)
 def user_page():
     return render_template('User/login.html')
 
+# user 가입
+@user.route('/user/signup', methods=['GET'])
+def user_signup():
+    return render_template('User/signup.html')
+
 # user 로그인 시도 요청 API
-@user.route('/userlogin', methods=['POST'])
+@user.route('/user/login', methods=['POST'])
 def user_try_login():
     # login 시도. (로그인 성공후 필요시 정보 전달 샘플)
     return jsonify({
@@ -28,7 +33,7 @@ def user_try_login():
         })
 
 # user 로그인 여부 요청 API
-@user.route('/userislogin', methods=['POST'])
+@user.route('/user/islogin', methods=['POST'])
 def user_is_login():
     return jsonify({
             'result' : {
@@ -42,7 +47,7 @@ def user_is_login():
             }
         })
 # user 사용자 정보 요청 API
-@user.route('/userinfo', methods=['POST'])
+@user.route('/user/info', methods=['POST'])
 def user_info():
     return jsonify({
             'result' : {
