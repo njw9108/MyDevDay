@@ -5,12 +5,17 @@ mydev = Blueprint('mydev', __name__)
 # mydevday
 ##############################
 
-# 공개된 년월 데이터 요청 또는 특정 글 읽기 API
+# mydev 페이지
 @mydev.route('/mydev', methods=['GET'])
 def devday_list():
     return render_template('MyDev/mydev.html')
 
-# 특정 글 읽기 API
+# 글 쓰기 페이지
+@mydev.route('/mydev/write', methods=['GET'])
+def devday_write():
+    return render_template('MyDev/write.html')
+
+# 글 읽기 페이지
 @mydev.route('/mydev/<devid>', methods=['GET'])
 def devday_read(devid):
     print(devid)
@@ -19,11 +24,7 @@ def devday_read(devid):
     else:
         return render_template('MyDev/read.html')
 
-# 특정 글 쓰기 페이지
-@mydev.route('/mydev/write', methods=['GET'])
-def devday_write():
-    return render_template('MyDev/write.html')
-
+# 특정 년월 데이터 요청 API
 @mydev.route('/mydev/<date>', methods=['POST'])
 def devday_calendar(date):
     print(f"{date} 년월 API 정보 요청 받음.")
