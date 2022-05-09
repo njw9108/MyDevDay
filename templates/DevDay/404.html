@@ -1,0 +1,160 @@
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <title>404</title>
+  <style>
+  /* 404 */
+  /* Tested in Chrome 26+, IE10, */
+  @import url('https://fonts.googleapis.com/css2?family=Monoton&display=swap');
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #111;
+    color: #fff;
+    /*background-image: url("./webb-dark2.png");*/
+    /*background-image: linear-gradient(to right, #333333, #111111)*/
+    /*background-image: linear-gradient(135deg, #111111 10%, #333333 30%, #111111 90%)*/
+    
+    background: linear-gradient(235deg, #111111, #551111, #111111);
+    background-size: 500% 500%;
+    -webkit-animation: AnimationName 3s ease infinite;
+    -moz-animation: AnimationName 3s ease infinite;
+    animation: AnimationName 3s ease infinite;
+  }
+  
+  .container {
+    align-items: center;
+  }
+  .error-box {
+    font-family: 'Monoton', cursive;
+    font-size: 10vw;
+    line-height: 9vw;
+    text-align: center;
+    padding-top: 9vw;
+  }
+  .error-title {
+    color: red;
+    text-shadow: 0 0 10vw red, 0 0 10vw red, 0 0 10vw red, 0 0 10vw red, 0 0 .2vw #771111, .4vw .4vw .1vw #771111;
+    opacity: 0.3;
+  }
+  .error-number {
+    color: skyblue;
+    opacity: 0.3;
+    font-size: 8.5vw;
+  }
+  .error-desc {
+    color: silver;
+    opacity: 0.5;
+    font-size: 3vw;
+    text-transform: uppercase;
+    line-height: 3vw;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+  }
+  .error-infobox {
+  align: center;
+  border-width: 3;
+  background-color: #000;
+    line-height: 10vw;
+    padding-top: 10vw;
+    width: 50vw;
+  }
+  
+  .error-title {
+    -webkit-animation: title-blink 3s 1s cubic-bezier  infinite;
+    -moz-animation: title-blink 3s 1s ease infinite;
+    -ms-animation: title-blink 3s 1s ease infinite;
+    -o-animation: title-blink 3s 1s ease infinite;
+    animation: title-blink 3s 1s ease infinite;
+  }
+  .error-number {
+    -webkit-animation: number-blink 1s .5s ease infinite;
+    -moz-animation: number-blink 1s .5s ease infinite;
+    -ms-animation: number-blink 1s .5s ease infinite;
+    -o-animation: number-blink 1s .5s ease infinite;
+    animation: number-blink 1s .5s ease infinite;
+  }
+  
+  @keyframes title-blink {
+    0% {}
+    50% { opacity: 1; color: red; }
+    100% { opacity: 0.3; color: red; }
+  }
+  @keyframes number-blink {
+    0% {}
+    50% { opacity: 1; color: skyblue; text-shadow: 0 0 1vw skyblue, 0 0 1vw skyblue, 0 0 1vw skyblue, 0 0 1vw skyblue, 0 0 .2vw #5555AA, .4vw .4vw .1vw #5555AA; }
+    100% { opacity: 0.3; color: skyblue; }
+  }
+  
+  @keyframes AnimationName {
+    0%{background-position:87% 0%}
+    50%{background-position:14% 50%}
+    100%{background-position:87% 0%}
+  }
+
+/* Marquee Animation */
+#footer, .marquee { overflow: hidden; }
+
+.marquee {
+  -webkit-animation: scroll 10s ease infinite;
+  -moz-animation:    scroll 10s ease infinite;
+  -ms-animation:     scroll 10s ease infinite;
+  animation:        scroll 10s ease infinite;
+}
+@keyframes scroll {
+  0%  { -webkit-transform:translateX(100%);opacity:0; }
+  10% { -webkit-transform:translateX(0);opacity:1; }
+  40% { -webkit-transform:translateX(0%); }
+  50% { -webkit-transform:translateX(0%); }
+  90% { opacity:1;}
+  100% { opacity:0;}
+}
+
+.hero-section,
+.content-section {
+  padding: 5vw 29vw 0vw 29vw;
+}
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+  <div id="header">
+    <div class="error-box">
+      <div class="error-title">ERROR</div>
+      <div class="error-number">404</div>
+      <div class="error-desc">File Not Found</div>
+    </div>
+  </div>
+  
+  <div class="hero-section">
+  <div class="container">
+    <div class="hero-text">
+      <h1>404 Error</h1>
+      <p>The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.</p>
+
+    <h4>Please try the following:</strong></h4>
+    <ul>
+    <li>Check your spelling</li>
+    <li>Go to the main site and search again</li>
+    <li><a href="javascript:history.back()">Go back to the previous page</a></li>
+    </ul>
+
+    <div id="footer">
+      <div class="contact"><p class="marquee">If you think this is a server error, please contact the system administrator.</p></div>
+      <p class="copyright">&copy; 2022 booxboox@naver.com</p>
+    </div>
+
+    </div>
+  </div>
+</div>
+
+  </div>
+</div>
+
+</body>
+</html>
+
