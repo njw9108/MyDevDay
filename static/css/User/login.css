@@ -81,7 +81,6 @@ h1, h3, p, div {
     width: 75%;
 }
 
-
 .inputBox > input {
     border: white;
     border-bottom: mediumturquoise 1px solid;
@@ -89,12 +88,6 @@ h1, h3, p, div {
     line-height: 280%;
     font-weight: 400;
     font-size: 20px;
-}
-
-.error {
-    color: red;
-    font-size: 13px;
-    font-family: 'Noto Sans KR', sans-serif;
 }
 
 #saveBtn {
