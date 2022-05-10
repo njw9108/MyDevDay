@@ -3,10 +3,13 @@ from app_devday import devday
 from app_user import user
 from app_mydev import mydev
 
+# mongo
+from pymongo import MongoClient
+client = MongoClient('mongodb://mydevday:devday2205@boox.synology.me/admin', 27018)
+db = client.mydevday
+
 # 개발자 환경 구분 (util.py에 각자 dburi 선언하여 사용.)
 import util
-if not hasattr(util, 'dburi') or util.dburi is None:
-    util.dburi = 'mongodb://localhost' # 실제 사용될 실서버 dburi
 if not hasattr(util, 'port') or util.port is None:
     util.port = 80 # 실제 사용될 실서버 port
 

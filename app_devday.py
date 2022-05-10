@@ -1,6 +1,14 @@
 from flask import Flask, Blueprint, render_template, jsonify, request # Flask 서버 객체 import
 devday = Blueprint('devday', __name__)
 
+# mongo
+from pymongo import MongoClient
+client = MongoClient('mongodb://mydevday:devday2205@boox.synology.me/admin', 27018)
+db = client.mydevday
+
+# time
+import time
+
 ##############################
 # main
 ##############################
@@ -8,6 +16,14 @@ devday = Blueprint('devday', __name__)
 # 메인 화면
 @devday.route('/')
 def main():
+    # mongo test
+    ip_addr = request.remote_addr;
+    url = request.url;
+    user_agent = request.user_agent.string;
+    current_time = time.strftime('%y-%m-%d %H:%M:%S');
+    doc = {'ip_addr':ip_addr, 'url':url, 'user_agent':user_agent, 'connect_time':current_time}
+    db.log.insert_one(doc)
+
     return render_template('DevDay/index.html')
     return jsonify({
             'result' : {
