@@ -4,10 +4,15 @@
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
+    <!--    구글 폰트-->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100&family=Poppins:wght@100;300;500&display=swap"
+          rel="stylesheet">
+    <!--    JQuery-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <title>MyDevDay | login</title>
-    <link rel="stylesheet" href="static/css/style.css"/>
+    <!--    css-->
+    <link rel="stylesheet" href="/static/css/User/login.css">
     <script>
         function CallUserIsLoginAPI() {
             // 사용자 로그인 여부 정보 요청 ajax API Call하여 사용자 로그인 여부 확인
@@ -23,8 +28,7 @@
                     let message = result['message'];
                     if (success == 'true') {
                         $(".test-result").append(message + '<br>')
-                    }
-                    else {
+                    } else {
                         $(".test-result").append(message + '<br>')
                     }
                 }
@@ -38,23 +42,44 @@
 </head>
 
 <body>
-
 <div class="container">
-    <h1>로그인 화면</h1>
-    <hr>
-    로그인 성공하면 '내가 작성한 글목록' 페이지로 이동<br>
-    <br>
-    <a href="./">메인 페이지로 이동</a><br>
-</div>
-<br>
-<br>
-
-<div class="test">
-    <h5>테스트 결과</h5>
-    <hr>
-    <div class="test-result">
+    <div class="imgBox">
+        <div class="titleBox">
+            <img src="/static/css/User/image/logo.png" id="logoimg">
+            <h1 id="title">MyDevDay</h1>
+        </div>
+        <img src="/static/css/User/image/diary.jpg" id="diaryimg">
+    </div>
+    <div class="signForm">
+        <h2 id="inputTitle">Login</h2>
+        <div class="inputBox">
+            <input id="idInput" type="text" placeholder="User ID">
+            <input id="pwInput" type="password" placeholder="Password">
+            <button id="saveBtn" onclick="">Create</button>
+        </div>
+        <div class="pageMove">
+            <p>아직 회원이 아니신가요? <a href="/user/signup"> 간단 회원가입 하러가기</a></p>
+            <p>비회원으로 볼래요! <a href="/">비회원으로 시작하기</a></p>
+        </div>
     </div>
 </div>
+
+<!--<div class="container">-->
+<!--    <h1>로그인 화면</h1>-->
+<!--    <hr>-->
+<!--    로그인 성공하면 '내가 작성한 글목록' 페이지로 이동<br>-->
+<!--    <br>-->
+<!--    <a href="./">메인 페이지로 이동</a><br>-->
+<!--</div>-->
+<!--<br>-->
+<!--<br>-->
+
+<!--<div class="test">-->
+<!--    <h5>테스트 결과</h5>-->
+<!--    <hr>-->
+<!--    <div class="test-result">-->
+<!--    </div>-->
+<!--</div>-->
 
 </body>
 
