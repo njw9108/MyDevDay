@@ -4,27 +4,47 @@
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
+    <!--    구글 폰트-->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100&family=Poppins:wght@100;300;500&display=swap"
+          rel="stylesheet">
+    <!--    JQuery-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <title>MyDevDay | signup</title>
-    <link rel="stylesheet" href="/static/css/style.css"/>
+    <!--    css-->
+    <link rel="stylesheet" href="/static/css/User/signup.css">
     <script>
         $(document).ready(function () {
         });
+
     </script>
 </head>
 
 <body>
-
 <div class="container">
-    <h1>가입 화면</h1>
-    <hr>
-    <br>
-    <a href="/">메인 페이지로 이동</a><br>
+    <div class="imgBox">
+        <div class="titleBox">
+            <img src="/static/css/User/image/logo.png" id="logoimg">
+            <h1 id="title">MyDevDay</h1>
+        </div>
+        <img src="/static/css/User/image/diary.jpg" id="diaryimg">
+    </div>
+    <div class="signForm">
+        <h2 id="inputTitle">Sign Up</h2>
+        <div class="inputBox">
+            <input id="idInput" type="text" placeholder="User ID" required>
+            <input id="pwInput" type="password" placeholder="Password">
+            <input id="repwInput" type="password" placeholder="RePassword">
+            <input id="nameInput" type="text" placeholder="Name">
+            <!--            <input id="emailInput" type="text" placeholder="Email Address">-->
+            <!--            <input id="goalInput" type="text" placeholder="My Goal">-->
+            <button id="saveBtn" onclick="create()">Create</button>
+        </div>
+        <div class="pageMove">
+            <p>이미 회원이신가요? <a href="/user"> 로그인 하러가기</a></p>
+        </div>
+    </div>
 </div>
-<br>
-<br>
-
 </body>
 
 </html>
