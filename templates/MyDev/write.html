@@ -1,32 +1,38 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <title>MyDevDay | write</title>
-    <link rel="stylesheet" href="/static/css/style.css"/>
+
+    <link rel="stylesheet" href="/static/css/MyDev/write.css"/>
     <script>
         $(document).ready(function () {
         });
     </script>
 </head>
-
 <body>
+<div id="wrap">
+    <header>
+        <div>
+            <a href="#">
+                <h1 class="logo">
+                    My Dev Day
+                </h1>
+                <img class="logo-img" src="/static/css/MyDev/img/logo.png" alt="로고"/>
+            </a>
 
-<div class="container">
-    <h1>글 쓰기 화면</h1>
-    <hr>
-    <br>
-    <br>
-    <a href="/mydev">글목록 페이지로 이동</a><br>
-    <a href="/">메인 페이지로 이동</a><br>
+            <ul class="gnb">
+                <li><a href="/"><U>전체 글 목록</U></a></li>
+                <li><a href="/mydev"><U>내 글 목록</U></a></li>
+                <div class="user-info">
+                    <div>남진우</div>
+                    <div><a href="#">로그아웃</a></div>
+                </div>
+            </ul>
+        </div>
+    </header>
 </div>
-<br>
-<br>
-
 </body>
-
 </html>
