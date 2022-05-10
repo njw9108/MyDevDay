@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <title>MyDevDay | login</title>
+    <link rel="stylesheet" href="static/css/style.css"/>
+    <script>
+        function CallUserIsLoginAPI() {
+            // 사용자 로그인 여부 정보 요청 ajax API Call하여 사용자 로그인 여부 확인
+            //alert('userislogin api');
+
+            $.ajax({
+                type: 'POST',
+                url: './user/islogin',
+                data: {},
+                success: function (response) {
+                    let result = response['result'];
+                    let success = result['success'];
+                    let message = result['message'];
+                    if (success == 'true') {
+                        $(".test-result").append(message + '<br>')
+                    }
+                    else {
+                        $(".test-result").append(message + '<br>')
+                    }
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            CallUserIsLoginAPI();
+        });
+    </script>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>로그인 화면</h1>
+    <hr>
+    로그인 성공하면 '내가 작성한 글목록' 페이지로 이동<br>
+    <br>
+    <a href="./">메인 페이지로 이동</a><br>
+</div>
+<br>
+<br>
+
+<div class="test">
+    <h5>테스트 결과</h5>
+    <hr>
+    <div class="test-result">
+    </div>
+</div>
+
+</body>
+
+</html>
