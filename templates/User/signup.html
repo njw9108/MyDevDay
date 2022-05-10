@@ -30,14 +30,13 @@
         <div class="inputBox">
             <h3 id="inid">ID<span class="error idError"></span></h3>
             <input id="idInput" type="text" placeholder="User ID" maxlength="10">
-            <h3 id="inid">Password<span class="error pwError"></span></h3>
+            <h3 id="inpw">Password<span class="error pwError"></span></h3>
             <input id="pwInput" type="password" placeholder="Password" maxlength="10">
-            <h3 id="inid">Password Check<span class="error repwError"></span></h3>
+            <h3 id="inrepw">Password Check<span class="error repwError"></span></h3>
             <input id="repwInput" type="password" placeholder="Password Check" maxlength="10">
-            <h3 id="inid">Name<span class="error nameError"></span></h3>
+            <h3 id="inname">Name<span class="error nameError"></span></h3>
             <input id="nameInput" type="text" placeholder="Name" maxlength="10">
-            <!--            <input id="emailInput" type="text" placeholder="Email Address">-->
-            <!--            <input id="goalInput" type="text" placeholder="My Goal">-->
+
             <button id="saveBtn" onclick="create()">Create</button>
         </div>
         <div class="pageMove">
@@ -71,10 +70,43 @@
         }
 
         if (repw.val() != pw.val()) {
-            alert("비밀번호가 일치 하지 않습니다.")
+            repw.focus();
+            $(".repwError").text(" 비밀번호가 일치 하지 않습니다.")
             return false;
+        } else {
+            $(".repwError").text("")
         }
-        alert("이상없음")
+
+        $.ajax({
+            type: "POST",
+            url: "/user/signup/idcheck",
+            data: {id_give: id.val()},
+            success: function (response) {
+                // alert(response['msg'])
+                let sameid = response["sameid"]
+                // console.log(sameid)
+                if (sameid == null) {
+                    // alert("사용 가능")
+                    $.ajax({
+                        type: "POST",
+                        url: "/user/signup/create",
+                        data: {
+                            id_give: idval.val(),
+                            pw_give: pwval.val(),
+                            name_give: nameval.val(),
+                        },
+                        success: function (response) {
+                            alert(response['msg'])
+                            window.location.reload();
+                        }
+                    })
+                } else if (id.val() == sameid['id']) {
+                    alert("중복아이디 입니다!")
+                    id.focus();
+                    $(".idError").text(" 중복아이디 입니다")
+                }
+            }
+        })
     }
 </script>
 </body>
