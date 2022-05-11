@@ -59,27 +59,26 @@
             } else {
                 errorlist[i].text("")
             }
-        }
 
-        // 로그인 요청
-        $.ajax({
-            type: "POST",
-            url: "/user/login",
-            data: {id_give: id.val(), pw_give: pw.val()},
-            success: function (response) {
-                let result = response['result']
-                if (result == 'success') {
-                    alert(response['msg'])
-                    window.location.replace('/');
-                } else if (result == 'fail') {
-                    alert("아이디 혹은 비밀번호가 틀렸습니다!")
-                    id.focus();
-                    $(".idError").text(" 아이디를 확인해주세요")
-                    $(".pwError").text(" 비밀번호를 확인해주세요")
+            // 로그인 요청
+            $.ajax({
+                type: "POST",
+                url: "/user/login",
+                data: {id_give: id.val(), pw_give: pw.val()},
+                success: function (response) {
+                    let result = response['result']
+                    if (result == 'success') {
+                        alert(response['msg'])
+                        window.location.replace('/');
+                    } else if (result == 'fail') {
+                        alert("아이디 혹은 비밀번호가 틀렸습니다!")
+                        id.focus();
+                        $(".idError").text(" 아이디를 확인해주세요")
+                        $(".pwError").text(" 비밀번호를 확인해주세요")
+                    }
                 }
-
-            }
-        })
+            })
+        }
     }
 
 

@@ -85,10 +85,10 @@
             url: "/user/signup/idcheck",
             data: {id_give: id.val()},
             success: function (response) {
-                console.log(response)
+                // console.log(response)
                 // alert(response['msg'])
                 let sameid = response["sameid"]
-                //console.log(sameid)
+                // console.log(sameid)
                 if (sameid == null) {
                     // alert("사용 가능")
                     // 아이디 중복이 아니라면, 회원정보 디비 저장 요청
@@ -102,7 +102,7 @@
                         },
                         success: function (response) {
                             alert(response['msg'])
-                            window.location.reload();
+                            window.location.href="/user";
                         }
                     })
                 } else if (id.val() == sameid['id']) {

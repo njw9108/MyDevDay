@@ -8,7 +8,8 @@ db = client.mydevday_user1
 
 SECRET_KEY = 'mydevday'
 
-import jwt
+# 패키지? 각자 설치해야함(근데 설치한걸 푸쉬로 공유는 불가능 한가? 질문해야지)
+# import jwt
 import datetime
 import hashlib
 
@@ -61,7 +62,7 @@ def api_register():
 @user.route('/user/signup/idcheck', methods=['POST'])
 def id_check():
     sameid_receive = request.form['id_give']
-    exists = db.users.find_one({"id": sameid_receive})
+    exists = db.user.find_one({"id": sameid_receive}, {'_id': False})
     print(sameid_receive, exists)
     return jsonify({'result': 'success', 'sameid': exists})
 
