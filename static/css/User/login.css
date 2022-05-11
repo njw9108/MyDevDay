@@ -90,6 +90,12 @@ h1, h3, p, div {
     font-size: 20px;
 }
 
+.error {
+    color: red;
+    font-size: 13px;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
 #saveBtn {
     background-color: #72C9CD;
     border: #72C9CD 1px solid;

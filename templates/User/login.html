@@ -13,32 +13,7 @@
     <title>MyDevDay | login</title>
     <!--    css-->
     <link rel="stylesheet" href="/static/css/User/login.css">
-    <script>
-        function CallUserIsLoginAPI() {
-            // 사용자 로그인 여부 정보 요청 ajax API Call하여 사용자 로그인 여부 확인
-            //alert('userislogin api');
 
-            $.ajax({
-                type: 'POST',
-                url: './user/islogin',
-                data: {},
-                success: function (response) {
-                    let result = response['result'];
-                    let success = result['success'];
-                    let message = result['message'];
-                    if (success == 'true') {
-                        $(".test-result").append(message + '<br>')
-                    } else {
-                        $(".test-result").append(message + '<br>')
-                    }
-                }
-            });
-        }
-
-        $(document).ready(function () {
-            CallUserIsLoginAPI();
-        });
-    </script>
 </head>
 
 <body>
@@ -53,9 +28,12 @@
     <div class="signForm">
         <h2 id="inputTitle">Login</h2>
         <div class="inputBox">
+            <h3 id="inid">ID<span class="error idError"></span></h3>
             <input id="idInput" type="text" placeholder="User ID">
+            <h3 id="inpw">Password<span class="error pwError"></span></h3>
             <input id="pwInput" type="password" placeholder="Password">
-            <button id="saveBtn" onclick="">Create</button>
+
+            <button id="saveBtn" onclick="create()">Create</button>
         </div>
         <div class="pageMove">
             <p>아직 회원이 아니신가요? <a href="/user/signup"> 간단 회원가입 하러가기</a></p>
@@ -63,6 +41,75 @@
         </div>
     </div>
 </div>
+
+<script>
+    let id = $("#idInput")
+    let pw = $("#pwInput")
+
+    function create() {
+        let inputlist = [id, pw]
+        let errorlist = [$(".idError"), $(".pwError")]
+
+        // 입력창 공백 여부 유효성 검사
+        for (let i = 0; i < inputlist.length; i++) {
+            if (inputlist[i].val() == "") {
+                inputlist[i].focus()
+                errorlist[i].text(" 입력해주세요")
+                return false;
+            } else {
+                errorlist[i].text("")
+            }
+        }
+
+        // 로그인 요청
+        $.ajax({
+            type: "POST",
+            url: "/user/login",
+            data: {id_give: id.val(), pw_give: pw.val()},
+            success: function (response) {
+                let result = response['result']
+                if (result == 'success') {
+                    alert(response['msg'])
+                    window.location.replace('/');
+                } else if (result == 'fail') {
+                    alert("아이디 혹은 비밀번호가 틀렸습니다!")
+                    id.focus();
+                    $(".idError").text(" 아이디를 확인해주세요")
+                    $(".pwError").text(" 비밀번호를 확인해주세요")
+                }
+
+            }
+        })
+    }
+
+
+    // function CallUserIsLoginAPI() {
+    //     // 사용자 로그인 여부 정보 요청 ajax API Call하여 사용자 로그인 여부 확인
+    //     //alert('userislogin api');
+    //
+    //     $.ajax({
+    //         type: 'POST',
+    //         url: './user/islogin',
+    //         data: {},
+    //         success: function (response) {
+    //             let result = response['result'];
+    //             let success = result['success'];
+    //             let message = result['message'];
+    //             if (success == 'true') {
+    //                 $(".test-result").append(message + '<br>')
+    //             } else {
+    //                 $(".test-result").append(message + '<br>')
+    //             }
+    //         }
+    //     });
+    //
+    //
+    // }
+
+    // $(document).ready(function () {
+    //     CallUserIsLoginAPI();
+    // });
+</script>
 
 <!--<div class="container">-->
 <!--    <h1>로그인 화면</h1>-->
