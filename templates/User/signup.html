@@ -59,6 +59,7 @@
         let inputlist = [id, pw, repw, name]
         let errorlist = [$(".idError"), $(".pwError"), $(".repwError"), $(".nameError")]
 
+        // 입력창 공백 여부 유효성 검사
         for (let i = 0; i < inputlist.length; i++) {
             if (inputlist[i].val() == "") {
                 inputlist[i].focus()
@@ -69,6 +70,7 @@
             }
         }
 
+        // 비밀번호 일치 여부 유효성 검사
         if (repw.val() != pw.val()) {
             repw.focus();
             $(".repwError").text(" 비밀번호가 일치 하지 않습니다.")
@@ -77,37 +79,41 @@
             $(".repwError").text("")
         }
 
+        // 아이디 중복 여부 요청
         $.ajax({
             type: "POST",
             url: "/user/signup/idcheck",
             data: {id_give: id.val()},
             success: function (response) {
+                // console.log(response)
                 // alert(response['msg'])
                 let sameid = response["sameid"]
                 // console.log(sameid)
                 if (sameid == null) {
                     // alert("사용 가능")
+                    // 아이디 중복이 아니라면, 회원정보 디비 저장 요청
                     $.ajax({
                         type: "POST",
                         url: "/user/signup/create",
                         data: {
-                            id_give: idval.val(),
-                            pw_give: pwval.val(),
-                            name_give: nameval.val(),
+                            id_give: id.val(),
+                            pw_give: pw.val(),
+                            name_give: name.val(),
                         },
                         success: function (response) {
                             alert(response['msg'])
-                            window.location.reload();
+                            window.location.href="/user";
                         }
                     })
                 } else if (id.val() == sameid['id']) {
-                    alert("중복아이디 입니다!")
+                    alert("중복된 아이디 입니다!")
                     id.focus();
-                    $(".idError").text(" 중복아이디 입니다")
+                    $(".idError").text(" 중복된 아이디 입니다")
                 }
             }
         })
     }
+
 </script>
 </body>
 
