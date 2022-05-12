@@ -1,19 +1,21 @@
 from pymongo import MongoClient
-from flask import Flask, Blueprint, render_template, session, jsonify, request, redirect, url_for # Flask 서버 객체 import
+from flask import Flask, Blueprint, render_template, jsonify, request, redirect, url_for  # Flask 서버 객체 import
 
 app = Flask(__name__)
 
-client = MongoClient('boox.synology.me', 27018 ,username="mydevday", password="devday2205" )
+client = MongoClient('boox.synology.me', 27018, username="mydevday", password="devday2205")
 db = client.mydevday_user1
 
 SECRET_KEY = 'mydevday'
 
 # 패키지? 각자 설치해야함(근데 설치한걸 푸쉬로 공유는 불가능 한가? 질문해야지)
-# import jwt
+import jwt
 import datetime
 import hashlib
 
 user = Blueprint('user', __name__)
+
+
 ##############################
 # user
 ##############################
@@ -31,18 +33,21 @@ def home():
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
 
+
 @user.route('/user', methods=['GET'])
 def user_page():
     msg = request.args.get("msg")
     return render_template('User/login.html', msg=msg)
+
 
 # user 가입
 @user.route('/user/signup', methods=['GET'])
 def user_signup():
     return render_template('User/signup.html')
 
+
 #################################
-#  로그인을 위한 API            
+#  로그인을 위한 API
 #################################
 
 # user 회원가입 API
@@ -54,9 +59,10 @@ def api_register():
 
     pw_hash = hashlib.sha256(pw_receive.encode('utf-8')).hexdigest()
 
-    db.user.insert_one({'id': id_receive, 'pw': pw_hash, 'nick': name_receive})
+    db.user.insert_one({'id': id_receive, 'pw': pw_hash, 'name': name_receive})
 
     return jsonify({'result': 'success', 'msg': '회원가입이 완료되었습니다'})
+
 
 # user 회원가입 ID 중복확인
 @user.route('/user/signup/idcheck', methods=['POST'])
@@ -66,53 +72,41 @@ def id_check():
     print(sameid_receive, exists)
     return jsonify({'result': 'success', 'sameid': exists})
 
-    
 
-# user 로그인 시도 요청 API
+# user 로그인 API
 @user.route('/user/login', methods=['POST'])
-def user_try_login():
-    # login 시도. (로그인 성공후 필요시 정보 전달 샘플)
-    return jsonify({
-            'result' : {
-                'success': 'true',
-                'message': '로그인 성공되었습니다',
-                'row_count': 1,
-                'row': [
-                    {
-                        'user_id': 'a_user',
-                    },
-                ]
-            }
-        })
+def user_login():
+    id_receive = request.form['id_give']
+    pw_receive = request.form['pw_give']
 
-# user 로그인 여부 요청 API
-@user.route('/user/islogin', methods=['POST'])
-def user_is_login():
-    return jsonify({
-            'result' : {
-                'success': 'true',
-                'message': '사용자가 로그인 되어 있습니다.',
-                'row_count': 0,
-                'row': [
-                    {
-                    }
-                ]
-            }
-        })
-# user 사용자 정보 요청 API
-@user.route('/user/info', methods=['POST'])
-def user_info():
-    return jsonify({
-            'result' : {
-                'success': 'true',
-                'message': '사용자가 정보 조회 성공',
-                'row_count': 1,
-                'row': [
-                    {
-                        'user_id': 'z_user',
-                        'user_name': 'zzzzz',
-                    }
-                ]
-            }
-        })
+    pw_hash = hashlib.sha256(pw_receive.encode('utf-8')).hexdigest()
 
+    result = db.user.find_one({'id': id_receive, 'pw': pw_hash})
+
+    if result is not None:
+        payload = {
+            'id': id_receive,
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)
+        }
+        #token = jwt.encode(payload, SECRET_KEY, algorithm='HS256').decode('urf-8')
+        token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
+
+        return jsonify({'result': 'success', 'token': token})
+    else:
+        return jsonify({'result': 'fail', 'msg': '아이디/비밀번호가 일치하지 않습니다.'})
+
+# user 사용자 정보 확인 api
+@user.route('/user/nick', methods=['GET'])
+def user_valid():
+    token_receive = request.cookies.get('mytoken')
+
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        # print(payload)
+
+        userinfo = db.user.find_one({'id': payload['id']}, {'_id': 0})
+        return jsonify({'result': 'success', 'nickname': userinfo['nick']})
+    except jwt.ExpiredSignatureError:
+        return jsonify({'result': 'fail', 'msg': '로그인 시간이 만료되었습니다.'})
+    except jwt.exceptions.DecodeError:
+        return jsonify({'result': 'fail', 'msg': '로그인 정보가 존재하지 않습니다.'})
