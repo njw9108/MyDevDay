@@ -47,7 +47,7 @@ def user_signup():
 
 
 #################################
-#  로그인을 위한 API            
+#  로그인을 위한 API
 #################################
 
 # user 회원가입 API
@@ -109,4 +109,3 @@ def user_valid():
         return jsonify({'result': 'fail', 'msg': '로그인 시간이 만료되었습니다.'})
     except jwt.exceptions.DecodeError:
         return jsonify({'result': 'fail', 'msg': '로그인 정보가 존재하지 않습니다.'})
-

@@ -11,9 +11,16 @@
     <script>
         $(document).ready(function () {});
     </script>
+
+    <script>
+        function resize(obj) {
+            obj.style.height = "1px";
+            obj.style.height = (12 + obj.scrollHeight) + "px";
+        }
+    </script>
 </head>
 <body>
-<div id="wrap">
+<div id="header-wrap">
     <header>
         <div>
             <a href="#">
@@ -34,5 +41,91 @@
         </div>
     </header>
 </div>
+<div class="board_wrap">
+    <div class="board_write_wrap">
+        <div class="board_write">
+            <div class="title">
+                <dl>
+                    <dd><textarea class="autosize" onkeydown="resize(this)" onkeyup="resize(this)"
+                                  placeholder="제목"></textarea></dd>
+                </dl>
+            </div>
+            <div class="goal">
+                <dl>
+                    <dd><input type="text" placeholder="나의 꿈(목표)"></dd>
+                </dl>
+            </div>
+            <div class="today-learn">
+                <div>
+                    <dt>오늘 배운 것</dt>
+                </div>
+                <textarea placeholder="오늘 배운것 요약"></textarea>
+            </div>
+            <div class="spacer"></div>
+            <div class="to-do-list">
+                <div>
+                    <dt>To do List</dt>
+                </div>
+                <textarea placeholder="To do List"></textarea>
+            </div>
+
+            <div class="spacer"></div>
+
+            <div class="emotion">
+                <dl>
+                    <dt>오늘의 감정</dt>
+                    <dd><input type="text" placeholder="오늘 느낀 감정"></dd>
+                </dl>
+            </div>
+
+            &#x1F601;
+            &#x1F602;
+            &#x1F603;
+            &#x1F604;
+            &#x1F605;
+            &#x1F606;
+            &#x1F609;
+            &#x1F60A;
+            &#x1F60B;
+            &#x1F60C;
+            &#x1F60D;
+            &#x1F60F;
+            &#x1F612;
+            &#x1F613;
+            &#x1F614;
+            &#x1F616;
+            &#x1F618;
+            &#x1F61A;
+            &#x1F61C;
+            &#x1F61D;
+            &#x1F61E;
+            &#x1F620;
+            &#x1F621;
+            &#x1F622;
+            &#x1F623;
+            &#x1F624;
+            &#x1F625;
+            &#x1F628;
+            &#x1F629;
+            &#x1F62A;
+            &#x1F62B;
+            &#x1F62D;
+            &#x1F630;
+            &#x1F631;
+            &#x1F632;
+            &#x1F633;
+            &#x1F635;
+            &#x1F637;
+
+
+            <div class="bt_wrap">
+                <a href="#" class="on">작성 하기</a>
+                <a href="#">취소</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 </body>
 </html>
