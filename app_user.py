@@ -9,9 +9,11 @@ db = client.mydevday_user1
 SECRET_KEY = 'mydevday'
 
 # 패키지? 각자 설치해야함(근데 설치한걸 푸쉬로 공유는 불가능 한가? 질문해야지)
+# PyJWT 패키지 설치하기
 import jwt
 import datetime
 import hashlib
+from datetime import datetime, timedelta
 
 user = Blueprint('user', __name__)
 
@@ -27,7 +29,7 @@ def home():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.user.find_one({"id": payload['id']})
-        return render_template('index.html', nickname=user_info["nick"])
+        return render_template('index.html', nickname=user_info["name"])
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
@@ -78,19 +80,19 @@ def id_check():
 def user_login():
     id_receive = request.form['id_give']
     pw_receive = request.form['pw_give']
-    print(pw_receive)
+
     pw_hash = hashlib.sha256(pw_receive.encode('utf-8')).hexdigest()
 
-    result = db.user.find_one({'id': id_receive, 'pw': pw_hash})
+    result = db.user.find_one({'id': id_receive, 'pw': pw_hash}, {'_id': False})
 
     if result is not None:
         payload = {
             'id': id_receive,
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)
+            'exp': datetime.utcnow() + timedelta(seconds=60 * 60 * 24)
         }
-        ## token = jwt.encode(payload, SECRET_KEY, algorithm='HS256').decode('urf-8')
+        token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
 
-        return jsonify({'result': 'success', 'msg': '로그인 성공.'})
+        return jsonify({'result': 'success', 'msg': '로그인 성공.', 'token': token,})
     else:
         return jsonify({'result': 'fail', 'msg': '아이디/비밀번호가 일치하지 않습니다.'})
 
