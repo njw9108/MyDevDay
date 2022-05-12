@@ -31,9 +31,9 @@
             <h3 id="inid">ID<span class="error idError"></span></h3>
             <input id="idInput" type="text" placeholder="User ID" maxlength="10">
             <h3 id="inpw">Password<span class="error pwError"></span></h3>
-            <input id="pwInput" type="password" placeholder="Password" maxlength="10">
+            <input id="pwInput" type="password" placeholder="Password" maxlength="12">
             <h3 id="inrepw">Password Check<span class="error repwError"></span></h3>
-            <input id="repwInput" type="password" placeholder="Password Check" maxlength="10">
+            <input id="repwInput" type="password" placeholder="Password Check" maxlength="12">
             <h3 id="inname">Name<span class="error nameError"></span></h3>
             <input id="nameInput" type="text" placeholder="Name" maxlength="10">
 
@@ -55,15 +55,32 @@
     let repw = $("#repwInput")
     let name = $("#nameInput")
 
+
     function create() {
+        {#영문 대소문자, 숫자, _, - 4-10글자#}
+        {#영문 대소문자, 숫자 1개이상 포함 4-12글자#}
+        {#한글, 영문 대소문자 2-10글자#}
+        let idcheck = /^[a-zA-Z0-9_-]{4,10}$/;
+        let pwcheck = /(?=.*\d)(?=.*[a-zA-ZS]).{4,12}/
+        let namecheck = /^[가-힣a-zA-Z]{2,10}$/
+
         let inputlist = [id, pw, repw, name]
         let errorlist = [$(".idError"), $(".pwError"), $(".repwError"), $(".nameError")]
+        let valcheck = [idcheck, pwcheck, pwcheck, namecheck]
+        let checkmsg = [' 영문 대소문자, 숫자, 언더바(_), 하이푼(-) 4-10글자 ', ' 영문 대소문자, 숫자 1개 이상 포함 4-12글자 ', ' 영문 대소문자, 숫자 1개 이상 포함 4-12글자 ', ' 한글, 영문 대소문자 2-10글자 ']
 
         // 입력창 공백 여부 유효성 검사
         for (let i = 0; i < inputlist.length; i++) {
             if (inputlist[i].val() == "") {
                 inputlist[i].focus()
                 errorlist[i].text(" 입력해주세요")
+                return false;
+            } else {
+                errorlist[i].text("")
+            }
+            if (!valcheck[i].test(inputlist[i].val())) {
+                inputlist[i].focus()
+                errorlist[i].text(checkmsg[i] + '로 입력해주세요')
                 return false;
             } else {
                 errorlist[i].text("")
@@ -102,7 +119,7 @@
                         },
                         success: function (response) {
                             alert(response['msg'])
-                            window.location.href="/user"
+                            window.location.href = "/user"
                         }
                     })
                 } else if (id.val() == sameid['id']) {
