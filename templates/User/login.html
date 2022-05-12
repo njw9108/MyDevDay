@@ -66,12 +66,13 @@
                 url: "/user/login",
                 data: {id_give: id.val(), pw_give: pw.val()},
                 success: function (response) {
-                    let result = response['result']
-                    if (result == 'success') {
+                    console.log(response)
+                    if (response['result'] == 'success') {
+                        // $.cookie('mytoken', response['token'])
                         alert(response['msg'])
-                        window.location.replace('/');
+                        window.location.href = '/';
                     } else if (result == 'fail') {
-                        alert("아이디 혹은 비밀번호가 틀렸습니다!")
+                        alert(response['msg'])
                         id.focus();
                         $(".idError").text(" 아이디를 확인해주세요")
                         $(".pwError").text(" 비밀번호를 확인해주세요")
@@ -80,8 +81,6 @@
             })
         }
     }
-
-
     // function CallUserIsLoginAPI() {
     //     // 사용자 로그인 여부 정보 요청 ajax API Call하여 사용자 로그인 여부 확인
     //     //alert('userislogin api');
