@@ -8,8 +8,8 @@ db = client.mydevday_user1
 
 SECRET_KEY = 'mydevday'
 
-# jwt 패키치 설치 필하니 개인이 설치 해주세요!!
-# import jwt
+# 패키지? 각자 설치해야함(근데 설치한걸 푸쉬로 공유는 불가능 한가? 질문해야지)
+import jwt
 import datetime
 import hashlib
 

@@ -29,11 +29,11 @@
         <h2 id="inputTitle">Login</h2>
         <div class="inputBox">
             <h3 id="inid">ID<span class="error idError"></span></h3>
-            <input id="idInput" type="text" placeholder="User ID" maxlength="10">
+            <input id="idInput" type="text" placeholder="User ID">
             <h3 id="inpw">Password<span class="error pwError"></span></h3>
-            <input id="pwInput" type="password" placeholder="Password" maxlength="12">
+            <input id="pwInput" type="password" placeholder="Password">
 
-            <button id="saveBtn" onclick="login()">Create</button>
+            <button id="saveBtn" onclick="create()">Create</button>
         </div>
         <div class="pageMove">
             <p>아직 회원이 아니신가요? <a href="/user/signup"> 간단 회원가입 하러가기</a></p>
@@ -46,16 +46,9 @@
     let id = $("#idInput")
     let pw = $("#pwInput")
 
-    function login() {
-        {#영문 대소문자, 숫자, _, - 4-10글자#}
-        {#영문 대소문자, 숫자 1개이상 포함 4-12글자#}
-        let idcheck = /^[a-zA-Z0-9_-]{4,10}$/;
-        let pwcheck = /(?=.*\d)(?=.*[a-zA-ZS]).{4,12}/
-
+    function create() {
         let inputlist = [id, pw]
         let errorlist = [$(".idError"), $(".pwError")]
-        let valcheck = [idcheck, pwcheck]
-        let checkmsg = [' 영문 대소문자, 숫자, 언더바(_), 하이푼(-) 4-10글자 ', ' 영문 대소문자, 숫자 1개 이상 포함 4-12글자 ']
 
         // 입력창 공백 여부 유효성 검사
         for (let i = 0; i < inputlist.length; i++) {
@@ -66,35 +59,28 @@
             } else {
                 errorlist[i].text("")
             }
-            if (!valcheck[i].test(inputlist[i].val())) {
-                inputlist[i].focus()
-                errorlist[i].text(checkmsg[i] + '로 입력해주세요')
-                return false;
-            } else {
-                errorlist[i].text("")
-            }
-        }
-        // 로그인 요청
-        $.ajax({
-            type: "POST",
-            url: "/user/login",
-            data: {id_give: id.val(), pw_give: pw.val()},
-            success: function (response) {
-                console.log(response)
-                if (response['result'] == 'success') {
-                    // $.cookie('mytoken', response['token'])
-                    alert(response['msg'])
-                    window.location.href = '/';
-                } else if (result == 'fail') {
-                    alert(response['msg'])
-                    id.focus();
-                    $(".idError").text(" 아이디를 확인해주세요")
-                    $(".pwError").text(" 비밀번호를 확인해주세요")
-                }
-            }
-        })
-    }
 
+            // 로그인 요청
+            $.ajax({
+                type: "POST",
+                url: "/user/login",
+                data: {id_give: id.val(), pw_give: pw.val()},
+                success: function (response) {
+                    console.log(response)
+                    if (response['result'] == 'success') {
+                        // $.cookie('mytoken', response['token'])
+                        alert(response['msg'])
+                        window.location.href = '/';
+                    } else if (result == 'fail') {
+                        alert(response['msg'])
+                        id.focus();
+                        $(".idError").text(" 아이디를 확인해주세요")
+                        $(".pwError").text(" 비밀번호를 확인해주세요")
+                    }
+                }
+            })
+        }
+    }
     // function CallUserIsLoginAPI() {
     //     // 사용자 로그인 여부 정보 요청 ajax API Call하여 사용자 로그인 여부 확인
     //     //alert('userislogin api');
