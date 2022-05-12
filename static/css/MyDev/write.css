@@ -50,6 +50,10 @@ header .gnb li {
     margin-left: 30px;
 }
 
+header .gnb li a{
+    cursor: pointer;
+}
+
 header .gnb li:first-child {
     margin-left: 0;
 }
@@ -75,6 +79,7 @@ header .user-info {
     margin-top: 30px;
     text-align: center;
     font-size: 0;
+
 }
 
 
@@ -84,8 +89,10 @@ header .user-info {
     margin-left: 10px;
     padding: 10px;
     border: 1px solid #B4DADC;
+    background: #ffffff;
     border-radius: 2px;
     font-size: 1.4rem;
+
 }
 
 .bt_wrap a:first-child {

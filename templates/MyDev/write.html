@@ -9,13 +9,46 @@
 
     <link rel="stylesheet" href="/static/css/MyDev/write.css"/>
     <script>
-        $(document).ready(function () {});
-    </script>
-
-    <script>
         function resize(obj) {
             obj.style.height = "1px";
             obj.style.height = (12 + obj.scrollHeight) + "px";
+        }
+
+
+        // 일지 작성 요청
+        let title = $("#title")
+        let myGoal = $("#myGoal")
+        let todayLearned = $("#todayLearned")
+        let todoList = $("#todoList")
+        let emotion = $("#emotion")
+
+        function write_post() {
+            $.ajax({
+                type: "POST",
+                url: "/mydev/write",
+                data: {
+                    title_give: title.val(),
+                    goal_give: myGoal.val(),
+                    todayLearned_give: todayLearned.val(),
+                    todoList_give: todoList.val(),
+                    emotion_give: emotion.val(),
+                },
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        alert(response['msg'])
+                        window.location.href = '/';
+                    } else if (response['result'] == 'fail') {
+                        alert(response['msg'])
+                    }
+                }
+            })
+        }
+
+        function cancel_post(url) {
+            if (confirm("작성을 그만 두시겠습니까?")) {
+                location.href = url;
+            } else {
+            }
         }
     </script>
 </head>
@@ -31,11 +64,11 @@
             </a>
 
             <ul class="gnb">
-                <li><a href="/"><U>전체 글 목록</U></a></li>
-                <li><a href="/mydev"><U>내 글 목록</U></a></li>
+                <li><a onclick="cancel_post('/')" style='cursor:pointer;'><U>전체 글 목록</U></a></li>
+                <li><a onclick="cancel_post('/mydev')" style='cursor:pointer;'><U>내 글 목록</U></a></li>
                 <div class="user-info">
                     <div>남진우</div>
-                    <div><a href="#">로그아웃</a></div>
+                    <div><a href="#" style='cursor:pointer;'>로그아웃</a></div>
                 </div>
             </ul>
         </div>
@@ -46,27 +79,27 @@
         <div class="board_write">
             <div class="title">
                 <dl>
-                    <dd><textarea class="autosize" onkeydown="resize(this)" onkeyup="resize(this)"
+                    <dd><textarea id="title" class="autosize" onkeydown="resize(this)" onkeyup="resize(this)"
                                   placeholder="제목"></textarea></dd>
                 </dl>
             </div>
             <div class="goal">
                 <dl>
-                    <dd><input type="text" placeholder="나의 꿈(목표)"></dd>
+                    <dd><input id="myGoal" type="text" placeholder="나의 꿈(목표)"></dd>
                 </dl>
             </div>
             <div class="today-learn">
                 <div>
                     <dt>오늘 배운 것</dt>
                 </div>
-                <textarea placeholder="오늘 배운것 요약"></textarea>
+                <textarea id="todayLearned" placeholder="오늘 배운것 요약"></textarea>
             </div>
             <div class="spacer"></div>
             <div class="to-do-list">
                 <div>
                     <dt>To do List</dt>
                 </div>
-                <textarea placeholder="To do List"></textarea>
+                <textarea id="todoList" placeholder="To do List"></textarea>
             </div>
 
             <div class="spacer"></div>
@@ -74,7 +107,7 @@
             <div class="emotion">
                 <dl>
                     <dt>오늘의 감정</dt>
-                    <dd><input type="text" placeholder="오늘 느낀 감정"></dd>
+                    <dd><input id="emotion" type="text" placeholder="오늘 느낀 감정"></dd>
                 </dl>
             </div>
 
@@ -119,8 +152,8 @@
 
 
             <div class="bt_wrap">
-                <a href="#" class="on">작성 하기</a>
-                <a href="#">취소</a>
+                <a onclick="write_post()" class="on" style='cursor:pointer;'>작성 하기</a>
+                <a onclick="cancel_post('/')" style='cursor:pointer;'>취소</a>
             </div>
         </div>
     </div>
