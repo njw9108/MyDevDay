@@ -31,3 +31,135 @@
 </body>
 
 </html>
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <title>MyDevDay | read</title>
+
+    <link rel="stylesheet" href="/static/css/MyDev/write.css"/>
+    <script>
+        function resize(obj) {
+            obj.style.height = "1px";
+            obj.style.height = (12 + obj.scrollHeight) + "px";
+        }
+
+
+        // 일지 작성 요청
+        let title = $("#title")
+        let myGoal = $("#myGoal")
+        let todayLearned = $("#todayLearned")
+        let todoList = $("#todoList")
+        let emotion = $("#emotion")
+
+        function edit_post() {
+            $.ajax({
+                type: "GET",
+                url: "/mydev/write",
+                data: {
+                    title_give: title.val(),
+                    goal_give: myGoal.val(),
+                    todayLearned_give: todayLearned.val(),
+                    todoList_give: todoList.val(),
+                    emotion_give: emotion.val(),
+                },
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        alert(response['msg'])
+                        window.location.href = '/';
+                    } else if (response['result'] == 'fail') {
+                        alert(response['msg'])
+                    }
+                }
+            })
+        }
+
+        function cancel_post(url) {
+            if (confirm("작성을 그만 두시겠습니까?")) {
+                location.href = url;
+            } else {
+            }
+        }
+    </script>
+</head>
+<body>
+<div id="header-wrap">
+    <header>
+        <div>
+            <a href="#">
+                <h1 class="logo">
+                    My Dev Day
+                </h1>
+                <img class="logo-img" src="/static/css/MyDev/img/logo.png" alt="로고"/>
+            </a>
+
+            <ul class="gnb">
+                <li><a onclick="cancel_post('/')" style='cursor:pointer;'><U>전체 글 목록</U></a></li>
+                <li><a onclick="cancel_post('/mydev')" style='cursor:pointer;'><U>내 글 목록</U></a></li>
+                <div class="user-info">
+                    <div>남진우</div>
+                    <div><a href="#" style='cursor:pointer;'>로그아웃</a></div>
+                </div>
+            </ul>
+        </div>
+    </header>
+</div>
+<div class="board_wrap">
+    <div class="board_write_wrap">
+        <div class="board_write">
+            <div class="title">
+                <dl>
+                    <dd><textarea id="title" class="autosize" onkeydown="resize(this)" onkeyup="resize(this)"
+                                  placeholder="제목">오늘은 힘들었다</textarea></dd>
+                </dl>
+            </div>
+            <div class="goal">
+                <dl>
+                    <dd><input id="myGoal" type="text" placeholder="나의 꿈(목표)">멋진 개발자가 되자</dd>
+                </dl>
+            </div>
+            <div class="today-learn">
+                <div>
+                    <dt>오늘 배운 것</dt>
+                </div>
+                <textarea id="todayLearned" placeholder="오늘 배운것 요약">
+1. html
+2. 자바스크립트
+3. css</textarea>
+            </div>
+            <div class="spacer"></div>
+            <div class="to-do-list">
+                <div>
+                    <dt>To do List</dt>
+                </div>
+                <textarea id="todoList" placeholder="To do List">
+1. write, read 화면을 꾸미자</textarea>
+            </div>
+
+            <div class="spacer"></div>
+
+            <div class="emotion">
+                <dl>
+                    <dt>오늘의 감정</dt>
+                    <dd><input id="emotion" type="text" placeholder="오늘 느낀 감정"></dd>
+                    <dd><input id="emotion" type="text" placeholder="오늘 느낀 감정">&#x1F601;</dd>
+
+                </dl>
+            </div>
+
+            <div class="bt_wrap">
+                <a onclick="edit_post()" class="on" style='cursor:pointer;'>수정 하기</a>
+                <!--<a onclick="cancel_post('/')" style='cursor:pointer;'>취소</a>-->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>
