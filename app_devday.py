@@ -39,6 +39,10 @@ def main():
                 },
             ]
         })
+# test page
+@devday.route('/test')
+def test():
+    return render_template('DevDay/index_test.html')
 
 # 공개된 전체 데이터 요청 API
 @devday.route('/devday', methods=['POST'])
@@ -64,6 +68,7 @@ def devday_list():
                         'emoticon': ';-)',
                         'date': '20220501',
                         'like_count': 123,
+                        'comment_count': 321,
                     },
                     {
                         'user_id': 'z_user',
@@ -79,6 +84,7 @@ def devday_list():
                         'emoticon': ':-|',
                         'date': '20220505',
                         'like_count': 3,
+                        'comment_count': 9,
                     },
                 ]
             }            

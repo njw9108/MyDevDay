@@ -58,6 +58,9 @@
             align-items: center;
             border-radius: 30px;
         }
+        .card:hover {
+            cursor: pointer;
+        }
 
         .card-top {
             background-color: white;
