@@ -21,7 +21,7 @@
             crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Noto+Serif+KR:wght@300&display=swap"
           rel="stylesheet">
-    <link rel="stylesheet" href="frontpage.css">
+    <link rel="stylesheet" href="static/css/frontpage.css">
     <title>Frontpage</title>
     <script>
         $(document).ready(function () {
@@ -29,55 +29,59 @@
             listing();
         });
 
-        var i = 0;
-        $('i').on('click', function () {
-            if (i == 0) {
-                $(this).attr('class', 'bi-heart-fill');
-                i++;
-            } else if (i == 1) {
-                $(this).attr('class', 'bi-heart');
-                i--;
-            }
-        )};
 
         function listing() {
             $.ajax({
-                type: "GET",
+                type: "POST",
                 url: "/devday",
                 data: {},
                 success: function (response) {
-                    let rows = response['articles']
-                    for (let i = 0; i < rows.length; i++) {
-                        let user_id = rows[i]['user_id']
-                        let title = rows[i]['title']
-                        let memo = rows[i]['memo']
-                        let date = rows[i]['date']
-                        let like_count = rows[i]['like_count']
-                        let comment_count = rows[i]['comment_count']
+                    let result = response['result'];
+                    let success = result['success'];
+                    if (success == 'true') {
+                    let devday_list = response['row']
+                    for (let i = 0; i < devday_list.length; i++) {
+                        let user_id = devday_list[i]['user_id']
+                        let title = devday_list[i]['title']
+                        let memo = devday_list[i]['memo']
+                        let emoticon = devday_list[i]['emoticon']
+                        let date = devday_list[i]['date']
+                        let like_count = devday_list[i]['like_count']
+                        let comment_count = devday_list[i]['comment_count']
 
                         let temp_html = `<div class="container" id="cards-box">
                                             <div class="card">
                                                 <div class="card-top">
-                                                     <p class="card-text date">${date}</p>
+                                                     <span class="emoticon">${emoticon}</span>
+                                                     <span class="card-text date">${date}</span>
                                                 </div>
                                                 <div class="card-body">
                                                     <h3 class="card-title">${title}</h3>
                                                     <p class="card-text">${memo}</p>
                                                 </div>
                                                 <div class="card-bottom">
-                                                    <p class="user-id">작성자명: ${user_id}</p>
-                                                <p>
-                                                    <i class="bi bi-heart"></i>${like_count}
-                                                    <i class="bi bi-chat-left-dots"></i>${comment_count}
-                                                </p>
-                                            </div>
+                                                    <span class="user-id">작성자명: ${user_id}</span>
+                                                    <span><i class="bi bi-heart"></i>${like_count}</span>
+                                                    <span><i class="bi bi-chat-left-dots"></i>${comment_count}</span>
+                                                </div>
                                         </div>`
                         $('#cards-box').append(temp_html)
                     }
+
+                    var i = 0;
+                    $('i').on('click', function () {
+                        if (i == 0) {
+                            $(this).attr('class', 'bi-heart-fill');
+                            i++;
+                        } else if (i == 1) {
+                            $(this).attr('class', 'bi-heart');
+                            i--;
+                        }}
+                    )
+                    };
+
                 }
             })
-        }
-
 
 
     </script>
@@ -95,34 +99,32 @@
 <div class="container" id="cards-box">
     <div class="card">
         <div class="card-top">
-            <p class="card-text date">2022년 5월 7일</p>
+            <span class="emoticon"></span>
+            <span class="card-text date">2022년 5월 7일</span>
         </div>
         <div class="card-body">
             <h3 class="card-title">일지 제목</h3>
             <p class="card-text">개발이 어렵다. 어떻게 하면 더 잘할 수 있을까.</p>
         </div>
         <div class="card-bottom">
-            <p class="user-id">작성자명: OOO</p>
-            <p>
-                <i class="bi bi-heart"></i>
-                <i class="bi bi-chat-left-dots"></i>
-            </p>
+            <span class="user-id">작성자명: OOO</span>
+            <span><i class="bi bi-heart"></i></span>
+            <span><i class="bi bi-chat-left-dots"></i></span>
         </div>
     </div>
     <div class="card">
         <div class="card-top">
-            <p class="card-text date">2022년 5월 7일</p>
+            <span class="emotion"></span>
+            <span class="card-text date">2022년 5월 7일</span>
         </div>
         <div class="card-body">
             <h3 class="card-title">일지 제목</h3>
             <p class="card-text">개발이 어렵다. 어떻게 하면 더 잘할 수 있을까.</p>
         </div>
         <div class="card-bottom">
-            <p class="user-id">작성자명: OOO</p>
-            <p>
-                <i class="bi bi-heart"></i>
-                <i class="bi bi-chat-left-dots"></i>
-            </p>
+            <span class="user-id">작성자명: OOO</span>
+            <span><i class="bi bi-heart"></i></span>
+            <span><i class="bi bi-chat-left-dots"></i></span>
         </div>
     </div>
 </div>
