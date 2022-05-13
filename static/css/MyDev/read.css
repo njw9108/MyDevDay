@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
-
 * {
     padding: 0;
     margin: 0;
@@ -52,7 +50,7 @@ header .gnb li {
     margin-left: 30px;
 }
 
-header .gnb li a {
+header .gnb li a{
     cursor: pointer;
 }
 
@@ -94,7 +92,7 @@ header .user-info {
     background: #ffffff;
     border-radius: 2px;
     font-size: 1.4rem;
-    cursor: pointer;
+
 }
 
 .bt_wrap a:first-child {
@@ -106,75 +104,9 @@ header .user-info {
     color: #000;
 }
 
-
-/**/
-.board_write select {
-    -moz-appearance: none;
-    -webkit-appearance: none;
-    appearance: none;
-
-    font-family: "Noto Sansf KR", sans-serif;
-    font-size: 1rem;
-    font-weight: 400;
-    line-height: 1.5;
-
-    color: #444;
-    background-color: #fff;
-
-    padding: .6em 1.4em .5em .8em;
-    margin: 0;
-
-    border: 1px solid #aaa;
-    border-radius: .5em;
-    box-shadow: 0 1px 0 1px rgba(0, 0, 0, .04);
-}
-
-.board_write select:hover {
-    border-color: #888;
-}
-
-.board_write select:focus {
-    border-color: #aaa;
-    /*box-shadow: 0 0 1px 3px rgba(59, 153, 252, .7);*/
-    /*box-shadow: 0 0 0 3px -moz-mac-focusring;*/
-    color: #222;
-    outline: none;
-}
-
-.board_write select:disabled {
-    opacity: 0.5;
-}
-
-.board_write label {
-    font-family: "Noto Sans KR", sans-serif;
-    font-size: 1rem;
-    font-weight: 600;
-    line-height: 1.3;
-
-
-    color: #444;
-
-    margin-right: 0.5em;
-}
-
-.board_write form {
-    /*display: flex;*/
-    margin-left: 20px;
-    display: inline-block;
-    justify-content: center;
-    align-items: center;
-    height: 100px;
-    font-size: 18px;
-    vertical-align: middle;
-    /*height: 100vh;*/
-}
-
-.board_write form > div {
-    padding-bottom: 10px;
-}
-
-/**/
-
+/*.board_write {*/
+/*    border-top: 2px solid #000;*/
+/*}*/
 
 .board_write .title,
 .board_write .goal {
@@ -192,8 +124,14 @@ header .user-info {
     display: inline-block;
     vertical-align: middle;
     font-size: 1.4rem;
-    width: 80%;
+    width: 100%;
 }
+
+/*.board_write .goal dd,*/
+/*.board_write .title dd {*/
+/*    !*width: calc(100% - 100px);*!*/
+/*    width: 80%;*/
+/*}*/
 
 .board_write .title textarea {
     height: 66px;
@@ -201,7 +139,7 @@ header .user-info {
     display: block;
     padding: 0;
     font-size: 50px;
-    width: 100%;
+    width: 80%;
     resize: none;
     line-height: 1.5;
     outline: none;
@@ -234,7 +172,6 @@ header .user-info {
 
 .board_write .goal {
     /*border-bottom: 1px solid #000;*/
-    text-align: center;
     font-size: 0;
 }
 
@@ -271,7 +208,7 @@ header .user-info {
 
 .board_write .emotion dl {
     display: inline-block;
-    width: 80%;
+    width: 100%;
     vertical-align: middle;
 }
 
@@ -280,12 +217,11 @@ header .user-info {
     display: inline-block;
     vertical-align: middle;
     font-size: 1rem;
-    width: 100%;
+    width: 70%;
 }
 
 .board_write .emotion dt {
     width: 120px;
-    text-align: left;
 }
 
 
@@ -293,56 +229,4 @@ header .user-info {
     padding: 10px;
     width: 100%;
     box-sizing: border-box;
-
 }
-
-.board_write .emotion dl {
-    position: relative;
-    display: inline-block;
-    padding: 0 20px;
-}
-
-.board_write .emotion dl:last-child {
-    float: right;
-    width: 10%;
-    text-align: center;
-}
-
-.board_write .emoticon_wrap {
-    width: 100%;
-    text-align: center;
-    padding-top: 20px;
-}
-
-.board_write .emoticon {
-    display: inline-block;
-}
-
-.board_write .emoticon a {
-    cursor: pointer;
-}
-
-
-.board_write .emoticon section {
-    /*position: absolute;*/
-    /*left: 30px;*/
-    /*top: 30px;*/
-
-    font-size: 26px;
-    width: 400px;
-    height: 130px;
-    padding: 30px 20px;
-    background: #B4DADC;
-    text-align: left;
-
-}
-
-/*.board_write .emoticon p {*/
-/*  !*position: absolute;*!*/
-/*  width: 50%;   !* == (400px + 20px + 20px) * .5 = 220px *!*/
-/*  height: 25%;  !* == (160px + 30px + 30px) * .25 = 55px *!*/
-/*  margin: 5%;   !* == (400px + 20px + 20px) * .05 = 22px *!*/
-/*  padding: 5%;  !* == (400px + 20px + 20px) * .05 = 22px *!*/
-/*  background: red;*/
-/*}*/
-

@@ -5,10 +5,18 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!--    JQuery-->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script> <!-- jQuery cookie 함수-->
 
     <title>MyDevDay | devday</title>
     <link rel="stylesheet" href="static/css/style.css"/>
     <script>
+        function logout() {
+            $.removeCookie('mytoken');
+            alert('로그아웃이 되었습니다!')
+            window.location.href = '/user'
+        }
+
         function CallDevDayListAPI() {
             // 전체 공개 목록 요청 ajax API Call하여 공개 데이터 정보 json 데이터 받아 화면 갱신하기
             //alert('devdaylist api');
@@ -62,8 +70,7 @@
                     let message = result['message'];
                     if (success == 'true') {
                         $(".test-result").append(message + '<br>')
-                    }
-                    else {
+                    } else {
                         $(".test-result").append(message + '<br>')
                     }
                 }
@@ -86,10 +93,10 @@
                         let userinfo = result['row'][0];
                         let user_id = userinfo['user_id']
                         let user_name = userinfo['user_name']
-                        
+
                         let temp_html = `user_id=${user_id}, user_name=${user_name}`
                         $(".test-result").append(temp_html + '<br>')
-                    }                    
+                    }
                 }
             });
         }
@@ -124,7 +131,9 @@
     <div class="test-result">
     </div>
 </div>
-
+<div>
+    <button type="button" onclick="logout()">로그아웃</button>
+</div>
 </body>
 
 </html>

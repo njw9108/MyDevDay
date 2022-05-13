@@ -52,3 +52,8 @@ def devday_calendar(date):
                 ]
             }
         })
+
+# # 신규 글 작성
+# @mydev.route('/mydev/write', methods=['POST'])
+# def write_dev_post():
+#

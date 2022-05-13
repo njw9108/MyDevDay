@@ -3,17 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
+    <!--    JQuery-->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script> <!-- jQuery cookie 함수-->
     <title>MyDevDay | write</title>
 
     <link rel="stylesheet" href="/static/css/MyDev/write.css"/>
     <script>
-        $(document).ready(function () {
-        });
+        function resize(obj) {
+            obj.style.height = "1px";
+            obj.style.height = (12 + obj.scrollHeight) + "px";
+        }
+
+
+        // 일지 작성 요청
+        let write = "njw9108"
+        let title = $("#title")
+        let myGoal = $("#myGoal")
+        let todayLearned = $("#todayLearned")
+        let todoList = $("#todoList")
+        let feeling = $("#emotion")
+        let emotion = "&#x1F601;"
+
+        function write_post() {
+            $.ajax({
+                type: "POST",
+                url: "/mydev/write",
+                data: {
+                    title_give: title.val(),
+                    goal_give: myGoal.val(),
+                    todayLearned_give: todayLearned.val(),
+                    todoList_give: todoList.val(),
+                    feeling_give: feeling.val(),
+                    emotion_give: emotion.val(),
+                },
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        alert(response['msg'])
+                        window.location.href = '/';
+                    } else if (response['result'] == 'fail') {
+                        alert(response['msg'])
+                    }
+                }
+            })
+        }
+
+        function cancel_post(url) {
+            if (confirm("작성을 그만 두시겠습니까?")) {
+                location.href = url;
+            } else {
+            }
+        }
     </script>
 </head>
 <body>
-<div id="wrap">
+<div id="header-wrap">
     <header>
         <div>
             <a href="#">
@@ -24,8 +67,8 @@
             </a>
 
             <ul class="gnb">
-                <li><a href="/"><U>전체 글 목록</U></a></li>
-                <li><a href="/mydev"><U>내 글 목록</U></a></li>
+                <li><a onclick="cancel_post('/')"><U>전체 글 목록</U></a></li>
+                <li><a onclick="cancel_post('/mydev')"><U>내 글 목록</U></a></li>
                 <div class="user-info">
                     <div>남진우</div>
                     <div><a href="#">로그아웃</a></div>
@@ -34,5 +77,115 @@
         </div>
     </header>
 </div>
+<div class="board_wrap">
+    <div class="board_write_wrap">
+        <div class="board_write">
+            <div class="title">
+                <dl>
+                    <dd><textarea id="title" class="autosize" onkeydown="resize(this)" onkeyup="resize(this)"
+                                  placeholder="제목"></textarea></dd>
+                    <form>
+                        <div>
+                            카테고리
+                        </div>
+                        <select id="category" name="category">
+                            <option value="">-- 선택하세요 --</option>
+                            <option value="web">웹 개발</option>
+                            <option value="algorithm">알고리즘</option>
+                            <option value="app">앱 개발</option>
+                            <option value="computer">컴퓨터 공학</option>
+                            <option value="etc">기타</option>
+                        </select>
+                    </form>
+                </dl>
+            </div>
+            <div class="goal">
+                <dl>
+                    <dd><input id="myGoal" type="text" placeholder="나의 꿈(목표)"></dd>
+                </dl>
+            </div>
+            <div class="today-learn">
+                <div>
+                    <dt>오늘 배운 것</dt>
+                </div>
+                <textarea id="todayLearned" placeholder="오늘 배운것 요약"></textarea>
+            </div>
+            <div class="spacer"></div>
+            <div class="to-do-list">
+                <div>
+                    <dt>To do List</dt>
+                </div>
+                <textarea id="todoList" placeholder="To do List"></textarea>
+            </div>
+
+            <div class="spacer"></div>
+
+            <div class="emotion">
+                <dl>
+                    <dt>오늘의 감정</dt>
+                    <dd><input id="emotion" type="text" placeholder="오늘 느낀 감정"></dd>
+                </dl>
+
+                <dl>
+                    <dt>이모티콘</dt>
+                    <dd><input readonly id="emoticon" type="text" placeholder=""></dd>
+                </dl>
+            </div>
+
+            <div class="emoticon_wrap">
+                <div class="emoticon">
+                    <section>
+                        <a>&#x1F601;</a>
+                        <a>&#x1F602;</a>
+                        <a>&#x1F603;</a>
+                        <a>&#x1F604;</a>
+                        <a>&#x1F605;</a>
+                        <a>&#x1F606;</a>
+                        <a>&#x1F609;</a>
+                        <a>&#x1F60A;</a>
+                        <a>&#x1F60B;</a>
+                        <a>&#x1F60C;</a>
+                        <a>&#x1F60D;</a>
+                        <a>&#x1F60F;</a>
+                        <a>&#x1F612;</a>
+                        <a>&#x1F613;</a>
+                        <a>&#x1F614;</a>
+                        <a>&#x1F616;</a>
+                        <a>&#x1F618;</a>
+                        <a>&#x1F61A;</a>
+                        <a>&#x1F61C;</a>
+                        <a>&#x1F61D;</a>
+                        <a>&#x1F61E;</a>
+                        <a>&#x1F620;</a>
+                        <a>&#x1F621;</a>
+                        <a>&#x1F622;</a>
+                        <a>&#x1F623;</a>
+                        <a>&#x1F624;</a>
+                        <a>&#x1F625;</a>
+                        <a>&#x1F628;</a>
+                        <a>&#x1F629;</a>
+                        <a>&#x1F62A;</a>
+                        <a>&#x1F62B;</a>
+                        <a>&#x1F62D;</a>
+                        <a>&#x1F630;</a>
+                        <a>&#x1F631;</a>
+                        <a>&#x1F632;</a>
+                        <a>&#x1F633;</a>
+                        <a>&#x1F635;</a>
+                        <a>&#x1F637;</a>
+                    </section>
+                </div>
+            </div>
+
+
+            <div class="bt_wrap">
+                <a onclick="write_post()" class="on">작성 하기</a>
+                <a onclick="cancel_post('/')" style='cursor:pointer;'>취소</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 </body>
 </html>
