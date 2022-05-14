@@ -47,6 +47,11 @@ h1, h3, p, div {
     margin-left: 10px;
 }
 
+#title > a {
+    text-decoration: none;
+    color: black;
+}
+
 #diaryimg {
     width: 100%;
     height: 100%;
