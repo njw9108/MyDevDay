@@ -1,17 +1,19 @@
-from pymongo import MongoClient
 from flask import Flask, Blueprint, render_template, jsonify, request, redirect, url_for  # Flask 서버 객체 import
+from pymongo import MongoClient
+# 패키지? 각자 설치해야함(근데 설치한걸 푸쉬로 공유는 불가능 한가? 질문해야지)
+# PyJWT 패키지 설치하기
+import jwt
+import datetime
+import hashlib
+from datetime import datetime, timedelta
 
 app = Flask(__name__)
 
 client = MongoClient('boox.synology.me', 27018, username="mydevday", password="devday2205")
+
 db = client.mydevday_user1
 
 SECRET_KEY = 'mydevday'
-
-# 패키지? 각자 설치해야함(근데 설치한걸 푸쉬로 공유는 불가능 한가? 질문해야지)
-import jwt
-import datetime
-import hashlib
 
 user = Blueprint('user', __name__)
 
@@ -26,28 +28,26 @@ def home():
     token_receive = request.cookies.get('mytoken')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        user_info = db.user.find_one({"id": payload['id']})
-        return render_template('index.html', nickname=user_info["nick"])
+        user_info = db.user.find_one({"id": payload["id"]})
+        return render_template('Devday/index.html', name=user_info["name"])
     except jwt.ExpiredSignatureError:
-        return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
+        return redirect(url_for("user.login", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
-        return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
+        return redirect(url_for("user.login", msg="로그인 정보가 존재하지 않습니다."))
 
 
 @user.route('/user', methods=['GET'])
-def user_page():
+def login():
     msg = request.args.get("msg")
     return render_template('User/login.html', msg=msg)
 
-
-# user 가입
-@user.route('/user/signup', methods=['GET'])
-def user_signup():
-    return render_template('User/signup.html')
+@app.route('/user/signup')
+def register():
+    return render_template('user/signup.html')
 
 
 #################################
-#  로그인을 위한 API            
+#  로그인을 위한 API
 #################################
 
 # user 회원가입 API
@@ -78,21 +78,22 @@ def id_check():
 def user_login():
     id_receive = request.form['id_give']
     pw_receive = request.form['pw_give']
-    print(pw_receive)
+
     pw_hash = hashlib.sha256(pw_receive.encode('utf-8')).hexdigest()
 
-    result = db.user.find_one({'id': id_receive, 'pw': pw_hash})
+    result = db.user.find_one({'id': id_receive, 'pw': pw_hash}, {'_id': False})
 
     if result is not None:
         payload = {
             'id': id_receive,
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)
+            'exp': datetime.utcnow() + timedelta(seconds=60 * 60 * 24)
         }
-        ## token = jwt.encode(payload, SECRET_KEY, algorithm='HS256').decode('urf-8')
+        token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
 
-        return jsonify({'result': 'success', 'msg': '로그인 성공.'})
+        return jsonify({'result': 'success', 'msg': '로그인 성공.', 'token': token, })
     else:
         return jsonify({'result': 'fail', 'msg': '아이디/비밀번호가 일치하지 않습니다.'})
+
 
 # user 사용자 정보 확인 api
 @user.route('/user/nick', methods=['GET'])
@@ -110,3 +111,8 @@ def user_valid():
     except jwt.exceptions.DecodeError:
         return jsonify({'result': 'fail', 'msg': '로그인 정보가 존재하지 않습니다.'})
 
+
+@user.route('/checkcookie')
+def checkcookie():
+    name = request.cookies.get('mytoken')
+    return '<h1>welcome ' + name + '</h1>'
