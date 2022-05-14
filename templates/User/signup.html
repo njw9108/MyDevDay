@@ -38,6 +38,17 @@
             <input id="repwInput" type="password" placeholder="Password Check" maxlength="12">
             <h3 id="inname">Name<span class="error nameError"></span></h3>
             <input id="nameInput" type="text" placeholder="Name" maxlength="10">
+            <h3 id="inemail">E-mail<span class="error emailError"></span></h3>
+            <input id="emailInput" type="text" placeholder="E-mail" maxlength="25">
+            <select id="domainBox">
+                <option value="@naver.com">@naver.com</option>
+                <option value="@gmail.com">@gmail.com</option>
+                <option value="@daum.com">@daum.net</option>
+                <option value="@hanmail.net">@hanmail.net</option>
+                <option value="@kakao.com">@kakao.com</option>
+                <option value="@tistory.com">@tistory.com</option>
+                <option value="">직접입력</option>
+            </select>
 
             <button id="saveBtn" onclick="create()">Create</button>
         </div>
@@ -56,20 +67,23 @@
     let pw = $("#pwInput")
     let repw = $("#repwInput")
     let name = $("#nameInput")
+    let email = $("#emailInput")
 
 
     function create() {
         {#영문 대소문자, 숫자, _, - 4-10글자#}
         {#영문 대소문자, 숫자 1개이상 포함 4-12글자#}
         {#한글, 영문 대소문자 2-10글자#}
+        {#영문 대소문자, 숫자 4-15글자#}
         let idcheck = /^[a-zA-Z0-9_-]{4,10}$/;
         let pwcheck = /(?=.*\d)(?=.*[a-zA-ZS]).{4,12}/
         let namecheck = /^[가-힣a-zA-Z]{2,10}$/
+        let emailcheck = /^[a-zA-Z0-9@.]{4,25}$/;
 
-        let inputlist = [id, pw, repw, name]
-        let errorlist = [$(".idError"), $(".pwError"), $(".repwError"), $(".nameError")]
-        let valcheck = [idcheck, pwcheck, pwcheck, namecheck]
-        let checkmsg = [' 영문 대소문자, 숫자, 언더바(_), 하이푼(-) 4-10글자 ', ' 영문 대소문자, 숫자 1개 이상 포함 4-12글자 ', ' 영문 대소문자, 숫자 1개 이상 포함 4-12글자 ', ' 한글, 영문 대소문자 2-10글자 ']
+        let inputlist = [id, pw, repw, name, email]
+        let errorlist = [$(".idError"), $(".pwError"), $(".repwError"), $(".nameError"), $(".emailError")]
+        let valcheck = [idcheck, pwcheck, pwcheck, namecheck, emailcheck]
+        let checkmsg = [' 영문 대소문자, 숫자, 언더바(_), 하이푼(-) 4-10글자 ', ' 영문 대소문자, 숫자 1개 이상 포함 4-12글자 ', ' 영문 대소문자, 숫자 1개 이상 포함 4-12글자 ', ' 한글, 영문 대소문자 2-10글자 ', " 영문 대소문자, 숫자 4-15글자"]
 
         // 입력창 공백 여부 유효성 검사
         for (let i = 0; i < inputlist.length; i++) {
@@ -98,6 +112,16 @@
             $(".repwError").text("")
         }
 
+        let emailcheck2 = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+
+        if (!emailcheck2.test(email.val() + $("#domainBox").val())){
+            email.focus()
+            $(".emailError").text(" 형식이 맞지 않음.")
+            return false;
+        } else {
+            $(".emailError").text("")
+        }
+
         // 아이디 중복 여부 요청
         $.ajax({
             type: "POST",
@@ -118,6 +142,7 @@
                             id_give: id.val(),
                             pw_give: pw.val(),
                             name_give: name.val(),
+                            email_give: email.val() + $("#domainBox").val()
                         },
                         success: function (response) {
                             alert(response['msg'])

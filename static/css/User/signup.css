@@ -67,7 +67,7 @@ h1, h3, p, div {
     width: 65%;
     min-width: 400px;
     height: 100vh;
-    min-height: 630px;
+    min-height: 670px;
     padding: 0px 20px 0px 20px;
     margin-left: 30px;
     display: flex;
@@ -91,9 +91,25 @@ h1, h3, p, div {
     border: white;
     border-bottom: mediumturquoise 1px solid;
     width: 100%;
-    line-height: 280%;
+    line-height: 170%;
     font-weight: 400;
     font-size: 20px;
+    margin-bottom: 10px;
+}
+
+#emailInput {
+    width: 50%;
+}
+
+#domainBox {
+    border: white;
+    /*border-bottom: mediumturquoise 1px solid;*/
+    width: 49%;
+    /*height: 30px;*/
+    /*line-height: 300%;*/
+    font-weight: 400;
+    font-size: 20px;
+    margin-bottom: 10px;
 }
 
 .error {
