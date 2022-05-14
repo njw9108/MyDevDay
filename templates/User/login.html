@@ -10,6 +10,9 @@
     <!--    JQuery-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
+    <!--    JQuery-->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <!-- jQuery cookie 함수-->
     <title>MyDevDay | login</title>
     <!--    css-->
     <link rel="stylesheet" href="/static/css/User/login.css">
@@ -43,6 +46,9 @@
 </div>
 
 <script>
+    {% if msg %}
+        alert("{{ msg }}")
+    {% endif %}
     let id = $("#idInput")
     let pw = $("#pwInput")
 
@@ -59,27 +65,27 @@
             } else {
                 errorlist[i].text("")
             }
-
-            // 로그인 요청
-            $.ajax({
-                type: "POST",
-                url: "/user/login",
-                data: {id_give: id.val(), pw_give: pw.val()},
-                success: function (response) {
-                    console.log(response)
-                    if (response['result'] == 'success') {
-                        // $.cookie('mytoken', response['token'])
-                        alert(response['msg'])
-                        window.location.href = '/';
-                    } else if (result == 'fail') {
-                        alert(response['msg'])
-                        id.focus();
-                        $(".idError").text(" 아이디를 확인해주세요")
-                        $(".pwError").text(" 비밀번호를 확인해주세요")
-                    }
-                }
-            })
         }
+        // 로그인 요청
+        $.ajax({
+            type: "POST",
+            url: "/user/login",
+            data: {id_give: id.val(), pw_give: pw.val()},
+            success: function (response) {
+                console.log(response)
+                if (response['result'] == 'success') {
+                    $.cookie('mytoken', response['token']), {path: '/'};
+                    alert(response['msg'])
+                    window.location.replace("/")
+                } else if (result == 'fail') {
+                    alert(response['msg'])
+                    id.focus();
+                    $(".idError").text(" 아이디를 확인해주세요")
+                    $(".pwError").text(" 비밀번호를 확인해주세요")
+                }
+            }
+        })
+
     }
     // function CallUserIsLoginAPI() {
     //     // 사용자 로그인 여부 정보 요청 ajax API Call하여 사용자 로그인 여부 확인
