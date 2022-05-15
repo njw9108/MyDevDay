@@ -1,0 +1,147 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: #B4DADC;
+}
+
+h1, h3, p, div {
+    margin: 0;
+    padding: 0;
+}
+
+
+.container {
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+    /*align-items: center;*/
+}
+
+.imgBox {
+    /*background-color: skyblue;*/
+    margin-top: 50px;
+    margin-left: 30px;
+    width: 35%;
+    min-width: 300px;
+    height: 50%;
+}
+
+.titleBox {
+    display: flex;
+    flex: 1;
+    align-items: center;
+}
+
+#logoimg {
+    width: 70px;
+    height: 70px;
+}
+
+#title {
+    display: inline-block;
+    font-size: 40px;
+    margin-left: 10px;
+}
+
+#title > a {
+    text-decoration: none;
+    color: black;
+}
+
+#diaryimg {
+    width: 100%;
+    height: 100%;
+    min-height: 450px;
+    border-radius: 20px;
+    margin-top: 20px;
+}
+
+.signForm {
+    background-color: white;
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
+    width: 65%;
+    min-width: 400px;
+    height: 100vh;
+    min-height: 670px;
+    padding: 0px 20px 0px 20px;
+    margin-left: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#inputTitle {
+    margin-bottom: 20px;
+    font-weight: bold;
+    margin-top: 100px;
+}
+
+.inputBox {
+    /*background-color: skyblue;*/
+    width: 75%;
+}
+
+
+.inputBox > input {
+    border: white;
+    border-bottom: mediumturquoise 1px solid;
+    width: 100%;
+    line-height: 170%;
+    font-weight: 400;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+#emailInput {
+    width: 50%;
+}
+
+#domainBox {
+    border: white;
+    /*border-bottom: mediumturquoise 1px solid;*/
+    width: 49%;
+    /*height: 30px;*/
+    /*line-height: 300%;*/
+    font-weight: 400;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.error {
+    color: red;
+    font-size: 13px;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+#saveBtn {
+    background-color: #72C9CD;
+    border: #72C9CD 1px solid;
+    border-radius: 10px;
+    width: 100%;
+    height: 50px;
+    margin-top: 30px;
+    color: white;
+    font-size: 20px;
+}
+
+.pageMove {
+    /*background-color: skyblue;*/
+    margin-top: 20px;
+    display: inline-block;
+}
+
+.pageMove > p {
+    line-height: 200%;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 700;
+}
+
+.pageMove > p > a {
+    color: #72C9CD;
+    font-family: 'Noto Sans KR', sans-serif;
+}

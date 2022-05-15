@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <!--    구글 폰트-->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100&family=Poppins:wght@100;300;500&display=swap"
+          rel="stylesheet">
+    <!--    JQuery-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <!-- jQuery cookie 함수-->
+    <title>MyDevDay | signup</title>
+    <!--    css-->
+    <link rel="stylesheet" href="/static/css/User/signup.css">
+
+</head>
+
+<body>
+<div class="container">
+    <div class="imgBox">
+        <div class="titleBox">
+            <img src="/static/css/User/image/logo.png" id="logoimg">
+            <h1 id="title"><a href="/">MyDevDay</a></h1>
+        </div>
+        <img src="/static/css/User/image/diary.jpg" id="diaryimg">
+    </div>
+    <div class="signForm">
+        <h2 id="inputTitle">Sign Up</h2>
+        <div class="inputBox">
+            <h3 id="inid">ID<span class="error idError"></span></h3>
+            <input id="idInput" type="text" placeholder="User ID" maxlength="10">
+            <h3 id="inpw">Password<span class="error pwError"></span></h3>
+            <input id="pwInput" type="password" placeholder="Password" maxlength="12">
+            <h3 id="inrepw">Password Check<span class="error repwError"></span></h3>
+            <input id="repwInput" type="password" placeholder="Password Check" maxlength="12">
+            <h3 id="inname">Name<span class="error nameError"></span></h3>
+            <input id="nameInput" type="text" placeholder="Name" maxlength="10">
+            <h3 id="inemail">E-mail<span class="error emailError"></span></h3>
+            <input id="emailInput" type="text" placeholder="E-mail" maxlength="25">
+            <select id="domainBox">
+                <option value="@naver.com">@naver.com</option>
+                <option value="@gmail.com">@gmail.com</option>
+                <option value="@daum.com">@daum.net</option>
+                <option value="@hanmail.net">@hanmail.net</option>
+                <option value="@kakao.com">@kakao.com</option>
+                <option value="@tistory.com">@tistory.com</option>
+                <option value="">직접입력</option>
+            </select>
+
+            <button id="saveBtn" onclick="create()">Create</button>
+        </div>
+        <div class="pageMove">
+            <p>이미 회원이신가요? <a href="/user"> 로그인 하러가기</a></p>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+    });
+
+
+    let id = $("#idInput")
+    let pw = $("#pwInput")
+    let repw = $("#repwInput")
+    let name = $("#nameInput")
+    let email = $("#emailInput")
+
+
+    function create() {
+        {#영문 대소문자, 숫자, _, - 4-10글자#}
+        {#영문 대소문자, 숫자 1개이상 포함 4-12글자#}
+        {#한글, 영문 대소문자 2-10글자#}
+        {#영문 대소문자, 숫자 4-15글자#}
+        let idcheck = /^[a-zA-Z0-9_-]{4,10}$/;
+        let pwcheck = /(?=.*\d)(?=.*[a-zA-ZS]).{4,12}/
+        let namecheck = /^[가-힣a-zA-Z]{2,10}$/
+        let emailcheck = /^[a-zA-Z0-9@.]{4,25}$/;
+
+        let inputlist = [id, pw, repw, name, email]
+        let errorlist = [$(".idError"), $(".pwError"), $(".repwError"), $(".nameError"), $(".emailError")]
+        let valcheck = [idcheck, pwcheck, pwcheck, namecheck, emailcheck]
+        let checkmsg = [' 영문 대소문자, 숫자, 언더바(_), 하이푼(-) 4-10글자 ', ' 영문 대소문자, 숫자 1개 이상 포함 4-12글자 ', ' 영문 대소문자, 숫자 1개 이상 포함 4-12글자 ', ' 한글, 영문 대소문자 2-10글자 ', " 영문 대소문자, 숫자 4-15글자"]
+
+        // 입력창 공백 여부 유효성 검사
+        for (let i = 0; i < inputlist.length; i++) {
+            if (inputlist[i].val() == "") {
+                inputlist[i].focus()
+                errorlist[i].text(" 입력해주세요")
+                return false;
+            } else {
+                errorlist[i].text("")
+            }
+            if (!valcheck[i].test(inputlist[i].val())) {
+                inputlist[i].focus()
+                errorlist[i].text(checkmsg[i] + '로 입력해주세요')
+                return false;
+            } else {
+                errorlist[i].text("")
+            }
+        }
+
+        // 비밀번호 일치 여부 유효성 검사
+        if (repw.val() != pw.val()) {
+            repw.focus();
+            $(".repwError").text(" 비밀번호가 일치 하지 않습니다.")
+            return false;
+        } else {
+            $(".repwError").text("")
+        }
+
+        let emailcheck2 = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+
+        if (!emailcheck2.test(email.val() + $("#domainBox").val())){
+            email.focus()
+            $(".emailError").text(" 형식이 맞지 않음.")
+            return false;
+        } else {
+            $(".emailError").text("")
+        }
+
+        // 아이디 중복 여부 요청
+        $.ajax({
+            type: "POST",
+            url: "/user/signup/idcheck",
+            data: {id_give: id.val()},
+            success: function (response) {
+                // console.log(response)
+                // alert(response['msg'])
+                let sameid = response["sameid"]
+                // console.log(sameid)
+                if (sameid == null) {
+                    // alert("사용 가능")
+                    // 아이디 중복이 아니라면, 회원정보 디비 저장 요청
+                    $.ajax({
+                        type: "POST",
+                        url: "/user/signup/create",
+                        data: {
+                            id_give: id.val(),
+                            pw_give: pw.val(),
+                            name_give: name.val(),
+                            email_give: email.val() + $("#domainBox").val()
+                        },
+                        success: function (response) {
+                            alert(response['msg'])
+                            window.location.href = "/user"
+                        }
+                    })
+                } else if (id.val() == sameid['id']) {
+                    alert("중복된 아이디 입니다!")
+                    id.focus();
+                    $(".idError").text(" 중복된 아이디 입니다")
+                }
+            }
+        })
+    }
+
+</script>
+</body>
+
+</html>

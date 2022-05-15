@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <!--    구글 폰트-->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100&family=Poppins:wght@100;300;500&display=swap"
+          rel="stylesheet">
+    <!--    JQuery-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- jQuery cookie 함수-->
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+
+    <title>MyDevDay | login</title>
+    <!--    css-->
+    <link rel="stylesheet" href="/static/css/User/login.css">
+
+</head>
+
+<body>
+<div class="container">
+    <div class="imgBox">
+        <div class="titleBox">
+            <img src="/static/css/User/image/logo.png" id="logoimg">
+            <h1 id="title"><a href="/">MyDevDay</a></h1>
+        </div>
+        <img src="/static/css/User/image/diary.jpg" id="diaryimg">
+    </div>
+    <div class="signForm">
+        <h2 id="inputTitle">Login</h2>
+        <div class="inputBox">
+            <h3 id="inid">ID<span class="error idError"></span></h3>
+            <input id="idInput" type="text" placeholder="User ID">
+            <h3 id="inpw">Password<span class="error pwError"></span></h3>
+            <input id="pwInput" type="password" placeholder="Password">
+
+            <button id="saveBtn" onclick="create()">Create</button>
+        </div>
+        <div class="pageMove">
+            <p>아직 회원이 아니신가요? <a href="/user/signup"> 간단 회원가입 하러가기</a></p>
+            <p>비회원으로 볼래요! <a href="/">비회원으로 시작하기</a></p>
+        </div>
+    </div>
+</div>
+
+<script>
+    {% if msg %}
+        alert("{{ msg }}")
+    {% endif %}
+    let id = $("#idInput")
+    let pw = $("#pwInput")
+
+    function create() {
+        {#영문 대소문자, 숫자, _, - 4-10글자#}
+        {#영문 대소문자, 숫자 1개이상 포함 4-12글자#}
+        let idcheck = /^[a-zA-Z0-9_-]{4,10}$/;
+        let pwcheck = /(?=.*\d)(?=.*[a-zA-ZS]).{4,12}/
+
+        let inputlist = [id, pw]
+        let errorlist = [$(".idError"), $(".pwError")]
+        let valcheck = [idcheck, pwcheck]
+        let checkmsg = [' 영문 대소문자, 숫자, 언더바(_), 하이푼(-) 4-10글자 ', ' 영문 대소문자, 숫자 1개 이상 포함 4-12글자 ']
+
+
+        for (let i = 0; i < inputlist.length; i++) {
+            // 입력창 공백 여부 유효성 검사
+            if (inputlist[i].val() == "") {
+                inputlist[i].focus()
+                errorlist[i].text(" 입력해주세요")
+                return false;
+            } else {
+                errorlist[i].text("")
+            }
+            // 로그인 정보 유효성 검사
+            if (!valcheck[i].test(inputlist[i].val())) {
+                inputlist[i].focus()
+                errorlist[i].text(checkmsg[i] + '로 입력해주세요')
+                return false;
+            } else {
+                errorlist[i].text("")
+            }
+        }
+        // 로그인 요청
+        $.ajax({
+            type: "POST",
+            url: "/user/login",
+            data: {id_give: id.val(), pw_give: pw.val()},
+            success: function (response) {
+                console.log(response)
+                if (response['result'] == 'success') {
+                    $.cookie('mytoken', response['token']), {path: '/'};
+                    alert(response['msg'])
+                    window.location.replace("/")
+                } else if (result == 'fail') {
+                    alert(response['msg'])
+                    id.focus();
+                    $(".idError").text(" 아이디를 확인해주세요")
+                    $(".pwError").text(" 비밀번호를 확인해주세요")
+                }
+            }
+        })
+
+    }
+
+    // function CallUserIsLoginAPI() {
+    //     // 사용자 로그인 여부 정보 요청 ajax API Call하여 사용자 로그인 여부 확인
+    //     //alert('userislogin api');
+    //
+    //     $.ajax({
+    //         type: 'POST',
+    //         url: './user/islogin',
+    //         data: {},
+    //         success: function (response) {
+    //             let result = response['result'];
+    //             let success = result['success'];
+    //             let message = result['message'];
+    //             if (success == 'true') {
+    //                 $(".test-result").append(message + '<br>')
+    //             } else {
+    //                 $(".test-result").append(message + '<br>')
+    //             }
+    //         }
+    //     });
+    //
+    //
+    // }
+
+    // $(document).ready(function () {
+    //     CallUserIsLoginAPI();
+    // });
+</script>
+
+<!--<div class="container">-->
+<!--    <h1>로그인 화면</h1>-->
+<!--    <hr>-->
+<!--    로그인 성공하면 '내가 작성한 글목록' 페이지로 이동<br>-->
+<!--    <br>-->
+<!--    <a href="./">메인 페이지로 이동</a><br>-->
+<!--</div>-->
+<!--<br>-->
+<!--<br>-->
+
+<!--<div class="test">-->
+<!--    <h5>테스트 결과</h5>-->
+<!--    <hr>-->
+<!--    <div class="test-result">-->
+<!--    </div>-->
+<!--</div>-->
+
+</body>
+
+</html>

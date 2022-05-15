@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!--    JQuery-->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script> <!-- jQuery cookie 함수-->
+
+    <title>MyDevDay | devday</title>
+    <link rel="stylesheet" href="static/css/style.css"/>
+    <script>
+        function logout() {
+            $.removeCookie('mytoken');
+            alert('로그아웃이 되었습니다!')
+            window.location.href = '/user'
+        }
+
+        function CallDevDayListAPI() {
+            // 전체 공개 목록 요청 ajax API Call하여 공개 데이터 정보 json 데이터 받아 화면 갱신하기
+            //alert('devdaylist api');
+
+            $.ajax({
+                type: 'POST',
+                url: './devday',
+                data: {},
+                success: function (response) {
+                    let result = response['result'];
+                    let success = result['success'];
+                    if (success == 'true') {
+                        let devday_list = result['row']
+                        for (let i = 0; i < devday_list.length; i++) {
+                            let user_id = devday_list[i]['user_id']
+                            let dev_id = devday_list[i]['dev_id']
+                            let subject = devday_list[i]['subject']
+                            let content = devday_list[i]['content']
+                            let memo1 = devday_list[i]['memo1']
+                            let memo2 = devday_list[i]['memo2']
+                            let memo3 = devday_list[i]['memo3']
+                            let memo4 = devday_list[i]['memo4']
+                            let memo5 = devday_list[i]['memo5']
+                            let feeling = devday_list[i]['feeling']
+                            let emoticon = devday_list[i]['emoticon']
+                            let date = devday_list[i]['date']
+                            let like_count = devday_list[i]['like_count']
+
+                            let temp_html = `user_id=${user_id}, dev_id=${dev_id}, subject=${subject}, content=${content},
+                                memo1=${memo1}, memo2=${memo2}, memo3=${memo3}, memo4=${memo4}, memo5=${memo5},
+                                feeling=${feeling}, emoticon=${emoticon}, date=${date}, like_count=${like_count},`
+
+                            $(".test-result").append(temp_html + '<br>')
+                        }
+                    }
+                }
+            });
+        }
+
+        function CallUserIsLoginAPI() {
+            // 사용자 로그인 여부 정보 요청 ajax API Call하여 사용자 로그인 여부 확인
+            //alert('userislogin api');
+
+            $.ajax({
+                type: 'GET',
+                url: './user/info',
+                data: {},
+                success: function (response) {
+                    let result = response['result'];
+                    let success = result['success'];
+                    let message = result['message'];
+                    if (success == 'true') {
+                        $(".test-result").append(message + '<br>')
+                    } else {
+                        $(".test-result").append(message + '<br>')
+                    }
+                }
+            });
+        }
+
+        function CallGetUserInfoAPI() {
+            // 사용자 정보 요청 ajax API Call하여 사용자 정보 json 데이터 받아 화면 갱신하기
+            //alert('userinfo api');
+
+            $.ajax({
+                type: 'POST',
+                url: './user/info',
+                data: {},
+                success: function (response) {
+                    let result = response['result'];
+                    let success = result['success'];
+                    let message = result['message'];
+                    if (success == 'true') {
+                        let userinfo = result['row'][0];
+                        let user_id = userinfo['user_id']
+                        let user_name = userinfo['user_name']
+
+                        let temp_html = `user_id=${user_id}, user_name=${user_name}`
+                        $(".test-result").append(temp_html + '<br>')
+                    }
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            CallDevDayListAPI();
+        });
+    </script>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>메인화면 : 전체 공개 DevDay</h1>
+    <hr>
+    <a href="./user">로그인 페이지로 이동</a><br>
+    <a href="./user/signup">가입 페이지로 이동</a><br>
+    <a href="./mydev">MyDevDay 페이지로 이동</a><br>
+</div>
+<br>
+<br>
+
+<div class="test">
+    <h3>테스트 API 호출</h3>
+    <hr>
+    <a onclick="CallDevDayListAPI()">전체공개 목록 API 요청</a><br>
+    <a onclick="CallUserIsLoginAPI()">로그인 여부 정보 API 요청</a><br>
+    <a onclick="CallGetUserInfoAPI()">사용자 정보 API 요청</a><br>
+    <br>
+    <h5>테스트 결과</h5>
+    <hr>
+    <div class="test-result">
+    </div>
+</div>
+<div>
+    <button type="button" onclick="logout()">로그아웃</button>
+</div>
+</body>
+
+</html>

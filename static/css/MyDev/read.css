@@ -1,0 +1,232 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+ul,
+li {
+    list-style: none;
+}
+
+header {
+    background: #B4DADC;
+}
+
+header > div {
+    background: #B4DADC;
+    width: 90%;
+    min-width: 1000px;
+    max-width: 1200px;
+    height: 80px;
+    margin: 0 auto;
+}
+
+header .logo {
+    float: left;
+    margin-top: 20px;
+    margin-left: 30px;
+    color: #fff;
+    font-weight: bold;
+}
+
+header .logo-img {
+    height: 33px;
+    margin-left: 10px;
+    margin-top: 20px;
+}
+
+header .gnb {
+    float: right;
+}
+
+header .gnb li {
+    display: inline-block;
+    margin-top: 28px;
+    margin-left: 30px;
+}
+
+header .gnb li a{
+    cursor: pointer;
+}
+
+header .gnb li:first-child {
+    margin-left: 0;
+}
+
+header .gnb li:last-child {
+    margin-right: 50px;
+}
+
+header .user-info {
+    float: right;
+    margin-left: 50px;
+    margin-right: 50px;
+    margin-top: 18px;
+    line-height: 30px;
+}
+
+.board_wrap {
+    width: 1000px;
+    margin: 100px auto;
+}
+
+.bt_wrap {
+    margin-top: 30px;
+    text-align: center;
+    font-size: 0;
+
+}
+
+
+.bt_wrap a {
+    display: inline-block;
+    min-width: 80px;
+    margin-left: 10px;
+    padding: 10px;
+    border: 1px solid #B4DADC;
+    background: #ffffff;
+    border-radius: 2px;
+    font-size: 1.4rem;
+
+}
+
+.bt_wrap a:first-child {
+    margin-left: 0;
+}
+
+.bt_wrap a.on {
+    background: #B4DADC;
+    color: #000;
+}
+
+/*.board_write {*/
+/*    border-top: 2px solid #000;*/
+/*}*/
+
+.board_write .title,
+.board_write .goal {
+    /*padding: 0 15px 50px 0px;*/
+    padding-bottom: 50px;
+}
+
+.board_write .goal dl,
+.board_write .title dl {
+    font-size: 0;
+}
+
+.board_write .title dd,
+.board_write .goal dd {
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 1.4rem;
+    width: 100%;
+}
+
+/*.board_write .goal dd,*/
+/*.board_write .title dd {*/
+/*    !*width: calc(100% - 100px);*!*/
+/*    width: 80%;*/
+/*}*/
+
+.board_write .title textarea {
+    height: 66px;
+    background: transparent;
+    display: block;
+    padding: 0;
+    font-size: 50px;
+    width: 80%;
+    resize: none;
+    line-height: 1.5;
+    outline: none;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    overflow: hidden;
+    font-weight: bold;
+    color: #212529;
+    outline-offset: 0;
+    letter-spacing: normal;
+    word-spacing: normal;
+    text-transform: none;
+    text-indent: 0;
+    text-shadow: none;
+    text-align: start;
+    appearance: auto;
+}
+
+
+.board_write .goal input[type="text"],
+.board_write .goal input[type="password"] {
+    padding: 10px;
+    box-sizing: border-box;
+    width: 100%;
+    height: 66px;
+    font-size: 40px;
+    text-align: center;
+}
+
+.board_write .goal {
+    /*border-bottom: 1px solid #000;*/
+    font-size: 0;
+}
+
+.spacer {
+    display: block;
+    height: 60px;
+}
+
+.board_write .today-learn dt,
+.board_write .to-do-list dt {
+    padding-bottom: 15px;
+}
+
+.board_write .today-learn textarea,
+.board_write .to-do-list textarea {
+    padding: 18px;
+    display: block;
+    width: 100%;
+    height: 300px;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    resize: vertical;
+    line-height: 1.5;
+    letter-spacing: normal;
+    word-spacing: normal;
+    text-transform: none;
+    text-indent: 0;
+    text-shadow: none;
+    text-align: start;
+    appearance: auto;
+    font-size: 20px;
+}
+
+
+.board_write .emotion dl {
+    display: inline-block;
+    width: 100%;
+    vertical-align: middle;
+}
+
+.board_write .emotion dt,
+.board_write .emotion dd {
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 1rem;
+    width: 70%;
+}
+
+.board_write .emotion dt {
+    width: 120px;
+}
+
+
+.board_write .emotion input[type="text"] {
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
+}
