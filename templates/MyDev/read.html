@@ -1,93 +1,116 @@
-<!doctype html>
-<html lang="en">
-
-<head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <!--    JQuery-->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script> <!-- jQuery cookie 함수-->
-    <title>MyDevDay | read</title>
-    <link rel="stylesheet" href="/static/css/style.css"/>
-    <script>
-        $(document).ready(function () {
-        });
-    </script>
-</head>
-
-<body>
-
-<div class="container">
-    <h1>글 보기 화면</h1>
-    <hr>
-    <br>
-    <br>
-    <a href="/mydev">글목록 페이지로 이동</a><br>
-    <a href="/">메인 페이지로 이동</a><br>
-</div>
-<br>
-<br>
-
-</body>
-
-</html>
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
+    <!--    JQuery-->
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <!-- jQuery cookie 함수-->
     <title>MyDevDay | read</title>
 
-    <link rel="stylesheet" href="/static/css/MyDev/write.css"/>
+    <link rel="stylesheet" href="/static/css/MyDev/read.css"/>
     <script>
-        function resize(obj) {
-            obj.style.height = "1px";
-            obj.style.height = (12 + obj.scrollHeight) + "px";
+        function getToday() {
+            var date = new Date();
+            var year = date.getFullYear();
+            var month = ("0" + (1 + date.getMonth())).slice(-2);
+            var day = ("0" + date.getDate()).slice(-2);
+
+            var hours = ('0' + date.getHours()).slice(-2);
+            var minutes = ('0' + date.getMinutes()).slice(-2);
+            var seconds = ('0' + date.getSeconds()).slice(-2);
+
+            var timeString = hours + ':' + minutes + ':' + seconds;
+
+            return year + "." + month + "." + day + " " + timeString;
         }
 
+        function getDevID() {
 
-        // 일지 작성 요청
-        let title = $("#title")
-        let myGoal = $("#myGoal")
-        let todayLearned = $("#todayLearned")
-        let todoList = $("#todoList")
-        let emotion = $("#emotion")
+        }
 
-        function edit_post() {
+        function getPost() {
+            let devID = getDevID();
+
+            $("#dev_title").val("제목입니다.");
+            $("#category").val("web");
+            $("#myGoal").val("나의 꿈 입니다.");
+            $("#todayLearned").val("오늘 배운것입니다.\n1. 웹\n2. 파이썬");
+            $("#todoList").val("내일 일정입니다.\n1. 알고리즘\n2. 컴퓨터공학");
+            $("#emotion").val("오늘은 참 힘들었다. 그래도 힘내야지");
+            $("#emoticon").val("&#x1F601;");
+        }
+
+        /*
+        &#x1F601;
+        */
+
+        function like() {
+        }
+
+        function unlike() {
+        }
+
+        function logout() {
+            $.removeCookie('mytoken');
+            alert('로그아웃이 되었습니다!')
+            window.location.href = '/user'
+        }
+
+        function check_login() {
             $.ajax({
-                type: "GET",
-                url: "/mydev/write",
-                data: {
-                    title_give: title.val(),
-                    goal_give: myGoal.val(),
-                    todayLearned_give: todayLearned.val(),
-                    todoList_give: todoList.val(),
-                    emotion_give: emotion.val(),
-                },
+                type: 'POST',
+                url: './user/islogin',
+                data: {},
                 success: function (response) {
-                    if (response['result'] == 'success') {
-                        alert(response['msg'])
-                        window.location.href = '/';
-                    } else if (response['result'] == 'fail') {
-                        alert(response['msg'])
+                    let result = response['result'];
+                    let success = result['success'];
+                    let message = result['message'];
+                    if (success == 'true') {
+                        $('#for_loginuser').show();
+                    } else {
+                        $('#for_notloginuser').show();
                     }
                 }
-            })
+            });
         }
 
-        function cancel_post(url) {
-            if (confirm("작성을 그만 두시겠습니까?")) {
-                location.href = url;
-            } else {
-            }
+        function CallGetUserInfoAPI() {
+            // 사용자 정보 요청 ajax API Call하여 사용자 정보 json 데이터 받아 화면 갱신하기
+            console.log("CallGetUserInfoAPI")
+            $.ajax({
+                type: 'POST',
+                url: './user/info',
+                data: {},
+                success: function (response) {
+                    let result = response['result'];
+                    let success = result['success'];
+                    let message = result['message'];
+                    if (success == 'true') {
+                        let userinfo = result['row'][0];
+                        let user_id = userinfo['user_id']
+                        let user_name = userinfo['user_name']
+
+                        //let temp_html = `user_id=${user_id}, user_name=${user_name}`
+                        console.log(user_name);
+                        $("#user_name").val(user_name)
+                    } else {
+                        /*let temp_html = `로그인된 사용자 정보가 없습니다.`
+                        $(".test-result").append(temp_html + '<br>')*/
+                        console.log("로그인된 사용자 정보가 없습니다.");
+                        $("#user_name").val("로그인된 사용자 정보가 없습니다.")
+                    }
+                }
+            });
+            console.log("CallGetUserInfoAPI end")
+
+            //Get Post
+            getPost();
         }
     </script>
 </head>
-<body>
+<body onload="CallGetUserInfoAPI()">
 <div id="header-wrap">
     <header>
         <div>
@@ -99,11 +122,11 @@
             </a>
 
             <ul class="gnb">
-                <li><a onclick="cancel_post('/')" style='cursor:pointer;'><U>전체 글 목록</U></a></li>
-                <li><a onclick="cancel_post('/mydev')" style='cursor:pointer;'><U>내 글 목록</U></a></li>
+                <li><a onclick="cancel_post('/')"><U>전체 글 목록</U></a></li>
+                <li><a onclick="cancel_post('/mydev')"><U>내 글 목록</U></a></li>
                 <div class="user-info">
-                    <div>남진우</div>
-                    <div><a href="#" style='cursor:pointer;'>로그아웃</a></div>
+                    <div id="user_name"></div>
+                    <div><a onclick="logout()" style="cursor: pointer">로그아웃</a></div>
                 </div>
             </ul>
         </div>
@@ -114,31 +137,40 @@
         <div class="board_write">
             <div class="title">
                 <dl>
-                    <dd><textarea id="title" class="autosize" onkeydown="resize(this)" onkeyup="resize(this)"
-                                  placeholder="제목">오늘은 힘들었다</textarea></dd>
+                    <dd><textarea id="dev_title" class="autosize" onkeydown="resize(this)" onkeyup="resize(this)"
+                                  readonly></textarea></dd>
+                    <form>
+                        <div>
+                            카테고리
+                        </div>
+                        <select id="category" name="category" disabled="disabled">
+                            <option value="">-- 선택하세요 --</option>
+                            <option value="web">웹 개발</option>
+                            <option value="algorithm">알고리즘</option>
+                            <option value="app">앱 개발</option>
+                            <option value="computer">컴퓨터 공학</option>
+                            <option value="etc">기타</option>
+                        </select>
+                    </form>
                 </dl>
             </div>
             <div class="goal">
                 <dl>
-                    <dd><input id="myGoal" type="text" placeholder="나의 꿈(목표)">멋진 개발자가 되자</dd>
+                    <dd><input id="myGoal" type="text" readonly></dd>
                 </dl>
             </div>
             <div class="today-learn">
                 <div>
                     <dt>오늘 배운 것</dt>
                 </div>
-                <textarea id="todayLearned" placeholder="오늘 배운것 요약">
-1. html
-2. 자바스크립트
-3. css</textarea>
+                <textarea id="todayLearned" readonly></textarea>
             </div>
             <div class="spacer"></div>
             <div class="to-do-list">
                 <div>
                     <dt>To do List</dt>
                 </div>
-                <textarea id="todoList" placeholder="To do List">
-1. write, read 화면을 꾸미자</textarea>
+                <textarea id="todoList" readonly></textarea>
             </div>
 
             <div class="spacer"></div>
@@ -146,15 +178,40 @@
             <div class="emotion">
                 <dl>
                     <dt>오늘의 감정</dt>
-                    <dd><input id="emotion" type="text" placeholder="오늘 느낀 감정"></dd>
-                    <dd><input id="emotion" type="text" placeholder="오늘 느낀 감정">&#x1F601;</dd>
+                    <dd><input id="emotion" type="text" readonly></dd>
+                </dl>
 
+                <dl>
+                    <dt>이모티콘</dt>
+                    <dd><input readonly id="emoticon" type="text" placeholder="" value=""></dd>
                 </dl>
             </div>
 
+            <div class="like_button_wrap">
+                <div class="heart" onclick="like()"></div>
+                <div class="animation-heart"></div>
+                <div>1</div>
+            </div>
+
+            <script>
+                const heart = document.querySelector(".heart");
+                const animationHeart = document.querySelector(".animation-heart");
+
+                heart.addEventListener('click', () => {
+                    animationHeart.classList.add('animation');
+                    heart.classList.add('fill-color');
+                });
+
+                animationHeart.addEventListener('click', () => {
+                    animationHeart.classList.remove('animation');
+                    heart.classList.remove('fill-color');
+                });
+            </script>
+
+
             <div class="bt_wrap">
-                <a onclick="edit_post()" class="on" style='cursor:pointer;'>수정 하기</a>
-                <!--<a onclick="cancel_post('/')" style='cursor:pointer;'>취소</a>-->
+                <a onclick="" href="./edit" class="on">수정 하기</a>
+                <a onclick="" style='cursor:pointer;'>게시글 삭제</a>
             </div>
         </div>
     </div>

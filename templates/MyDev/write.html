@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!--    JQuery-->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script> <!-- jQuery cookie 함수-->
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <!-- jQuery cookie 함수-->
     <title>MyDevDay | write</title>
 
     <link rel="stylesheet" href="/static/css/MyDev/write.css"/>
@@ -14,27 +16,63 @@
             obj.style.height = (12 + obj.scrollHeight) + "px";
         }
 
+        function getEmoticon(ths) {
+            var emot = $(ths).text();
+            $("#emoticon").val(emot);
+        }
 
-        // 일지 작성 요청
-        let write = "njw9108"
-        let title = $("#title")
-        let myGoal = $("#myGoal")
-        let todayLearned = $("#todayLearned")
-        let todoList = $("#todoList")
-        let feeling = $("#emotion")
-        let emotion = "&#x1F601;"
+        function getToday() {
+            var date = new Date();
+            var year = date.getFullYear();
+            var month = ("0" + (1 + date.getMonth())).slice(-2);
+            var day = ("0" + date.getDate()).slice(-2);
+
+            var hours = ('0' + date.getHours()).slice(-2);
+            var minutes = ('0' + date.getMinutes()).slice(-2);
+            var seconds = ('0' + date.getSeconds()).slice(-2);
+
+            var timeString = hours + ':' + minutes + ':' + seconds;
+
+            return year + "." + month + "." + day + " " + timeString;
+        }
 
         function write_post() {
+            // 일지 작성 요청
+            let writer = "njw9108";
+            let date = getToday();
+            let dev_title = $("#dev_title").val();
+            if (dev_title == "") {
+                alert("제목을 입력해주세요.");
+                return;
+            }
+            let category = $("#category").val();
+            if (category == "") {
+                alert("카테고리를 선택해 주세요");
+                return;
+            }
+            let myGoal = $("#myGoal").val();
+            let todayLearned = $("#todayLearned").val();
+            let todoList = $("#todoList").val();
+            let feeling = $("#emotion").val();
+            let emotion = $("#emoticon").val();
+
+
+            console.log(writer, date, dev_title, category, myGoal, todayLearned, todoList, feeling, emotion);
+
+
             $.ajax({
                 type: "POST",
                 url: "/mydev/write",
                 data: {
-                    title_give: title.val(),
-                    goal_give: myGoal.val(),
-                    todayLearned_give: todayLearned.val(),
-                    todoList_give: todoList.val(),
-                    feeling_give: feeling.val(),
-                    emotion_give: emotion.val(),
+                    writer_give: writer,
+                    date_give: date,
+                    title_give: dev_title,
+                    category_give: category,
+                    goal_give: myGoal,
+                    todayLearned_give: todayLearned,
+                    todoList_give: todoList,
+                    feeling_give: feeling,
+                    emotion_give: emotion,
                 },
                 success: function (response) {
                     if (response['result'] == 'success') {
@@ -53,9 +91,63 @@
             } else {
             }
         }
+
+        function logout() {
+            $.removeCookie('mytoken');
+            alert('로그아웃이 되었습니다!')
+            window.location.href = '/user'
+        }
+
+        function check_login() {
+            $.ajax({
+                type: 'POST',
+                url: './user/islogin',
+                data: {},
+                success: function (response) {
+                    let result = response['result'];
+                    let success = result['success'];
+                    let message = result['message'];
+                    if (success == 'true') {
+                        $('#for_loginuser').show();
+                    } else {
+                        $('#for_notloginuser').show();
+                    }
+                }
+            });
+        }
+
+        function CallGetUserInfoAPI() {
+            // 사용자 정보 요청 ajax API Call하여 사용자 정보 json 데이터 받아 화면 갱신하기
+            console.log("CallGetUserInfoAPI")
+            $.ajax({
+                type: 'POST',
+                url: './user/info',
+                data: {},
+                success: function (response) {
+                    let result = response['result'];
+                    let success = result['success'];
+                    let message = result['message'];
+                    if (success == 'true') {
+                        let userinfo = result['row'][0];
+                        let user_id = userinfo['user_id']
+                        let user_name = userinfo['user_name']
+
+                        //let temp_html = `user_id=${user_id}, user_name=${user_name}`
+                        console.log(user_name);
+                        $("#user_name").val(user_name)
+                    } else {
+                        /*let temp_html = `로그인된 사용자 정보가 없습니다.`
+                        $(".test-result").append(temp_html + '<br>')*/
+                        console.log("로그인된 사용자 정보가 없습니다.");
+                        $("#user_name").val("로그인된 사용자 정보가 없습니다.")
+                    }
+                }
+            });
+            console.log("CallGetUserInfoAPI end")
+        }
     </script>
 </head>
-<body>
+<body onload="CallGetUserInfoAPI()">
 <div id="header-wrap">
     <header>
         <div>
@@ -70,8 +162,8 @@
                 <li><a onclick="cancel_post('/')"><U>전체 글 목록</U></a></li>
                 <li><a onclick="cancel_post('/mydev')"><U>내 글 목록</U></a></li>
                 <div class="user-info">
-                    <div>남진우</div>
-                    <div><a href="#">로그아웃</a></div>
+                    <div id="user_name"></div>
+                    <div><a onclick="logout()" style="cursor: pointer">로그아웃</a></div>
                 </div>
             </ul>
         </div>
@@ -82,7 +174,7 @@
         <div class="board_write">
             <div class="title">
                 <dl>
-                    <dd><textarea id="title" class="autosize" onkeydown="resize(this)" onkeyup="resize(this)"
+                    <dd><textarea id="dev_title" class="autosize" onkeydown="resize(this)" onkeyup="resize(this)"
                                   placeholder="제목"></textarea></dd>
                     <form>
                         <div>
@@ -128,51 +220,51 @@
 
                 <dl>
                     <dt>이모티콘</dt>
-                    <dd><input readonly id="emoticon" type="text" placeholder=""></dd>
+                    <dd><input readonly id="emoticon" type="text" placeholder="" value="&#x1F601;"></dd>
                 </dl>
             </div>
 
             <div class="emoticon_wrap">
                 <div class="emoticon">
                     <section>
-                        <a>&#x1F601;</a>
-                        <a>&#x1F602;</a>
-                        <a>&#x1F603;</a>
-                        <a>&#x1F604;</a>
-                        <a>&#x1F605;</a>
-                        <a>&#x1F606;</a>
-                        <a>&#x1F609;</a>
-                        <a>&#x1F60A;</a>
-                        <a>&#x1F60B;</a>
-                        <a>&#x1F60C;</a>
-                        <a>&#x1F60D;</a>
-                        <a>&#x1F60F;</a>
-                        <a>&#x1F612;</a>
-                        <a>&#x1F613;</a>
-                        <a>&#x1F614;</a>
-                        <a>&#x1F616;</a>
-                        <a>&#x1F618;</a>
-                        <a>&#x1F61A;</a>
-                        <a>&#x1F61C;</a>
-                        <a>&#x1F61D;</a>
-                        <a>&#x1F61E;</a>
-                        <a>&#x1F620;</a>
-                        <a>&#x1F621;</a>
-                        <a>&#x1F622;</a>
-                        <a>&#x1F623;</a>
-                        <a>&#x1F624;</a>
-                        <a>&#x1F625;</a>
-                        <a>&#x1F628;</a>
-                        <a>&#x1F629;</a>
-                        <a>&#x1F62A;</a>
-                        <a>&#x1F62B;</a>
-                        <a>&#x1F62D;</a>
-                        <a>&#x1F630;</a>
-                        <a>&#x1F631;</a>
-                        <a>&#x1F632;</a>
-                        <a>&#x1F633;</a>
-                        <a>&#x1F635;</a>
-                        <a>&#x1F637;</a>
+                        <a onclick="getEmoticon(this)">&#x1F601;</a>
+                        <a onclick="getEmoticon(this)">&#x1F602;</a>
+                        <a onclick="getEmoticon(this)">&#x1F603;</a>
+                        <a onclick="getEmoticon(this)">&#x1F604;</a>
+                        <a onclick="getEmoticon(this)">&#x1F605;</a>
+                        <a onclick="getEmoticon(this)">&#x1F606;</a>
+                        <a onclick="getEmoticon(this)">&#x1F609;</a>
+                        <a onclick="getEmoticon(this)">&#x1F60A;</a>
+                        <a onclick="getEmoticon(this)">&#x1F60B;</a>
+                        <a onclick="getEmoticon(this)">&#x1F60C;</a>
+                        <a onclick="getEmoticon(this)">&#x1F60D;</a>
+                        <a onclick="getEmoticon(this)">&#x1F60F;</a>
+                        <a onclick="getEmoticon(this)">&#x1F612;</a>
+                        <a onclick="getEmoticon(this)">&#x1F613;</a>
+                        <a onclick="getEmoticon(this)">&#x1F614;</a>
+                        <a onclick="getEmoticon(this)">&#x1F616;</a>
+                        <a onclick="getEmoticon(this)">&#x1F618;</a>
+                        <a onclick="getEmoticon(this)">&#x1F61A;</a>
+                        <a onclick="getEmoticon(this)">&#x1F61C;</a>
+                        <a onclick="getEmoticon(this)">&#x1F61D;</a>
+                        <a onclick="getEmoticon(this)">&#x1F61E;</a>
+                        <a onclick="getEmoticon(this)">&#x1F620;</a>
+                        <a onclick="getEmoticon(this)">&#x1F621;</a>
+                        <a onclick="getEmoticon(this)">&#x1F622;</a>
+                        <a onclick="getEmoticon(this)">&#x1F623;</a>
+                        <a onclick="getEmoticon(this)">&#x1F624;</a>
+                        <a onclick="getEmoticon(this)">&#x1F625;</a>
+                        <a onclick="getEmoticon(this)">&#x1F628;</a>
+                        <a onclick="getEmoticon(this)">&#x1F629;</a>
+                        <a onclick="getEmoticon(this)">&#x1F62A;</a>
+                        <a onclick="getEmoticon(this)">&#x1F62B;</a>
+                        <a onclick="getEmoticon(this)">&#x1F62D;</a>
+                        <a onclick="getEmoticon(this)">&#x1F630;</a>
+                        <a onclick="getEmoticon(this)">&#x1F631;</a>
+                        <a onclick="getEmoticon(this)">&#x1F632;</a>
+                        <a onclick="getEmoticon(this)">&#x1F633;</a>
+                        <a onclick="getEmoticon(this)">&#x1F635;</a>
+                        <a onclick="getEmoticon(this)">&#x1F637;</a>
                     </section>
                 </div>
             </div>
