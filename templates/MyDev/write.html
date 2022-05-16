@@ -11,42 +11,45 @@
 
     <link rel="stylesheet" href="/static/css/MyDev/write.css"/>
     <script>
+        let userName;
+        let userID;
+
         function resize(obj) {
             obj.style.height = "1px";
             obj.style.height = (12 + obj.scrollHeight) + "px";
         }
 
         function getEmoticon(ths) {
-            var emot = $(ths).text();
+            let emot = $(ths).text();
             $("#emoticon").val(emot);
         }
 
         function getToday() {
-            var date = new Date();
-            var year = date.getFullYear();
-            var month = ("0" + (1 + date.getMonth())).slice(-2);
-            var day = ("0" + date.getDate()).slice(-2);
+            let date = new Date();
+            let year = date.getFullYear();
+            let month = ("0" + (1 + date.getMonth())).slice(-2);
+            let day = ("0" + date.getDate()).slice(-2);
 
-            var hours = ('0' + date.getHours()).slice(-2);
-            var minutes = ('0' + date.getMinutes()).slice(-2);
-            var seconds = ('0' + date.getSeconds()).slice(-2);
+            let hours = ('0' + date.getHours()).slice(-2);
+            let minutes = ('0' + date.getMinutes()).slice(-2);
+            let seconds = ('0' + date.getSeconds()).slice(-2);
 
-            var timeString = hours + ':' + minutes + ':' + seconds;
+            let timeString = hours + ':' + minutes + ':' + seconds;
 
             return year + "." + month + "." + day + " " + timeString;
         }
 
         function write_post() {
             // 일지 작성 요청
-            let writer = "njw9108";
+            let writer = userID;
             let date = getToday();
             let dev_title = $("#dev_title").val();
-            if (dev_title == "") {
+            if (dev_title === "") {
                 alert("제목을 입력해주세요.");
                 return;
             }
             let category = $("#category").val();
-            if (category == "") {
+            if (category === "") {
                 alert("카테고리를 선택해 주세요");
                 return;
             }
@@ -54,10 +57,9 @@
             let todayLearned = $("#todayLearned").val();
             let todoList = $("#todoList").val();
             let feeling = $("#emotion").val();
-            //let emotion = $("#emoticon").val();
+            let emoticon = $("#emoticon").val();
 
-
-            console.log(writer, date, dev_title, category, myGoal, todayLearned, todoList, feeling);
+            console.log(writer, date, dev_title, category, myGoal, todayLearned, todoList, feeling, emoticon);
 
 
             $.ajax({
@@ -72,6 +74,7 @@
                     todayLearned_give: todayLearned,
                     todoList_give: todoList,
                     feeling_give: feeling,
+                    emoticon_give: emoticon,
                 },
                 success: function (response) {
                     if (response['result'] == 'success') {
@@ -82,6 +85,8 @@
                     }
                 }
             })
+
+
         }
 
         function cancel_post(url) {
@@ -132,7 +137,9 @@
                         let user_name = userinfo['user_name']
 
                         //let temp_html = `user_id=${user_id}, user_name=${user_name}`
-                        console.log(user_name);
+                        userName = user_name;
+                        userID = user_id;
+
                         $("#user_name").text(user_name)
                     } else {
                         /*let temp_html = `로그인된 사용자 정보가 없습니다.`

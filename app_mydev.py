@@ -38,11 +38,11 @@ def devday_read(devid):
     else:
         return render_template('MyDev/read.html')
 
+
 # 글 수정 페이지
 @mydev.route('/mydev/edit', methods=['GET'])
 def devday_edit():
     return render_template('MyDev/edit.html')
-
 
 
 # 특정 년월 데이터 요청 API
@@ -87,17 +87,20 @@ def write_dev_post():
     todayLearned_receive = request.form['todayLearned_give']
     todoList_receive = request.form['todoList_give']
     feeling_receive = request.form['feeling_give']
-    # emoticon_receive = request.form['emoticon_give']
+    print(feeling_receive)
+    emoticon_receive = request.form['emoticon_give']
+    print(emoticon_receive)
 
     print(writer_receive, date_receive, title_receive, category_receive, goal_receive, todoList_receive,
-          todayLearned_receive, feeling_receive)
+          todayLearned_receive, feeling_receive, emoticon_receive)
 
     db.post.insert_one(
         {'writer': writer_receive, 'date': date_receive, 'title': title_receive, 'category': category_receive,
          'goal': goal_receive, 'todayLearned': todayLearned_receive, 'todo': todoList_receive,
-         'feeling': feeling_receive})
+         'feeling': feeling_receive, 'emoticon': emoticon_receive})
 
     return jsonify({'result': 'success', 'msg': '포스팅 완료'})
+
 
 # 글 수정 요청(Edit)
 @mydev.route('/mydev/edit', methods=['POST'])
@@ -111,7 +114,7 @@ def edit_dev_post():
     todayLearned_receive = request.form['todayLearned_give']
     todoList_receive = request.form['todoList_give']
     feeling_receive = request.form['feeling_give']
-    #emoticon_receive = request.form['emoticon_give']
+    # emoticon_receive = request.form['emoticon_give']
 
     print(writer_receive, date_receive, title_receive, category_receive, goal_receive, todoList_receive,
           todayLearned_receive, feeling_receive)
@@ -122,6 +125,5 @@ def edit_dev_post():
          'feeling': feeling_receive})
 
     return jsonify({'result': 'success', 'msg': '수정 완료'})
-
 
 # 글 정보 요청(Read)

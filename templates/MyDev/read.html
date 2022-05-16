@@ -39,18 +39,12 @@
             $("#todayLearned").val("오늘 배운것입니다.\n1. 웹\n2. 파이썬");
             $("#todoList").val("내일 일정입니다.\n1. 알고리즘\n2. 컴퓨터공학");
             $("#emotion").val("오늘은 참 힘들었다. 그래도 힘내야지");
-            $("#emoticon").val("&#x1F601;");
+            $("#emoticon2").append(`&#x1F637;`);
         }
 
         /*
         &#x1F601;
         */
-
-        function like() {
-        }
-
-        function unlike() {
-        }
 
         function logout() {
             $.removeCookie('mytoken');
@@ -183,10 +177,12 @@
 
                 <dl>
                     <dt>이모티콘</dt>
-                    <dd><input readonly id="emoticon" type="text" placeholder="" value=""></dd>
+                    <!--<dd><input readonly id="emoticon" type="text" placeholder="" value=""></dd>-->
+                    <dd><p id="emoticon2"></p></dd>
+
                 </dl>
             </div>
-
+<!--
             <div class="like_button_wrap">
                 <div class="heart"></div>
                 <div class="animation-heart"></div>
@@ -228,7 +224,7 @@
 
                 </div>
             </div>
-
+-->
             <div class="bt_wrap">
                 <a onclick="" href="./edit" class="on">수정 하기</a>
                 <a onclick="" style='cursor:pointer;'>게시글 삭제</a>
