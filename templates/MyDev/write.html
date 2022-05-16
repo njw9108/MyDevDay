@@ -9,32 +9,48 @@
 
     <link rel="stylesheet" href="/static/css/MyDev/write.css"/>
     <script>
+        $(document).ready(function () {
+            user_valid();
+        })
+
         function resize(obj) {
             obj.style.height = "1px";
             obj.style.height = (12 + obj.scrollHeight) + "px";
         }
-
+        //user/api 로그인한 유저를 표시합니다
+        function user_valid() {
+            $.ajax({
+                type: 'GET',
+                url: '/user/info',
+                data: {},
+                success: function (response) {
+                    let nickname = response['nickname']
+                    temp_html = `${nickname}`
+                    $('#my_name').append(temp_html)
+                }})}
 
         // 일지 작성 요청
-        let write = "njw9108"
-        let title = $("#title")
-        let myGoal = $("#myGoal")
-        let todayLearned = $("#todayLearned")
-        let todoList = $("#todoList")
-        let feeling = $("#emotion")
-        let emotion = "&#x1F601;"
-
         function write_post() {
+            let title = $("#title").val()
+            let category = $("#category").val()
+            let goal = $("#dream").val()
+            let content = $("#todayLearned").val()
+            let todo = $("#todoList").val()
+            let feeling = $("#feeling").val()
+            let emoticon = $("#emoticon").val()
+            let today = new Date().toISOString()
             $.ajax({
                 type: "POST",
                 url: "/mydev/write",
                 data: {
-                    title_give: title.val(),
-                    goal_give: myGoal.val(),
-                    todayLearned_give: todayLearned.val(),
-                    todoList_give: todoList.val(),
-                    feeling_give: feeling.val(),
-                    emotion_give: emotion.val(),
+                    subject_give: title,
+                    category_give: category,
+                    dream_give: goal,
+                    content_give: content,
+                    todo_give: todo,
+                    feeling_give: feeling,
+                    emoticon_give: emoticon,
+                    date_give: today
                 },
                 success: function (response) {
                     if (response['result'] == 'success') {
@@ -70,7 +86,7 @@
                 <li><a onclick="cancel_post('/')"><U>전체 글 목록</U></a></li>
                 <li><a onclick="cancel_post('/mydev')"><U>내 글 목록</U></a></li>
                 <div class="user-info">
-                    <div>남진우</div>
+                    <div id="my_name"></div>
                     <div><a href="#">로그아웃</a></div>
                 </div>
             </ul>

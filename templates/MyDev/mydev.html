@@ -1,89 +1,324 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <!-- Required meta tags -->
+     <!-- Required meta tags -->
     <meta charset="utf-8">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <!--    JQuery-->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script> <!-- jQuery cookie 함수-->
-    <title>MyDevDay | mydev</title>
-    <link rel="stylesheet" href="static/css/style.css"/>
-    <script>
-        function CallMyDevListAPI(yearmonth) {
-            // /mydev/yyyyMM (POST)로 ajax API Call하여 내가 작성한 글 정보 json 데이터 받아 화면 갱신하기
-            //alert('mydevlist api: ' + yearmonth);
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Noto+Serif+KR:wght@300&display=swap" rel="stylesheet">
+    <title>Frontpage</title>
+    <style>
+        * {
+        margin: 0;
+        padding: 0;
+        font-family: 'Noto Sans Korean', sans-serif;
+    }
+
+    h1, p, div {
+        margin: 0;
+        padding: 0;
+    }
+
+    a {
+        text-decoration: none;
+        color: white;
+        padding-right: 10px;
+    }
+
+    header {
+        height: 80px;
+        padding: 1rem;
+        background: #B4DADC;
+        font-weight: bold;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    nav {
+        align-self: end;
+    }
+
+    .card-columns wrap {
+        padding: 50px;
+        width: auto;
+        height: 75vh;
+        margin: auto 40px;
+        display: flex;
+        flex: 1;
+        justify-content: center;
+        align-items: center;
+    }
+
+
+    .card {
+        background-color: white;
+        width: 20%;
+        min-width: 300px;
+        height: 158px;
+        min-height: 280px;
+        padding: 50px 50px;
+        margin: 40px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50px;
+    }
+
+    h3 {
+        margin-bottom: 20px;
+        font-size: 2rem;
+    }
+
+
+    </style>
+    <script>
+        $(document).ready(function () {
+            $('#cards-box').empty();
+            listing();
+            user_valid();
+            {#devday();#}
+        });
+
+        function listing() {
             $.ajax({
-                type: 'POST',
-                url: './mydev/' + yearmonth,
+                type: "GET",
+                url: "/devday",
                 data: {},
                 success: function (response) {
-                    let result = response['result'];
-                    let success = result['success'];
-                    let message = result['message'];
-                    if (success == 'true') {
-                        let devday_list = result['row']
-                        for (let i = 0; i < devday_list.length; i++) {
-                            let user_id = devday_list[i]['user_id']
-                            let dev_id = devday_list[i]['dev_id']
-                            let subject = devday_list[i]['subject']
-                            let content = devday_list[i]['content']
-                            let memo1 = devday_list[i]['memo1']
-                            let memo2 = devday_list[i]['memo2']
-                            let memo3 = devday_list[i]['memo3']
-                            let memo4 = devday_list[i]['memo4']
-                            let memo5 = devday_list[i]['memo5']
-                            let feeling = devday_list[i]['feeling']
-                            let emoticon = devday_list[i]['emoticon']
-                            let date = devday_list[i]['date']
-                            let like_count = devday_list[i]['like_count']
+                    let rows = response['articles']
+                    for (let i = 0; i < rows.length; i++) {
+                        let user_id = rows[i]['user_id']
+                        let title = rows[i]['title']
+                        let memo = rows[i]['memo']
+                        let date = rows[i]['date']
+                        let like_count = rows[i]['like_count']
+                        let comment_count = rows[i]['comment_count']
 
-                            let temp_html = `user_id=${user_id}, dev_id=${dev_id}, subject=${subject}, content=${content},
-                                memo1=${memo1}, memo2=${memo2}, memo3=${memo3}, memo4=${memo4}, memo5=${memo5},
-                                feeling=${feeling}, emoticon=${emoticon}, date=${date}, like_count=${like_count},`
-
-                            $(".test-result").append(temp_html + '<br>')
-                        }
+                        let temp_html = `<div class="card-columns wrap" id="cards-box">
+                                            <div class="card">
+                                                <div class="card-top">
+                                                     <p class="card-text date">${date}</p>
+                                                </div>
+                                                <div class="card-body">
+                                                    <h3 class="card-title">${title}</h3>
+                                                    <p class="card-text">${memo}</p>
+                                                </div>
+                                                <div class="card-bottom">
+                                                    <p class="user-id">작성자명: ${user_id}</p>
+                                                </div>
+                                                <div>
+                                                    <span class="glyphicon glyphicon-search" aria-hidden="true"> ${like_count}</span>
+                                                    <span class="glyphicon glyphicon-search" aria-hidden="true"> ${comment_count}</span>
+                                                </div>
+                                            </div>
+                                        </div>`
+                        $('#cards-box').append(temp_html)
                     }
                 }
-            });
+            })
         }
 
-        $(document).ready(function () {
-            CallMyDevListAPI(202205);
-        });
+//user/api 로그인한 유저를 표시합니다
+function user_valid() {
+    $.ajax({
+        type: 'GET',
+        url: '/user/info',
+        data: {},
+        success: function (response) {
+            let nickname = response['nickname']
+            temp_html = `${nickname}`
+            $('#my_name').append(temp_html)
+        }})}
+
+//mydev 작성한 시간 보여주기 (ex. 1 시간전, 3 분전 작성)
+function time2str(date) {
+    let today = new Date()
+    let time = (today - date) / 1000 / 60  // 분
+
+    if (time < 60) {
+        return parseInt(time) + "분 전"
+    }
+    time = time / 60  // 시간
+    if (time < 24) {
+        return parseInt(time) + "시간 전"
+    }
+    time = time / 24
+    if (time < 2) {
+        return parseInt(time) + "일 전"
+    }
+    return `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`
+}
+
+//mydev GET/api 유저별 글 & 전체 글 listing() ->
+function devday(dev_id) {
+    if (dev_id == undefined) {
+        dev_id = ""
+    }
+    $("#mydevs").empty()
+    $.ajax({
+        type: "GET",
+        url: `/devday?username_give=${dev_id}`,
+        data: {},
+        success: function (response) {
+            if (response["result"] == "success") {
+                let rows = response["posts"]
+                for (let i = 0; i < rows.length; i++) {
+                    let subject = rows[i]['subject']
+                    let content = rows[i]['content']
+                    let id = rows[i]['id']
+                    let time_post = new Date(rows[i]['date'])
+                    let time_before = time2str(time_post)
+                    let temp_html = `<div class="card-columns wrap" id="cards-box">
+                                    <div class="card">
+                                        <div class="card-top">
+                                             <p class="card-text date">${time_before}</p>
+                                        </div>
+                                        <div class="card-body">
+                                            <h3 class="card-title">${subject}</h3>
+                                            <p class="card-text">${content}</p>
+                                        </div>
+                                        <div class="card-bottom">
+                                            <p class="user-id">작성자명: ${id}</p>
+                                        </div>
+                                        <div>
+                                            <span class="glyphicon glyphicon-search" aria-hidden="true"> ${like_count}</span>
+                                            <span class="glyphicon glyphicon-search" aria-hidden="true"> ${comment_count}</span>
+                                        </div>
+                                    </div>
+                                </div>`
+                $('#cards-box').append(temp_html)
+                }
+            }
+        }
+    })
+}
+
     </script>
 </head>
-
 <body>
-
-<div class="container">
-    <h1>내 글 목록 화면</h1>
-    <hr>
-    <a href='./mydev/33'>내가 작성한 글 1</a><br>
-    <a href='./mydev/34'>내가 작성한 글 2</a><br>
-    <a href='./mydev/35'>내가 작성한 글 3</a><br>
-    <br>
-    <a href="./mydev/write">글쓰기 페이지로 이동</a><br>
-    <a href="./">메인 페이지로 이동</a><br>
-</div>
-<br>
-<br>
-
-<div class="test">
-    <h3>테스트 API 호출</h3>
-    <hr>
-    <a onclick="CallMyDevListAPI(202203)">202203 목록 요청</a><br>
-    <a onclick="CallMyDevListAPI(202204)">202204 목록 요청</a><br>
-    <a onclick="CallMyDevListAPI(202205)">202205 목록 요청</a><br>
-    <br>
-    <h5>테스트 결과</h5>
-    <hr>
-    <div class="test-result">
+<header>
+    <a href="/"><h1>MyDevDay</h1></a>
+    <nav>
+        <a href="/write">글 쓰기</a>
+        <a href="/read">일지 목록</a>
+        <a href="/login">로그인</a>
+        <a href="/sign">회원가입</a>
+        <div id="my_name"></div>
+    </nav>
+</header>
+<div class="card-columns wrap" id="cards-box">
+    <div class="card">
+        <div class="card-top">
+             <p class="card-text date">2022년 5월 7일</p>
+        </div>
+        <div class="card-body">
+            <h3 class="card-title">일지 제목</h3>
+            <p class="card-text">개발이 어렵다. 어떻게 하면 더 잘할 수 있을까.</p>
+        </div>
+        <div class="card-bottom">
+            <p class="user-id">작성자명: OOO</p>
+        </div>
+        <div>
+            <span class="glyphicon glyphicon-search" aria-hidden="true"> 20</span>
+            <span class="glyphicon glyphicon-search" aria-hidden="true"> 30</span>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-top">
+             <p class="card-text date">2022년 5월 7일</p>
+        </div>
+        <div class="card-body">
+            <h3 class="card-title">일지 제목</h3>
+            <p class="card-text">개발이 어렵다. 어떻게 하면 더 잘할 수 있을까.</p>
+        </div>
+        <div class="card-bottom">
+            <p class="user-id">작성자명: OOO</p>
+        </div>
+        <div>
+            <span class="glyphicon glyphicon-search" aria-hidden="true"> 20</span>
+            <span class="glyphicon glyphicon-search" aria-hidden="true"> 30</span>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-top">
+             <p class="card-text date">2022년 5월 7일</p>
+        </div>
+        <div class="card-body">
+            <h3 class="card-title">일지 제목</h3>
+            <p class="card-text">개발이 어렵다. 어떻게 하면 더 잘할 수 있을까.</p>
+        </div>
+        <div class="card-bottom">
+            <p class="user-id">작성자명: OOO</p>
+        </div>
+        <div>
+            <span class="glyphicon glyphicon-search" aria-hidden="true"> 20</span>
+            <span class="glyphicon glyphicon-search" aria-hidden="true"> 30</span>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-top">
+             <p class="card-text date">2022년 5월 7일</p>
+        </div>
+        <div class="card-body">
+            <h3 class="card-title">일지 제목</h3>
+            <p class="card-text">개발이 어렵다. 어떻게 하면 더 잘할 수 있을까.</p>
+        </div>
+        <div class="card-bottom">
+            <p class="user-id">작성자명: OOO</p>
+        </div>
+        <div>
+            <span class="glyphicon glyphicon-search" aria-hidden="true"> 20</span>
+            <span class="glyphicon glyphicon-search" aria-hidden="true"> 30</span>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-top">
+             <p class="card-text date">2022년 5월 7일</p>
+        </div>
+        <div class="card-body">
+            <h3 class="card-title">일지 제목</h3>
+            <p class="card-text">개발이 어렵다. 어떻게 하면 더 잘할 수 있을까.</p>
+        </div>
+        <div class="card-bottom">
+            <p class="user-id">작성자명: OOO</p>
+        </div>
+        <div>
+            <span class="glyphicon glyphicon-search" aria-hidden="true"> 20</span>
+            <span class="glyphicon glyphicon-search" aria-hidden="true"> 30</span>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-top">
+             <p class="card-text date">2022년 5월 7일</p>
+        </div>
+        <div class="card-body">
+            <h3 class="card-title">일지 제목</h3>
+            <p class="card-text">개발이 어렵다. 어떻게 하면 더 잘할 수 있을까.</p>
+        </div>
+        <div class="card-bottom">
+            <p class="user-id">작성자명: OOO</p>
+        </div>
+        <div>
+            <span class="glyphicon glyphicon-search" aria-hidden="true"> 20</span>
+            <span class="glyphicon glyphicon-search" aria-hidden="true"> 30</span>
+        </div>
     </div>
 </div>
-
 </body>
-
 </html>

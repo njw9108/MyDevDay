@@ -1,6 +1,20 @@
-from flask import Flask, Blueprint, render_template, jsonify, request # Flask 서버 객체 import
+import jwt
+from flask import Flask, Blueprint, render_template, jsonify, request, redirect, url_for  # Flask 서버 객체 import
+
+from pymongo import MongoClient
+app = Flask(__name__)
 mydev = Blueprint('mydev', __name__)
 
+import hashlib
+import certifi
+import datetime
+
+ca = certifi.where()
+
+client = MongoClient('boox.synology.me', 27018, username="mydevday", password="devday2205")
+db = client.mydevday_user1
+
+SECRET_KEY = 'mydevday'
 ##############################
 # mydevday
 ##############################
@@ -56,38 +70,36 @@ def devday_calendar(date):
 
 # 내 paycharm 에선 실행되는데 가져오니까 계속 오류나서 일단 주석처리하고 하나씩 살려보자..
 
-# # 신규 글 작성
+# 신규 글 작성
 # @mydev.route('/mydev/write', methods=['POST'])
 # def write_dev_post():
 #     token_receive = request.cookies.get('mytoken')
-#     try:
-#         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-#         user_info = db.user.find_one({"id": payload["id"]})
+#     payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+#     user_info = db.user.find_one({"id": payload["id"]})
 #
-#         subject_receive = request.form["subject_give"]
-#         category_receive = request.form["category_give"]
-#         dream_receive = request.form["dream_give"]
-#         content_receive = request.form["content_give"]
-#         todo_receive = request.form["todo_give"]
-#         feeling_receive = request.form["feeling_give"]
-#         emoticon_receive = request.form["emoticon_give"]
-#         date_receive = request.form["date_give"]
+#     subject_receive = request.form["subject_give"]
+#     category_receive = request.form["category_give"]
+#     dream_receive = request.form["dream_give"]
+#     content_receive = request.form["content_give"]
+#     todo_receive = request.form["todo_give"]
+#     feeling_receive = request.form["feeling_give"]
+#     emoticon_receive = request.form["emoticon_give"]
+#     date_receive = request.form["date_give"]
 #
-#         doc = {
-#             "id": user_info["id"],
-#             "subject": subject_receive,
-#             "category": category_receive,
-#             "dream": dream_receive,
-#             "content": content_receive,
-#             "todo": todo_receive,
-#             "feeling": feeling_receive,
-#             "emoticon": emoticon_receive,
-#             "date": date_receive
-#         }
-#         db.mydev.insert_one(doc)
-#         return jsonify({"result": "success", 'msg': '나의 개발일지 저장 완료!'})
-#     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
-#         return redirect(url_for("/login"))
+#     doc = {
+#         "id": user_info["id"],
+#         "subject": subject_receive,
+#         "category": category_receive,
+#         "dream": dream_receive,
+#         "content": content_receive,
+#         "todo": todo_receive,
+#         "feeling": feeling_receive,
+#         "emoticon": emoticon_receive,
+#         "date": date_receive
+#     }
+#     db.mydev.insert_one(doc)
+#     return jsonify({"result": "success", 'msg': '나의 개발일지 저장 완료!'})
+
 #
 # # GET 전체 글 & 유저별 글을 볼수 있음
 # @app.route("/devday", methods=['GET'])
@@ -107,18 +119,11 @@ def devday_calendar(date):
 #     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
 #         return redirect(url_for("/login"))
 #
-# # 로그인 된 유저만 call 할 수 있는 API입니다.
-# @app.route('/user/info', methods=['GET'])
-# def api_valid():
-#     token_receive = request.cookies.get('mytoken')
-#
-#     try:
-#         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-#         # payload 안에 id가 들어있습니다. 이 id로 유저정보를 찾습니다.
-#         # 여기에선 그 예로 닉네임을 보내주겠습니다.
-#         userinfo = db.user.find_one({'id': payload['id']}, {'_id': 0})
-#         return jsonify({'result': 'success', 'nickname': userinfo['nick']})
-#     except jwt.ExpiredSignatureError:
-#         return jsonify({'result': 'fail', 'msg': '로그인 시간이 만료되었습니다.'})
-#     except jwt.exceptions.DecodeError:
-#         return jsonify({'result': 'fail', 'msg': '로그인 정보가 존재하지 않습니다.'})
+# 로그인 된 유저만 call 할 수 있는 API입니다. (유일하게 작동..)
+@app.route('/user/info', methods=['GET'])
+def api_valid():
+    token_receive = request.cookies.get('mytoken')
+
+    payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+    userinfo = db.user.find_one({'id': payload['id']}, {'_id': 0})
+    return jsonify({'result': 'success', 'nickname': userinfo['name']})
