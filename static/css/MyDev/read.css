@@ -333,16 +333,16 @@ header .user-info {
 
 }
 
-.like_button_wrap {
+.board_write .like_button_wrap {
     /*margin: 0;*/
-    padding: 100px;
+    padding: 50px;
     /*box-sizing: border-box;*/
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.heart {
+.board_write .heart {
     position: relative;
     height: 50px;
     width: 50px;
@@ -355,12 +355,12 @@ header .user-info {
     cursor: pointer;
 }
 
-.heart.fill-color{
+.board_write .heart.fill-color {
     background: #ff2727;
 
 }
 
-.heart::before {
+.board_write .heart::before {
     position: absolute;
     content: "";
     top: -50%;
@@ -372,7 +372,7 @@ header .user-info {
 }
 
 
-.heart::after {
+.board_write .heart::after {
     position: absolute;
     content: "";
     right: -50%;
@@ -383,7 +383,7 @@ header .user-info {
     border-radius: 50%;
 }
 
-.animation-heart{
+.board_write .animation-heart {
     position: absolute;
     display: flex;
     justify-content: center;
@@ -398,12 +398,12 @@ header .user-info {
     visibility: hidden;
 }
 
-.animation-heart.animation {
+.board_write .animation-heart.animation {
     animation: popup .8s linear;
     visibility: visible;
 }
 
-.animation-heart::after {
+.board_write .animation-heart::after {
     position: absolute;
     content: "";
     height: 100%;
@@ -414,7 +414,7 @@ header .user-info {
     border-radius: 50%;
 }
 
-.animation-heart::before{
+.board_write .animation-heart::before {
     position: absolute;
     content: "";
     height: 100%;
@@ -426,8 +426,69 @@ header .user-info {
 }
 
 @keyframes popup {
-    100%{
+    100% {
         transform: scale(1.5) rotate(-45deg);
         opacity: 0;
     }
+}
+
+.board_write .comment_wrap {
+    /*margin: 0;*/
+    padding: 10px 50px;
+    /*box-sizing: border-box;*/
+    /*display: flex;*/
+    /*justify-content: center;*/
+    /*align-items: center;*/
+    text-align: center;
+    background: #B4DADC;
+}
+
+.board_write .comment_wrap .write_comment {
+    vertical-align: middle;
+}
+
+.board_write .comment_wrap .write_comment textarea {
+    height: 80px;
+    width: 200px;
+    background: white;
+    display: inline-block;
+    padding: 0;
+    font-size: 14px;
+    /*width: 100%;*/
+    resize: none;
+    line-height: 1.5;
+    outline: none;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    overflow: hidden;
+    font-weight: bold;
+    color: #212529;
+    outline-offset: 0;
+    letter-spacing: normal;
+    word-spacing: normal;
+    text-transform: none;
+    text-indent: 0;
+    text-shadow: none;
+    text-align: start;
+    appearance: auto;
+}
+
+.board_write .comment_wrap .write_comment button {
+    display: inline-block;
+    width: 80px;
+    height: 40px;
+
+}
+
+.board_write .comment_wrap .comment_list {
+    padding: 30px;
+    text-align: left;
+}
+
+.board_write .comment_list .comment {
+    margin: 20px;
+    background: white;
+    padding: 30px;
+
 }

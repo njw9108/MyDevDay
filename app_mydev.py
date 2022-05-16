@@ -87,15 +87,15 @@ def write_dev_post():
     todayLearned_receive = request.form['todayLearned_give']
     todoList_receive = request.form['todoList_give']
     feeling_receive = request.form['feeling_give']
-    emoticon_receive = request.form['emoticon_give']
+    # emoticon_receive = request.form['emoticon_give']
 
     print(writer_receive, date_receive, title_receive, category_receive, goal_receive, todoList_receive,
-          todayLearned_receive, feeling_receive, emoticon_receive)
+          todayLearned_receive, feeling_receive)
 
     db.post.insert_one(
         {'writer': writer_receive, 'date': date_receive, 'title': title_receive, 'category': category_receive,
          'goal': goal_receive, 'todayLearned': todayLearned_receive, 'todo': todoList_receive,
-         'feeling': feeling_receive, 'emoticon': emoticon_receive})
+         'feeling': feeling_receive})
 
     return jsonify({'result': 'success', 'msg': '포스팅 완료'})
 
@@ -111,15 +111,15 @@ def edit_dev_post():
     todayLearned_receive = request.form['todayLearned_give']
     todoList_receive = request.form['todoList_give']
     feeling_receive = request.form['feeling_give']
-    emoticon_receive = request.form['emoticon_give']
+    #emoticon_receive = request.form['emoticon_give']
 
     print(writer_receive, date_receive, title_receive, category_receive, goal_receive, todoList_receive,
-          todayLearned_receive, feeling_receive, emoticon_receive)
+          todayLearned_receive, feeling_receive)
 
     db.post.updateOne(
         {'writer': writer_receive, 'date': date_receive, 'title': title_receive, 'category': category_receive,
          'goal': goal_receive, 'todayLearned': todayLearned_receive, 'todo': todoList_receive,
-         'feeling': feeling_receive, 'emoticon': emoticon_receive})
+         'feeling': feeling_receive})
 
     return jsonify({'result': 'success', 'msg': '수정 완료'})
 

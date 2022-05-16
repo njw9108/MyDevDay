@@ -81,7 +81,7 @@
             console.log("CallGetUserInfoAPI")
             $.ajax({
                 type: 'POST',
-                url: './user/info',
+                url: '/user/info',
                 data: {},
                 success: function (response) {
                     let result = response['result'];
@@ -188,9 +188,8 @@
             </div>
 
             <div class="like_button_wrap">
-                <div class="heart" onclick="like()"></div>
+                <div class="heart"></div>
                 <div class="animation-heart"></div>
-                <div>1</div>
             </div>
 
             <script>
@@ -208,6 +207,27 @@
                 });
             </script>
 
+            <div class="comment_wrap">
+                <div class="write_comment">
+                    <textarea class="autosize" onkeydown="resize(this)" onkeyup="resize(this)"
+                              placeholder="댓글을 남겨주세요."></textarea>
+                    <button>등록</button>
+                </div>
+                <div class="comment_list">
+                    <div class="comment">
+                        <div class="text">잘 봤습니다!</div>
+                        <div class="writer">njw9108</div>
+                        <div class="date">2022.05.16 15:34:05</div>
+                    </div>
+
+                    <div class="comment">
+                        <div class="text">잘 봤습니다!</div>
+                        <div class="writer">njw9108</div>
+                        <div class="date">2022.05.16 15:34:05</div>
+                    </div>
+
+                </div>
+            </div>
 
             <div class="bt_wrap">
                 <a onclick="" href="./edit" class="on">수정 하기</a>

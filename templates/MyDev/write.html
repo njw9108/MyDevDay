@@ -54,10 +54,10 @@
             let todayLearned = $("#todayLearned").val();
             let todoList = $("#todoList").val();
             let feeling = $("#emotion").val();
-            let emotion = $("#emoticon").val();
+            //let emotion = $("#emoticon").val();
 
 
-            console.log(writer, date, dev_title, category, myGoal, todayLearned, todoList, feeling, emotion);
+            console.log(writer, date, dev_title, category, myGoal, todayLearned, todoList, feeling);
 
 
             $.ajax({
@@ -72,7 +72,6 @@
                     todayLearned_give: todayLearned,
                     todoList_give: todoList,
                     feeling_give: feeling,
-                    emotion_give: emotion,
                 },
                 success: function (response) {
                     if (response['result'] == 'success') {
@@ -121,7 +120,7 @@
             console.log("CallGetUserInfoAPI")
             $.ajax({
                 type: 'POST',
-                url: './user/info',
+                url: '/user/info',
                 data: {},
                 success: function (response) {
                     let result = response['result'];
@@ -134,7 +133,7 @@
 
                         //let temp_html = `user_id=${user_id}, user_name=${user_name}`
                         console.log(user_name);
-                        $("#user_name").val(user_name)
+                        $("#user_name").text(user_name)
                     } else {
                         /*let temp_html = `로그인된 사용자 정보가 없습니다.`
                         $(".test-result").append(temp_html + '<br>')*/
