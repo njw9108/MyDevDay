@@ -45,6 +45,8 @@
                     let success = result['success'];
                     if (success == 'true') {
                         let devday = result['data']
+
+                        let writer = devday['user_id']
                         let title = devday['subject']
                         let category = devday['category']
                         let goal = devday['memo1']
@@ -56,6 +58,11 @@
 
                         writeDate = date
 
+                        if(writer !== userID){
+                            $("#edit_del_button").css('display','none');
+                        } else {
+                            $("#edit_del_button").css('display','');
+                        }
                         $("#dev_title").val(title);
                         $("#category").val(category);
                         $("#myGoal").val(goal);
@@ -67,11 +74,6 @@
                     }
                 }
             })
-        }
-
-        function editClick() {
-            console.log('mydev/write/' + dev_id)
-            window.location.href = 'mydev/write/' + dev_id;
         }
 
         function logout() {
@@ -116,7 +118,6 @@
                         //let temp_html = `user_id=${user_id}, user_name=${user_name}`
                         userName = user_name;
                         userID = user_id;
-
                         $("#user_name").text(user_name)
                     } else {
                         /*let temp_html = `로그인된 사용자 정보가 없습니다.`
@@ -252,8 +253,8 @@
                             </div>
                         </div>
             -->
-            <div class="bt_wrap">
-                <a onclick="window.location.href = 'mydev/write/'+'{{devid}}'" class="on">수정 하기</a>
+            <div class="bt_wrap" id = edit_del_button>
+                <a onclick="window.location.href = 'write/'+'{{devid}}'" class="on">수정 하기</a>
                 <a onclick="" style='cursor:pointer;'>게시글 삭제</a>
             </div>
         </div>

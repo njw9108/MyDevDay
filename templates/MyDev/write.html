@@ -40,54 +40,101 @@
         }
 
         function write_post() {
-            // 일지 작성 요청
-            let writer = userID;
-            let date = getToday();
-            let dev_title = $("#dev_title").val();
-            if (dev_title === "") {
-                alert("제목을 입력해주세요.");
-                return;
-            }
-            let category = $("#category").val();
-            if (category === "") {
-                alert("카테고리를 선택해 주세요");
-                return;
-            }
-            let myGoal = $("#myGoal").val();
-            let todayLearned = $("#todayLearned").val();
-            let todoList = $("#todoList").val();
-            let feeling = $("#emotion").val();
-            let emoticon = $("#emoticon").val();
-
-            $.ajax({
-                type: "POST",
-                url: "/mydev/write",
-                data: {
-                    writer_give: writer,
-                    date_give: date,
-                    title_give: dev_title,
-                    category_give: category,
-                    goal_give: myGoal,
-                    todayLearned_give: todayLearned,
-                    todoList_give: todoList,
-                    feeling_give: feeling,
-                    emoticon_give: emoticon,
-                },
-                success: function (response) {
-                    if (response['result'] == 'success') {
-                        alert(response['msg'])
-                        window.location.href = '/';
-                    } else if (response['result'] == 'fail') {
-                        alert(response['msg'])
-                    }
+            let devID = '{{devid}}';
+            if (devID === "") {
+                // 일지 작성 요청
+                let writer = userID;
+                let date = getToday();
+                let dev_title = $("#dev_title").val();
+                if (dev_title === "") {
+                    alert("제목을 입력해주세요.");
+                    return;
                 }
-            })
+                let category = $("#category").val();
+                if (category === "") {
+                    alert("카테고리를 선택해 주세요");
+                    return;
+                }
+                let myGoal = $("#myGoal").val();
+                let todayLearned = $("#todayLearned").val();
+                let todoList = $("#todoList").val();
+                let feeling = $("#emotion").val();
+                let emoticon = $("#emoticon").val();
+
+                $.ajax({
+                    type: "POST",
+                    url: "/mydev/write",
+                    data: {
+                        writer_give: writer,
+                        date_give: date,
+                        title_give: dev_title,
+                        category_give: category,
+                        goal_give: myGoal,
+                        todayLearned_give: todayLearned,
+                        todoList_give: todoList,
+                        feeling_give: feeling,
+                        emoticon_give: emoticon,
+                    },
+                    success: function (response) {
+                        if (response['result'] == 'success') {
+                            alert(response['msg'])
+                            window.location.href = '/';
+                        } else if (response['result'] == 'fail') {
+                            alert(response['msg'])
+                        }
+                    }
+                })
+            } else {
+                // 일지 수정 요청
+                let writer = userID;
+                let date = getToday();
+                let dev_title = $("#dev_title").val();
+                if (dev_title === "") {
+                    alert("제목을 입력해주세요.");
+                    return;
+                }
+                let category = $("#category").val();
+                if (category === "") {
+                    alert("카테고리를 선택해 주세요");
+                    return;
+                }
+                let myGoal = $("#myGoal").val();
+                let todayLearned = $("#todayLearned").val();
+                let todoList = $("#todoList").val();
+                let feeling = $("#emotion").val();
+                let emoticon = $("#emoticon").val();
+
+                $.ajax({
+                    type: "POST",
+                    url: '/mydev/write/' + '{{devid}}',
+                    data: {
+                        writer_give: writer,
+                        date_give: date,
+                        title_give: dev_title,
+                        category_give: category,
+                        goal_give: myGoal,
+                        todayLearned_give: todayLearned,
+                        todoList_give: todoList,
+                        feeling_give: feeling,
+                        emoticon_give: emoticon,
+                    },
+                    success: function (response) {
+                        if (response['result'] == 'success') {
+                            alert(response['msg'])
+                            window.location.href = '/mydev/' + '{{devid}}'
+                        } else if (response['result'] == 'fail') {
+                            alert(response['msg'])
+                        }
+                    }
+                })
+            }
+
         }
 
         function getPost() {
             console.log('write page get post')
             let devID = '{{devid}}';
-            console.log('dev id = '+devID)
+            console.log('dev id = ' + devID)
             if (devID !== "")
                 $.ajax({
                     type: "POST",
