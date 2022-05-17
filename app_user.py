@@ -60,10 +60,11 @@ def api_register():
     id_receive = request.form['id_give']
     pw_receive = request.form['pw_give']
     name_receive = request.form['name_give']
+    email_receive = request.form['email_give']
 
     pw_hash = hashlib.sha256(pw_receive.encode('utf-8')).hexdigest()
 
-    db.user.insert_one({'id': id_receive, 'pw': pw_hash, 'name': name_receive})
+    db.user.insert_one({'id': id_receive, 'pw': pw_hash, 'name': name_receive,  'email': email_receive})
 
     return jsonify({'result': 'success', 'msg': '회원가입이 완료되었습니다'})
 
@@ -162,7 +163,42 @@ def checkcookie():
                 }
             })
 
+# user 정보 콜
+@user.route('/user/data', methods=['GET'])
+def data():
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.user.find_one({"id": payload["id"]})
+        return render_template('User/updateinfo.html', name=user_info["name"], email=user_info["email"])
+    except jwt.ExpiredSignatureError:
+        return jsonify({
+            'result': {
+                'success': 'false',
+                'message': '사용자 정보 실패 (ExpiredSignatureError)'
+            },
+            'row_count': 0,
+            'row': [{}, ]
+        })
+    except jwt.exceptions.DecodeError:
+        return jsonify({
+            'result': {
+                'success': 'false',
+                'message': '사용자 정보 실패 (DecodeError)'
+            },
+            'row_count': 0,
+            'row': [{}, ]
+        })
+
 # user 정보 수정페이지
-@user.route('/user/update', methods=['GET'])
+@user.route('/user/update/data', methods=['GET'])
 def update():
-    return render_template('User/updateinfo.html')
+    name_receive = request.form['name_give']
+    email_receive = request.form['email_give']
+
+    db.user.update_one({'name':name_receive},{'$set':name_receive}, {'email':email_receive},{'$set': email_receive})
+
+    return jsonify({'result': 'success', 'msg': '회원 정보가 수정되었습니다.' })
+
+
+
