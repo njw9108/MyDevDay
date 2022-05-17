@@ -93,7 +93,7 @@
                     $.cookie('mytoken', response['token']), {path: '/'};
                     alert(response['msg'])
                     window.location.replace("/")
-                } else if (result == 'fail') {
+                } else if (response['result'] == 'fail') {
                     alert(response['msg'])
                     id.focus();
                     $(".idError").text(" 아이디를 확인해주세요")

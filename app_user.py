@@ -161,3 +161,8 @@ def checkcookie():
                     'row': [ {}, ]
                 }
             })
+
+# user 정보 수정페이지
+@user.route('/user/update', methods=['GET'])
+def update():
+    return render_template('User/updateinfo.html')
