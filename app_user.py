@@ -5,6 +5,8 @@ from pymongo import MongoClient
 import jwt
 import datetime
 import hashlib
+import smtplib
+
 from datetime import datetime, timedelta
 
 app = Flask(__name__)
@@ -16,7 +18,6 @@ db = client.mydevday_user1
 SECRET_KEY = 'mydevday'
 
 user = Blueprint('user', __name__)
-
 
 ##############################
 # user
@@ -170,7 +171,7 @@ def data():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.user.find_one({"id": payload["id"]})
-        return render_template('User/updateinfo.html', name=user_info["name"], email=user_info["email"])
+        return render_template('user/updateinfo.html', name=user_info["name"], email=user_info["email"])
     except jwt.ExpiredSignatureError:
         return jsonify({
             'result': {
@@ -191,14 +192,35 @@ def data():
         })
 
 # user 정보 수정페이지
-@user.route('/user/update/data', methods=['GET'])
+@user.route('/user/update/data', methods=['POST'])
 def update():
-    name_receive = request.form['name_give']
-    email_receive = request.form['email_give']
+    token_receive = request.cookies.get('mytoken')
+    if token_receive == None:
+        return render_template("user/updateinfo.html")
+    else:
+        try:
+            payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+            name_receive = request.form['name_give']
+            email_receive = request.form['email_give']
 
-    db.user.update_one({'name':name_receive},{'$set':name_receive}, {'email':email_receive},{'$set': email_receive})
-
-    return jsonify({'result': 'success', 'msg': '회원 정보가 수정되었습니다.' })
-
-
-
+            db.user.update_one({'id': payload['id']}, {"$set": {'name': name_receive, 'email': email_receive}})
+            print("update complete")
+            return jsonify({'result':'success', 'msg': '회원정보가 수정되었습니다'})
+        except jwt.ExpiredSignatureError:
+            return jsonify({
+                'result': {
+                    'success': 'false',
+                    'message': '사용자 정보 실패 (ExpiredSignatureError)'
+                },
+                'row_count': 0,
+                'row': [{}, ]
+            })
+        except jwt.exceptions.DecodeError:
+            return jsonify({
+                'result': {
+                    'success': 'false',
+                    'message': '사용자 정보 실패 (DecodeError)'
+                },
+                'row_count': 0,
+                'row': [{}, ]
+            })
