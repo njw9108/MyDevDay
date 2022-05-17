@@ -14,6 +14,7 @@
         let userName;
         let userID;
         let writeDate;
+        let dev_id;
 
         function getToday() {
             var date = new Date();
@@ -33,6 +34,8 @@
 
         function getPost() {
             let devID = '{{devid}}';
+            dev_id = devID;
+
             $.ajax({
                 type: "POST",
                 url: '/mydev/read/' + devID,
@@ -64,8 +67,11 @@
                     }
                 }
             })
+        }
 
-
+        function editClick() {
+            console.log('mydev/write/' + dev_id)
+            window.location.href = 'mydev/write/' + dev_id;
         }
 
         function logout() {
@@ -111,7 +117,7 @@
                         userName = user_name;
                         userID = user_id;
 
-                        $("#user_name").val(user_name)
+                        $("#user_name").text(user_name)
                     } else {
                         /*let temp_html = `로그인된 사용자 정보가 없습니다.`
                         $(".test-result").append(temp_html + '<br>')*/
@@ -247,7 +253,7 @@
                         </div>
             -->
             <div class="bt_wrap">
-                <a onclick="" href="./edit" class="on">수정 하기</a>
+                <a onclick="window.location.href = 'mydev/write/'+'{{devid}}'" class="on">수정 하기</a>
                 <a onclick="" style='cursor:pointer;'>게시글 삭제</a>
             </div>
         </div>

@@ -33,8 +33,7 @@ def devday_write():
 # 글 읽기 페이지
 @mydev.route('/mydev/<devid>', methods=['GET'])
 def devday_read(devid):
-    print('dev id = ', devid)
-    print(type(devid))
+    print('글 읽기 페이지 devid = ', devid)
     if devid is None:
         return render_template('MyDev/mydev.html')
     else:
@@ -42,9 +41,10 @@ def devday_read(devid):
 
 
 # 글 수정 페이지
-@mydev.route('/mydev/edit/<devid>', methods=['GET'])
-def devday_edit():
-    return render_template('MyDev/edit.html')
+@mydev.route('/mydev/write/<devid>', methods=['GET'])
+def devday_edit(devid):
+    print('수정 페이지 devid = ', devid)
+    return render_template('MyDev/write.html', devid=devid)
 
 
 # 특정 년월 데이터 요청 API

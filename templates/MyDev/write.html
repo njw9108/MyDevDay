@@ -82,8 +82,44 @@
                     }
                 }
             })
+        }
 
+        function getPost() {
+            console.log('write page get post')
+            let devID = '{{devid}}';
+            console.log('dev id = '+devID)
+            if (devID !== "")
+                $.ajax({
+                    type: "POST",
+                    url: '/mydev/read/' + devID,
+                    data: {},
+                    success: function (response) {
+                        let result = response['result'];
+                        let success = result['success'];
+                        if (success === 'true') {
+                            let devday = result['data']
+                            let title = devday['subject']
+                            let category = devday['category']
+                            let goal = devday['memo1']
+                            let todayLearned = devday['memo2']
+                            let todo = devday['memo3']
+                            let feeling = devday['feeling']
+                            let emoticon = devday['emoticon']
+                            let date = devday['date']
 
+                            writeDate = date
+
+                            $("#dev_title").val(title);
+                            $("#category").val(category);
+                            $("#myGoal").val(goal);
+                            $("#todayLearned").val(todayLearned);
+                            $("#todoList").val(todo);
+                            $("#emotion").val(feeling);
+                            $("#emoticon2").append(emoticon);
+                            //$("#emoticon2").append(`&#x1F637;`);
+                        }
+                    }
+                })
         }
 
         function cancel_post(url) {
@@ -144,6 +180,8 @@
                     }
                 }
             });
+
+            getPost();
         }
     </script>
 </head>
