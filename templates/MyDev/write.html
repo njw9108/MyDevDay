@@ -59,9 +59,6 @@
             let feeling = $("#emotion").val();
             let emoticon = $("#emoticon").val();
 
-            console.log(writer, date, dev_title, category, myGoal, todayLearned, todoList, feeling, emoticon);
-
-
             $.ajax({
                 type: "POST",
                 url: "/mydev/write",
@@ -122,7 +119,6 @@
 
         function CallGetUserInfoAPI() {
             // 사용자 정보 요청 ajax API Call하여 사용자 정보 json 데이터 받아 화면 갱신하기
-            console.log("CallGetUserInfoAPI")
             $.ajax({
                 type: 'POST',
                 url: '/user/info',
@@ -144,12 +140,10 @@
                     } else {
                         /*let temp_html = `로그인된 사용자 정보가 없습니다.`
                         $(".test-result").append(temp_html + '<br>')*/
-                        console.log("로그인된 사용자 정보가 없습니다.");
                         $("#user_name").val("로그인된 사용자 정보가 없습니다.")
                     }
                 }
             });
-            console.log("CallGetUserInfoAPI end")
         }
     </script>
 </head>

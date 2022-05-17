@@ -11,6 +11,10 @@
 
     <link rel="stylesheet" href="/static/css/MyDev/read.css"/>
     <script>
+        let userName;
+        let userID;
+        let writeDate;
+
         function getToday() {
             var date = new Date();
             var year = date.getFullYear();
@@ -26,25 +30,43 @@
             return year + "." + month + "." + day + " " + timeString;
         }
 
-        function getDevID() {
-
-        }
 
         function getPost() {
-            let devID = getDevID();
+            let devID = '{{devid}}';
+            $.ajax({
+                type: "POST",
+                url: '/mydev/read/' + devID,
+                data: {},
+                success: function (response) {
+                    let result = response['result'];
+                    let success = result['success'];
+                    if (success == 'true') {
+                        let devday = result['data']
+                        let title = devday['subject']
+                        let category = devday['category']
+                        let goal = devday['memo1']
+                        let todayLearned = devday['memo2']
+                        let todo = devday['memo3']
+                        let feeling = devday['feeling']
+                        let emoticon = devday['emoticon']
+                        let date = devday['date']
 
-            $("#dev_title").val("제목입니다.");
-            $("#category").val("web");
-            $("#myGoal").val("나의 꿈 입니다.");
-            $("#todayLearned").val("오늘 배운것입니다.\n1. 웹\n2. 파이썬");
-            $("#todoList").val("내일 일정입니다.\n1. 알고리즘\n2. 컴퓨터공학");
-            $("#emotion").val("오늘은 참 힘들었다. 그래도 힘내야지");
-            $("#emoticon2").append(`&#x1F637;`);
+                        writeDate = date
+
+                        $("#dev_title").val(title);
+                        $("#category").val(category);
+                        $("#myGoal").val(goal);
+                        $("#todayLearned").val(todayLearned);
+                        $("#todoList").val(todo);
+                        $("#emotion").val(feeling);
+                        $("#emoticon2").append(emoticon);
+                        //$("#emoticon2").append(`&#x1F637;`);
+                    }
+                }
+            })
+
+
         }
-
-        /*
-        &#x1F601;
-        */
 
         function logout() {
             $.removeCookie('mytoken');
@@ -72,7 +94,6 @@
 
         function CallGetUserInfoAPI() {
             // 사용자 정보 요청 ajax API Call하여 사용자 정보 json 데이터 받아 화면 갱신하기
-            console.log("CallGetUserInfoAPI")
             $.ajax({
                 type: 'POST',
                 url: '/user/info',
@@ -87,17 +108,17 @@
                         let user_name = userinfo['user_name']
 
                         //let temp_html = `user_id=${user_id}, user_name=${user_name}`
-                        console.log(user_name);
+                        userName = user_name;
+                        userID = user_id;
+
                         $("#user_name").val(user_name)
                     } else {
                         /*let temp_html = `로그인된 사용자 정보가 없습니다.`
                         $(".test-result").append(temp_html + '<br>')*/
-                        console.log("로그인된 사용자 정보가 없습니다.");
                         $("#user_name").val("로그인된 사용자 정보가 없습니다.")
                     }
                 }
             });
-            console.log("CallGetUserInfoAPI end")
 
             //Get Post
             getPost();
@@ -182,49 +203,49 @@
                     <p id="emoticon2"></p>
                 </dl>
             </div>
-<!--
-            <div class="like_button_wrap">
-                <div class="heart"></div>
-                <div class="animation-heart"></div>
-            </div>
+            <!--
+                        <div class="like_button_wrap">
+                            <div class="heart"></div>
+                            <div class="animation-heart"></div>
+                        </div>
 
-            <script>
-                const heart = document.querySelector(".heart");
-                const animationHeart = document.querySelector(".animation-heart");
+                        <script>
+                            const heart = document.querySelector(".heart");
+                            const animationHeart = document.querySelector(".animation-heart");
 
-                heart.addEventListener('click', () => {
-                    animationHeart.classList.add('animation');
-                    heart.classList.add('fill-color');
-                });
+                            heart.addEventListener('click', () => {
+                                animationHeart.classList.add('animation');
+                                heart.classList.add('fill-color');
+                            });
 
-                animationHeart.addEventListener('click', () => {
-                    animationHeart.classList.remove('animation');
-                    heart.classList.remove('fill-color');
-                });
-            </script>
+                            animationHeart.addEventListener('click', () => {
+                                animationHeart.classList.remove('animation');
+                                heart.classList.remove('fill-color');
+                            });
+                        </script>
 
-            <div class="comment_wrap">
-                <div class="write_comment">
-                    <textarea class="autosize" onkeydown="resize(this)" onkeyup="resize(this)"
-                              placeholder="댓글을 남겨주세요."></textarea>
-                    <button>등록</button>
-                </div>
-                <div class="comment_list">
-                    <div class="comment">
-                        <div class="text">잘 봤습니다!</div>
-                        <div class="writer">njw9108</div>
-                        <div class="date">2022.05.16 15:34:05</div>
-                    </div>
+                        <div class="comment_wrap">
+                            <div class="write_comment">
+                                <textarea class="autosize" onkeydown="resize(this)" onkeyup="resize(this)"
+                                          placeholder="댓글을 남겨주세요."></textarea>
+                                <button>등록</button>
+                            </div>
+                            <div class="comment_list">
+                                <div class="comment">
+                                    <div class="text">잘 봤습니다!</div>
+                                    <div class="writer">njw9108</div>
+                                    <div class="date">2022.05.16 15:34:05</div>
+                                </div>
 
-                    <div class="comment">
-                        <div class="text">잘 봤습니다!</div>
-                        <div class="writer">njw9108</div>
-                        <div class="date">2022.05.16 15:34:05</div>
-                    </div>
+                                <div class="comment">
+                                    <div class="text">잘 봤습니다!</div>
+                                    <div class="writer">njw9108</div>
+                                    <div class="date">2022.05.16 15:34:05</div>
+                                </div>
 
-                </div>
-            </div>
--->
+                            </div>
+                        </div>
+            -->
             <div class="bt_wrap">
                 <a onclick="" href="./edit" class="on">수정 하기</a>
                 <a onclick="" style='cursor:pointer;'>게시글 삭제</a>
