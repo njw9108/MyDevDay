@@ -16,6 +16,14 @@
         let writeDate;
         let dev_id;
 
+        $(document).ready(function () {
+            $('#for_loginuser').hide();
+            $('#for_notloginuser').hide();
+            check_login();
+            CallGetUserInfoAPI();
+            getPost();
+        });
+
         function getToday() {
             var date = new Date();
             var year = date.getFullYear();
@@ -45,6 +53,8 @@
                     let success = result['success'];
                     if (success == 'true') {
                         let devday = result['data']
+
+                        let writer = devday['user_id']
                         let title = devday['subject']
                         let category = devday['category']
                         let goal = devday['memo1']
@@ -56,6 +66,12 @@
 
                         writeDate = date
 
+
+                        if (writer !== userID) {
+                            $("#edit_del_button").css('display', 'none');
+                        } else {
+                            $("#edit_del_button").css('display', '');
+                        }
                         $("#dev_title").val(title);
                         $("#category").val(category);
                         $("#myGoal").val(goal);
@@ -69,9 +85,11 @@
             })
         }
 
-        function editClick() {
-            console.log('mydev/write/' + dev_id)
-            window.location.href = 'mydev/write/' + dev_id;
+        function cancel_post(url) {
+            //if (confirm("작성을 그만 두시겠습니까?")) {
+                location.href = url;
+            //} else {
+            //}
         }
 
         function logout() {
@@ -83,7 +101,7 @@
         function check_login() {
             $.ajax({
                 type: 'POST',
-                url: './user/islogin',
+                url: '/user/islogin',
                 data: {},
                 success: function (response) {
                     let result = response['result'];
@@ -103,6 +121,7 @@
             $.ajax({
                 type: 'POST',
                 url: '/user/info',
+                async: false,
                 data: {},
                 success: function (response) {
                     let result = response['result'];
@@ -113,44 +132,60 @@
                         let user_id = userinfo['user_id']
                         let user_name = userinfo['user_name']
 
-                        //let temp_html = `user_id=${user_id}, user_name=${user_name}`
-                        userName = user_name;
-                        userID = user_id;
-
-                        $("#user_name").text(user_name)
+                        let temp_html = `
+                                <a href="/" id="logname">${user_id}</a>
+                                <a href="#" id="logout" onclick="logout();">로그아웃</a>`
+                        $("#for_loginuser").append(temp_html)
                     } else {
-                        /*let temp_html = `로그인된 사용자 정보가 없습니다.`
-                        $(".test-result").append(temp_html + '<br>')*/
-                        $("#user_name").val("로그인된 사용자 정보가 없습니다.")
+                        let temp_html = `로그인된 사용자 정보가 없습니다.`
+                        $("#for_loginuser").append(temp_html)
                     }
                 }
             });
+        }
 
-            //Get Post
-            getPost();
+        function delete_post() {
+            let devID = '{{devid}}';
+            if (devID === "") {
+                alert('[삭제 에러] devID가 존재하지 않습니다.')
+            } else {
+                // 일지 삭제 요청
+                $.ajax({
+                    type: "DELETE",
+                    url: '/mydev/write/' + '{{devid}}',
+                    data: { },
+                    success: function (response) {
+                        if (response['result'] == 'success') {
+                            alert(response['msg'])
+                            window.location.href = '/mydev'
+                        } else if (response['result'] == 'fail') {
+                            alert(response['msg'])
+                            window.location.href = '/mydev'
+                        }
+                    }
+                })
+            }
+
         }
     </script>
 </head>
-<body onload="CallGetUserInfoAPI()">
-<div id="header-wrap">
+<body>
+<div class="header-wrap">
     <header>
-        <div>
-            <a href="#">
-                <h1 class="logo">
-                    My Dev Day
-                </h1>
-                <img class="logo-img" src="/static/css/MyDev/img/logo.png" alt="로고"/>
-            </a>
-
-            <ul class="gnb">
-                <li><a onclick="cancel_post('/')"><U>전체 글 목록</U></a></li>
-                <li><a onclick="cancel_post('/mydev')"><U>내 글 목록</U></a></li>
-                <div class="user-info">
-                    <div id="user_name"></div>
-                    <div><a onclick="logout()" style="cursor: pointer">로그아웃</a></div>
-                </div>
-            </ul>
-        </div>
+        <a href="/" id="titlelogo">
+            <h1>MyDevDay</h1>
+            <img class="logo-img" src="/static/css/MyDev/img/logo.png" alt="로고"/>
+        </a>
+        <nav id="for_loginuser">
+            <a href="/mydev/write">글 쓰기</a>
+            <a href="/mydev">내 글 목록</a>
+            {#        <a href="/" id="logname">내 글 목록</a>#}
+            {#        <a href="#" id="logout" onclick="logout();">로그아웃</a>#}
+        </nav>
+        <nav id="for_notloginuser">
+            <a href="/user" id="user_name">로그인</a>
+            <a href="/user/signup">회원가입</a>
+        </nav>
     </header>
 </div>
 <div class="board_wrap">
@@ -252,9 +287,10 @@
                             </div>
                         </div>
             -->
-            <div class="bt_wrap">
-                <a onclick="window.location.href = 'mydev/write/'+'{{devid}}'" class="on">수정 하기</a>
-                <a onclick="" style='cursor:pointer;'>게시글 삭제</a>
+            <div class="bt_wrap" id = edit_del_button>
+                <a onclick="window.location.href = 'write/'+'{{devid}}'" class="on">수정 하기</a>
+                <a onclick="delete_post()" style='cursor:pointer;'>게시글 삭제</a>
+
             </div>
         </div>
     </div>
