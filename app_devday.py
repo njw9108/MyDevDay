@@ -1,3 +1,4 @@
+import jwt
 from flask import Flask, Blueprint, render_template, jsonify, request # Flask 서버 객체 import
 devday = Blueprint('devday', __name__)
 
@@ -5,7 +6,10 @@ devday = Blueprint('devday', __name__)
 from pymongo import MongoClient
 client = MongoClient('mongodb://mydevday:devday2205@boox.synology.me/admin', 27018)
 #db = client.mydevday
-db = client.mydevday_post
+# db = client.mydevday_post
+db = client.mydevday_user1
+
+SECRET_KEY = 'mydevday'
 
 # time
 import time
@@ -17,7 +21,12 @@ import time
 # 메인 화면
 @devday.route('/')
 def main():
+    token_receive = request.cookies.get('mytoken')
+    payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+    user_info = db.user.find_one({"id": payload['id']})
+    print(user_info)
     # mongo test
+
     ip_addr = request.remote_addr;
     url = request.url;
     user_agent = request.user_agent.string;
@@ -25,7 +34,7 @@ def main():
     doc = {'ip_addr':ip_addr, 'url':url, 'user_agent':user_agent, 'connect_time':current_time}
     db.log.insert_one(doc)
 
-    return render_template('DevDay/index.html')
+    return render_template('DevDay/index.html', user_info=user_info)
     return jsonify({
             'result' : {
                 'success': 'true',
@@ -49,7 +58,7 @@ def test():
 @devday.route('/devday', methods=['POST'])
 def devday_list():
     print('devday_list')
-    
+
     datas = list(db.post.find({}, {}).sort('date', -1))
 
     ret_datas = [];
@@ -79,7 +88,7 @@ def devday_list():
                 'message': 'devday 목록 가져오기 성공',
                 'row_count': len(datas),
                 'row': ret_datas,
-            }            
+            }
         })
     else:
         return jsonify({
@@ -88,5 +97,5 @@ def devday_list():
                 'message': 'devday 목록이 없습니다',
                 'row_count': 0,
                 'row': [],
-            }            
+            }
         })

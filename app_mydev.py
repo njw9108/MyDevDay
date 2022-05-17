@@ -43,18 +43,21 @@ def devday_read(devid):
 def mydevs(dev_id):
     token_receive = request.cookies.get('mytoken')
     payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-    dev_id == payload["id"]
+    status = (dev_id == payload["id"])
 
     user_info = db.user.find_one({"id": payload["id"]}, {"_id": False})
     print(dev_id)
-    return render_template('MyDev/mydev.html', user_info=user_info)
+    return render_template('MyDev/mydev.html', user_info=user_info, status=status)
 
 
-# GET 유저별 글을 가져옴
+#전체 & GET 유저별 글을 가져옴
 @mydev.route('/mydevs', methods=['GET'])
 def mydev_lists():
     username_receive = request.args.get("username_give")
-    posts = list(db.mydev.find({"id": username_receive}).sort("date", -1).limit(3))
+    if username_receive == "":
+        posts = list(db.mydev.find({}).sort("date", -1).limit(10))
+    else:
+        posts = list(db.mydev.find({"id": username_receive}).sort("date", -1).limit(4))
     for post in posts:
         post["_id"] = str(post["_id"])
     print(posts)
@@ -123,14 +126,6 @@ def edit_dev_post():
 
 
 # 글 정보 요청(Read)
-
-
-
-
-
-
-
-
 
 # 특정 년월 데이터 요청 API
 # @mydev.route('/mydev/<date>', methods=['POST'])
