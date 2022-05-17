@@ -212,6 +212,7 @@
             $.ajax({
                 type: 'POST',
                 url: '/user/info',
+                async: false,
                 data: {},
                 success: function (response) {
                     let result = response['result'];
