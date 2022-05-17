@@ -26,7 +26,7 @@
             <img src="/static/css/User/image/logo.png" id="logoimg">
             <h1 id="title"><a href="/">MyDevDay</a></h1>
         </div>
-        <img src="/static/css/User/image/diary.jpg" id="diaryimg">
+        <img id="diaryimg">
     </div>
     <div class="signForm">
         <h2 id="inputTitle">Login</h2>
@@ -45,6 +45,7 @@
     </div>
 </div>
 
+<script src="/static/js/User/imgchange.js"></script>
 <script>
     {% if msg %}
         alert("{{ msg }}")
