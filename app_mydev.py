@@ -1,12 +1,12 @@
 from pymongo import MongoClient
 
 from flask import Flask, Blueprint, render_template, jsonify, request  # Flask 서버 객체 import
-
+import jwt
 app = Flask(__name__)
 
 client = MongoClient('boox.synology.me', 27018, username="mydevday", password="devday2205")
 
-db = client.mydevday_post
+db = client.mydevday_user1
 
 SECRET_KEY = 'mydevday'
 
@@ -38,6 +38,27 @@ def devday_read(devid):
     else:
         return render_template('MyDev/read.html')
 
+# 유저별 글을 볼 수 있는 공간
+@mydev.route('/mydevs/<dev_id>')
+def mydevs(dev_id):
+    token_receive = request.cookies.get('mytoken')
+    payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+    dev_id == payload["id"]
+
+    user_info = db.user.find_one({"id": payload["id"]}, {"_id": False})
+    print(dev_id)
+    return render_template('MyDev/mydev.html', user_info=user_info)
+
+
+# GET 유저별 글을 가져옴
+@mydev.route('/mydevs', methods=['GET'])
+def mydev_lists():
+    username_receive = request.args.get("username_give")
+    posts = list(db.mydev.find({"id": username_receive}).sort("date", -1).limit(3))
+    for post in posts:
+        post["_id"] = str(post["_id"])
+    print(posts)
+    return jsonify({"result": "success", "msg": "포스팅을 가져왔습니다.", "posts": posts})
 
 # 글 수정 페이지
 @mydev.route('/mydev/edit', methods=['GET'])
@@ -45,39 +66,13 @@ def devday_edit():
     return render_template('MyDev/edit.html')
 
 
-# 특정 년월 데이터 요청 API
-@mydev.route('/mydev/<date>', methods=['POST'])
-def devday_calendar(date):
-    print(f"{date} 년월 API 정보 요청 받음.")
-    return jsonify({
-        'result': {
-            'success': 'true',
-            'message': '내가 작성한 글 목록 조회 성공',
-            'row_count': 1,
-            'row': [
-                {
-                    'user_id': 'c_user',
-                    'dev_id': 33,
-                    'subject': 'pyCharm 사용법 정리',
-                    'content': '사용법 1) ~~~ Blabla..',
-                    'memo1': '메모1',
-                    'memo2': '메모2',
-                    'memo3': '메모3',
-                    'memo4': '메모4',
-                    'memo5': '메모5',
-                    'feeling': '기분 굳~',
-                    'emoticon': ';->',
-                    'date': '20220505',
-                    'like_count': 5,
-                },
-            ]
-        }
-    })
-
-
 # 신규 글 작성
 @mydev.route('/mydev/write', methods=['POST'])
 def write_dev_post():
+    token_receive = request.cookies.get('mytoken')
+    payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+    user_info = db.user.find_one({"id": payload["id"]})
+
     print("글 작성 api 받음")
     writer_receive = request.form['writer_give']
     date_receive = request.form['date_give']
@@ -91,11 +86,11 @@ def write_dev_post():
     emoticon_receive = request.form['emoticon_give']
     print(emoticon_receive)
 
-    print(writer_receive, date_receive, title_receive, category_receive, goal_receive, todoList_receive,
+    print(user_info["id"], writer_receive, date_receive, title_receive, category_receive, goal_receive, todoList_receive,
           todayLearned_receive, feeling_receive, emoticon_receive)
 
-    db.post.insert_one(
-        {'writer': writer_receive, 'date': date_receive, 'title': title_receive, 'category': category_receive,
+    db.mydev.insert_one(
+        {"id": user_info["id"],'writer': writer_receive, 'date': date_receive, 'title': title_receive, 'category': category_receive,
          'goal': goal_receive, 'todayLearned': todayLearned_receive, 'todo': todoList_receive,
          'feeling': feeling_receive, 'emoticon': emoticon_receive})
 
@@ -126,4 +121,42 @@ def edit_dev_post():
 
     return jsonify({'result': 'success', 'msg': '수정 완료'})
 
+
 # 글 정보 요청(Read)
+
+
+
+
+
+
+
+
+
+# 특정 년월 데이터 요청 API
+# @mydev.route('/mydev/<date>', methods=['POST'])
+# def devday_calendar(date):
+#     print(f"{date} 년월 API 정보 요청 받음.")
+#     return jsonify({
+#         'result': {
+#             'success': 'true',
+#             'message': '내가 작성한 글 목록 조회 성공',
+#             'row_count': 1,
+#             'row': [
+#                 {
+#                     'user_id': 'c_user',
+#                     'dev_id': 33,
+#                     'subject': 'pyCharm 사용법 정리',
+#                     'content': '사용법 1) ~~~ Blabla..',
+#                     'memo1': '메모1',
+#                     'memo2': '메모2',
+#                     'memo3': '메모3',
+#                     'memo4': '메모4',
+#                     'memo5': '메모5',
+#                     'feeling': '기분 굳~',
+#                     'emoticon': ';->',
+#                     'date': '20220505',
+#                     'like_count': 5,
+#                 },
+#             ]
+#         }
+#     })
