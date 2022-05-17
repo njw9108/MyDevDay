@@ -15,6 +15,17 @@ a {
     padding-right: 10px;
 }
 
+a:hover {
+    text-decoration: none;
+}
+
+#titlelogo{
+    display: flex;
+    flex: 1;
+    align-items: center;
+    margin-left: 5%;
+}
+
 header {
     height: 80px;
     padding: 1rem;
@@ -27,6 +38,11 @@ header {
 
 nav {
     align-self: end;
+}
+header .logo-img {
+    height: 40px;
+    margin-left: 10px;
+    /*margin-top: 20px;*/
 }
 
 .container {

@@ -3,6 +3,11 @@ from pymongo import MongoClient
 from flask import Flask, Blueprint, render_template, jsonify, request  # Flask 서버 객체 import
 from bson import ObjectId
 
+import jwt
+import datetime
+import hashlib
+from datetime import datetime, timedelta
+
 app = Flask(__name__)
 
 client = MongoClient('boox.synology.me', 27018, username="mydevday", password="devday2205")
@@ -38,7 +43,6 @@ def devday_read(devid):
         return render_template('MyDev/mydev.html')
     else:
         return render_template('MyDev/read.html', devid=devid)
-
 
 # 글 수정 페이지
 @mydev.route('/mydev/write/<devid>', methods=['GET'])
@@ -167,3 +171,54 @@ def delete_dev_post(devid):
     db.post.delete_one({'_id': ObjectId(devid)})
 
     return jsonify({'result': 'success', 'msg': '삭제 완료'})
+
+# 내가 쓴글 데이터 요청 API
+@mydev.route('/mydev', methods=['POST'])
+def mydev_list():
+    print('mydev_list')
+
+    token_receive = request.cookies.get('mytoken')
+    payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+
+    print(payload["id"])
+
+    datas = list(db.post.find({"writer": payload["id"]}).sort('date', -1))
+
+    ret_datas = [];
+    for d in datas:
+        ret_datas.append({
+            'user_id': d['writer'],
+            'dev_id': str(d['_id']),
+            'subject': d['title'],
+            'content': '',
+            'category': d['category'],
+            'memo1': d['goal'],
+            'memo2': d['todayLearned'],
+            'memo3': d['todo'],
+            'memo4': '',
+            'memo5': '',
+            'feeling': d['feeling'],
+            'emoticon': '',
+            'date': d['date'],
+            'like_count': 123,  # 임시
+            'comment_count': 321,  # 임시
+        })
+
+    if len(datas) >= 1:
+        return jsonify({
+            'result': {
+                'success': 'true',
+                'message': 'mydev 목록 가져오기 성공',
+                'row_count': len(datas),
+                'row': ret_datas,
+            }
+        })
+    else:
+        return jsonify({
+            'result': {
+                'success': 'false',
+                'message': 'mydev 목록이 없습니다',
+                'row_count': 0,
+                'row': [],
+            }
+        })
