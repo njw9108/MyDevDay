@@ -132,6 +132,9 @@
                         let user_id = userinfo['user_id']
                         let user_name = userinfo['user_name']
 
+                        userName = user_name;
+                        userID = user_id;
+
                         let temp_html = `
                                 <a href="/" id="logname">${user_id}</a>
                                 <a href="#" id="logout" onclick="logout();">로그아웃</a>`
