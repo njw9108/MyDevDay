@@ -1,6 +1,7 @@
 from pymongo import MongoClient
 
 from flask import Flask, Blueprint, render_template, jsonify, request  # Flask 서버 객체 import
+from bson import ObjectId
 
 app = Flask(__name__)
 
@@ -32,15 +33,16 @@ def devday_write():
 # 글 읽기 페이지
 @mydev.route('/mydev/<devid>', methods=['GET'])
 def devday_read(devid):
-    print(devid)
+    print('dev id = ', devid)
+    print(type(devid))
     if devid is None:
         return render_template('MyDev/mydev.html')
     else:
-        return render_template('MyDev/read.html')
+        return render_template('MyDev/read.html', devid=devid)
 
 
 # 글 수정 페이지
-@mydev.route('/mydev/edit', methods=['GET'])
+@mydev.route('/mydev/edit/<devid>', methods=['GET'])
 def devday_edit():
     return render_template('MyDev/edit.html')
 
@@ -102,8 +104,40 @@ def write_dev_post():
     return jsonify({'result': 'success', 'msg': '포스팅 완료'})
 
 
+# 글 읽기(Read)
+@mydev.route('/mydev/read/<devid>', methods=['POST'])
+def read_dev_post(devid):
+    print("글 읽기 api 받음")
+
+    devday = db.post.find_one({'_id': ObjectId(devid)})
+
+    data = {
+        'user_id': devday['writer'],
+        'dev_id': str(devday['_id']),
+        'subject': devday['title'],
+        'content': '',
+        'category': devday['category'],
+        'memo1': devday['goal'],
+        'memo2': devday['todayLearned'],
+        'memo3': devday['todo'],
+        'memo4': '',
+        'memo5': '',
+        'feeling': devday['feeling'],
+        'emoticon': devday['emoticon'],
+        'date': devday['date'],
+    }
+
+    return jsonify({
+        'result': {
+            'success': 'true',
+            'message': 'devday 가져오기 성공',
+            'data': data,
+        }
+    })
+
+
 # 글 수정 요청(Edit)
-@mydev.route('/mydev/edit', methods=['POST'])
+@mydev.route('/mydev/write/<devid>', methods=['POST'])
 def edit_dev_post():
     print("글 작성 api 받음")
     writer_receive = request.form['writer_give']
@@ -125,5 +159,3 @@ def edit_dev_post():
          'feeling': feeling_receive})
 
     return jsonify({'result': 'success', 'msg': '수정 완료'})
-
-# 글 정보 요청(Read)
