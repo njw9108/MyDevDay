@@ -135,7 +135,7 @@ def read_dev_post(devid):
 
 
 # 글 수정 요청(Edit)
-@mydev.route('/mydev/write/<devid>', methods=['POST'])
+@mydev.route('/mydev/write/<devid>', methods=['PUT'])
 def edit_dev_post(devid):
     print("글 수정 api 받음")
 
@@ -152,9 +152,18 @@ def edit_dev_post(devid):
     print(writer_receive, date_receive, title_receive, category_receive, goal_receive, todoList_receive,
           todayLearned_receive, feeling_receive, emoticon_receive)
 
-    db.users.update_one({'_id': ObjectId(devid)}, {
+    db.post.update_one({'_id': ObjectId(devid)}, {
         '$set': {'writer': writer_receive, 'date': date_receive, 'title': title_receive, 'category': category_receive,
                  'goal': goal_receive, 'todayLearned': todayLearned_receive, 'todo': todoList_receive,
                  'feeling': feeling_receive, 'emoticon': emoticon_receive}})
 
     return jsonify({'result': 'success', 'msg': '수정 완료'})
+
+# 글 삭제 요청(Delete)
+@mydev.route('/mydev/write/<devid>', methods=['DELETE'])
+def delete_dev_post(devid):
+    print("글 삭제 api 받음")
+
+    db.post.delete_one({'_id': ObjectId(devid)})
+
+    return jsonify({'result': 'success', 'msg': '삭제 완료'})

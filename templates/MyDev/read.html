@@ -58,7 +58,7 @@
 
                         writeDate = date
 
-                        if(writer !== userID){
+                        if(writer != userID){
                             $("#edit_del_button").css('display','none');
                         } else {
                             $("#edit_del_button").css('display','');
@@ -74,6 +74,13 @@
                     }
                 }
             })
+        }
+
+        function cancel_post(url) {
+            //if (confirm("작성을 그만 두시겠습니까?")) {
+                location.href = url;
+            //} else {
+            //}
         }
 
         function logout() {
@@ -105,6 +112,7 @@
             $.ajax({
                 type: 'POST',
                 url: '/user/info',
+                async: false,
                 data: {},
                 success: function (response) {
                     let result = response['result'];
@@ -130,13 +138,37 @@
             //Get Post
             getPost();
         }
+
+        function delete_post() {
+            let devID = '{{devid}}';
+            if (devID === "") {
+                alert('[삭제 에러] devID가 존재하지 않습니다.')
+            } else {
+                // 일지 삭제 요청
+                $.ajax({
+                    type: "DELETE",
+                    url: '/mydev/write/' + '{{devid}}',
+                    data: { },
+                    success: function (response) {
+                        if (response['result'] == 'success') {
+                            alert(response['msg'])
+                            window.location.href = '/mydev'
+                        } else if (response['result'] == 'fail') {
+                            alert(response['msg'])
+                            window.location.href = '/mydev'
+                        }
+                    }
+                })
+            }
+
+        }
     </script>
 </head>
 <body onload="CallGetUserInfoAPI()">
 <div id="header-wrap">
     <header>
         <div>
-            <a href="#">
+            <a href="#" onclick="cancel_post('/')">
                 <h1 class="logo">
                     My Dev Day
                 </h1>
@@ -255,7 +287,7 @@
             -->
             <div class="bt_wrap" id = edit_del_button>
                 <a onclick="window.location.href = 'write/'+'{{devid}}'" class="on">수정 하기</a>
-                <a onclick="" style='cursor:pointer;'>게시글 삭제</a>
+                <a onclick="delete_post()" style='cursor:pointer;'>게시글 삭제</a>
             </div>
         </div>
     </div>
