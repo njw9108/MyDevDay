@@ -10,66 +10,37 @@ a {
     color: inherit;
 }
 
-ul,
-li {
-    list-style: none;
+a {
+    text-decoration: none;
+    color: white;
+    margin-right: 10px;
+}
+
+#titlelogo {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    margin-left: 5%;
 }
 
 header {
-    background: #B4DADC;
-}
-
-header > div {
-    background: #B4DADC;
-    width: 90%;
-    min-width: 1000px;
-    max-width: 1200px;
     height: 80px;
-    margin: 0 auto;
+    padding: 1rem;
+    background: #B4DADC;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-header .logo {
-    float: left;
-    margin-top: 20px;
-    margin-left: 30px;
-    color: #fff;
-    font-weight: bold;
+nav {
+    align-self: end;
 }
 
 header .logo-img {
-    height: 33px;
+    height: 40px;
     margin-left: 10px;
-    margin-top: 20px;
-}
-
-header .gnb {
-    float: right;
-}
-
-header .gnb li {
-    display: inline-block;
-    margin-top: 28px;
-    margin-left: 30px;
-}
-
-header .gnb li a {
-    cursor: pointer;
-}
-
-header .gnb li:first-child {
-    margin-left: 0;
-}
-
-header .gnb li:last-child {
-    margin-right: 50px;
-}
-
-header .user-info {
-    float: right;
-    margin-left: 50px;
-    margin-right: 50px;
-    margin-top: 18px;
-    line-height: 30px;
+    /*margin-top: 20px;*/
 }
 
 .board_wrap {

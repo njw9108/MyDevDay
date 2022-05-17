@@ -14,6 +14,14 @@
         let userName;
         let userID;
 
+        $(document).ready(function () {
+            $('#for_loginuser').hide();
+            $('#for_notloginuser').hide();
+            check_login();
+            CallGetUserInfoAPI();
+            getPost();
+        });
+
         function resize(obj) {
             obj.style.height = "1px";
             obj.style.height = (12 + obj.scrollHeight) + "px";
@@ -128,7 +136,6 @@
                     }
                 })
             }
-
         }
 
         function getPost() {
@@ -185,7 +192,7 @@
         function check_login() {
             $.ajax({
                 type: 'POST',
-                url: './user/islogin',
+                url: '/user/islogin',
                 data: {},
                 success: function (response) {
                     let result = response['result'];
@@ -215,43 +222,36 @@
                         let user_id = userinfo['user_id']
                         let user_name = userinfo['user_name']
 
-                        //let temp_html = `user_id=${user_id}, user_name=${user_name}`
-                        userName = user_name;
-                        userID = user_id;
-
-                        $("#user_name").text(user_name)
+                        let temp_html = `
+                                <a href="/" id="logname">${user_id}</a>
+                                <a href="#" id="logout" onclick="logout();">로그아웃</a>`
+                        $("#for_loginuser").append(temp_html)
                     } else {
-                        /*let temp_html = `로그인된 사용자 정보가 없습니다.`
-                        $(".test-result").append(temp_html + '<br>')*/
-                        $("#user_name").val("로그인된 사용자 정보가 없습니다.")
+                        let temp_html = `로그인된 사용자 정보가 없습니다.`
+                        $("#for_loginuser").append(temp_html)
                     }
                 }
             });
-
-            getPost();
         }
     </script>
 </head>
-<body onload="CallGetUserInfoAPI()">
-<div id="header-wrap">
+<body>
+<div class="header-wrap">
     <header>
-        <div>
-            <a href="#" onclick="cancel_post('/')">
-                <h1 class="logo">
-                    My Dev Day
-                </h1>
-                <img class="logo-img" src="/static/css/MyDev/img/logo.png" alt="로고"/>
-            </a>
-
-            <ul class="gnb">
-                <li><a onclick="cancel_post('/')"><U>전체 글 목록</U></a></li>
-                <li><a onclick="cancel_post('/mydev')"><U>내 글 목록</U></a></li>
-                <div class="user-info">
-                    <div id="user_name"></div>
-                    <div><a onclick="logout()" style="cursor: pointer">로그아웃</a></div>
-                </div>
-            </ul>
-        </div>
+        <a href="/" id="titlelogo">
+            <h1>MyDevDay</h1>
+            <img class="logo-img" src="/static/css/MyDev/img/logo.png" alt="로고"/>
+        </a>
+        <nav id="for_loginuser">
+            <a href="/mydev/write">글 쓰기</a>
+            <a href="/mydev">내 글 목록</a>
+            {#        <a href="/" id="logname">내 글 목록</a>#}
+            {#        <a href="#" id="logout" onclick="logout();">로그아웃</a>#}
+        </nav>
+        <nav id="for_notloginuser">
+            <a href="/user" id="user_name">로그인</a>
+            <a href="/user/signup">회원가입</a>
+        </nav>
     </header>
 </div>
 <div class="board_wrap">
