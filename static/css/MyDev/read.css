@@ -43,7 +43,8 @@ header .logo-img {
     margin-right: 5px;
     /*margin-top: 20px;*/
 }
-header h1{
+
+header h1 {
     font-size: 35px;
     font-weight: 500;
 }
@@ -180,6 +181,14 @@ header a {
     vertical-align: middle;
     font-size: 1.4rem;
     width: 80%;
+}
+
+.board_write .title .writer_id {
+    font-size: 19px;
+}
+.board_write .title .write_date {
+    font-size: 16px;
+    color: #888888;
 }
 
 .board_write .title textarea {
