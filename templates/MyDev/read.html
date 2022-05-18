@@ -68,7 +68,8 @@
 
                         writeDate = date
 
-
+                        $("#write_id_id").text('작성자 : ' + writer);
+                        $("#write_date_id").text('작성 시간 : ' + date);
                         if (writer !== userID) {
                             $("#edit_del_button").css('display', 'none');
                         } else {
@@ -349,6 +350,14 @@
     <div class="board_write_wrap">
         <div class="board_write">
             <div class="title">
+                <dl>
+                    <dd>
+                        <div class="writer_id" id="write_id_id">작성자</div>
+                    </dd>
+                    <dd>
+                        <div class="write_date" id="write_date_id">작성 시간</div>
+                    </dd>
+                </dl>
                 <dl>
                     <dd><textarea id="dev_title" class="autosize" onkeydown="resize(this)" onkeyup="resize(this)"
                                   readonly></textarea></dd>
