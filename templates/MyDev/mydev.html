@@ -27,11 +27,12 @@
     <title>MyDev list</title>
     <script>
         $(document).ready(function () {
-            $('#cards-box').empty();
             $('#for_loginuser').hide();
             $('#for_notloginuser').hide();
-            listing();
             check_login();
+            CallGetUserInfoAPI();
+            $('#cards-box').empty();
+            listing();
         });
 
 
@@ -89,15 +90,14 @@
         }
 
 		function logout() {
-            $.removeCookie('mytoken');
-            alert('로그아웃이 되었습니다!')
+            $.removeCookie('mytoken', { path: '/' });
             window.location.href = '/user'
         }
 		
 		function check_login() {
             $.ajax({
                 type: 'POST',
-                url: './user/islogin',
+                url: '/user/islogin',
                 data: {},
                 success: function (response) {
                     let result = response['result'];
@@ -114,10 +114,10 @@
 
         function CallGetUserInfoAPI() {
             // 사용자 정보 요청 ajax API Call하여 사용자 정보 json 데이터 받아 화면 갱신하기
-
             $.ajax({
                 type: 'POST',
-                url: './user/info',
+                url: '/user/info',
+                async: false,
                 data: {},
                 success: function (response) {
                     let result = response['result'];
@@ -128,12 +128,16 @@
                         let user_id = userinfo['user_id']
                         let user_name = userinfo['user_name']
 
-                        let temp_html = `user_id=${user_id}, user_name=${user_name}`
-                        $(".test-result").append(temp_html + '<br>')
-                    }
-                    else {
+                        userName = user_name;
+                        userID = user_id;
+
+                        let temp_html = `
+                                <a href="/user/data" id="logname">${user_id}</a>
+                                <a href="#" id="logout" onclick="logout();">로그아웃</a>`
+                        $("#for_loginuser").append(temp_html)
+                    } else {
                         let temp_html = `로그인된 사용자 정보가 없습니다.`
-                        $(".test-result").append(temp_html + '<br>')
+                        $("#for_loginuser").append(temp_html)
                     }
                 }
             });
@@ -146,17 +150,16 @@
 <body>
 <header>
     <a href="/" id="titlelogo">
-        <h1>MyDevDay</h1><small>한땀한땀<br>개발일지</small>
         <img class="logo-img" src="/static/css/MyDev/img/logo.png" alt="로고"/>
+        <h1>MyDevDay</h1><small>한땀한땀<br>개발일지</small>
     </a>
     <nav id="for_loginuser">
-        <a href="mydev/write">글 쓰기</a>
-        <a href="mydev">내 글 목록</a>
-        <a href="#" onclick="logout();">로그아웃</a>
+        <a href="/mydev/write">글 쓰기</a>
+        <a href="/mydev">내 글 목록</a>
     </nav>
     <nav id="for_notloginuser">
-        <a href="user">로그인</a>
-        <a href="user/signup">회원가입</a>
+        <a href="/user" id="user_name">로그인</a>
+        <a href="/user/signup">회원가입</a>
     </nav>
 </header>
 <div class="container" id="cards-box">

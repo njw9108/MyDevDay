@@ -93,8 +93,7 @@
         }
 
         function logout() {
-            $.removeCookie('mytoken');
-            alert('로그아웃이 되었습니다!')
+            $.removeCookie('mytoken', {path: '/'});
             window.location.href = '/user'
         }
 
@@ -136,7 +135,7 @@
                         userID = user_id;
 
                         let temp_html = `
-                                <a href="/" id="logname">${user_id}</a>
+                                <a href="/user/data" id="logname">${user_id}</a>
                                 <a href="#" id="logout" onclick="logout();">로그아웃</a>`
                         $("#for_loginuser").append(temp_html)
                     } else {
@@ -176,14 +175,12 @@
 <div class="header-wrap">
     <header>
         <a href="/" id="titlelogo">
-            <h1>MyDevDay</h1>
             <img class="logo-img" src="/static/css/MyDev/img/logo.png" alt="로고"/>
+            <h1>MyDevDay</h1><small>한땀한땀<br>개발일지</small>
         </a>
         <nav id="for_loginuser">
             <a href="/mydev/write">글 쓰기</a>
             <a href="/mydev">내 글 목록</a>
-            {#        <a href="/" id="logname">내 글 목록</a>#}
-            {#        <a href="#" id="logout" onclick="logout();">로그아웃</a>#}
         </nav>
         <nav id="for_notloginuser">
             <a href="/user" id="user_name">로그인</a>

@@ -9,17 +9,18 @@ h1, p, div {
     padding: 0;
 }
 
+a:hover {
+    text-decoration: none;
+    color: white;
+}
+
 a {
     text-decoration: none;
     color: white;
-    padding-right: 10px;
+    margin-right: 10px;
 }
 
-a:hover {
-    text-decoration: none;
-}
-
-#titlelogo{
+#titlelogo {
     display: flex;
     flex: 1;
     align-items: center;
@@ -27,7 +28,7 @@ a:hover {
 }
 
 header {
-    height: 80px;
+    height: 84px;
     padding: 1rem;
     background: #B4DADC;
     font-weight: bold;
@@ -39,10 +40,19 @@ header {
 nav {
     align-self: end;
 }
+
 header .logo-img {
-    height: 40px;
-    margin-left: 10px;
+    height: 50px;
+    margin-right: 5px;
     /*margin-top: 20px;*/
+}
+header h1{
+    font-size: 35px;
+}
+
+header small {
+    margin-left: 5px;
+    font-weight: lighter;
 }
 
 .container {
