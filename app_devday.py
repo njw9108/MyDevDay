@@ -60,6 +60,9 @@ def devday_list():
 
     ret_datas = [];
     for d in datas:
+        likedata = list(db.devday_like.find({'dev_id': str(d['_id'])}))
+        commentdata = list(db.devday_comment.find({'dev_id': str(d['_id'])}))
+
         ret_datas.append({
             'user_id': d['writer'],
             'dev_id': str(d['_id']),
@@ -74,8 +77,8 @@ def devday_list():
             'feeling': d['feeling'],
             'emoticon': '',
             'date': d['date'],
-            'like_count': 123,  # 임시
-            'comment_count': 321,  # 임시
+            'like_count': len(likedata),  # 임시
+            'comment_count': len(commentdata),  # 임시
         })
 
     if len(datas) >= 1:
