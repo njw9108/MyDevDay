@@ -171,7 +171,11 @@ def data():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.user.find_one({"id": payload["id"]})
-        return render_template('user/updateinfo.html', name=user_info["name"], email=user_info["email"])
+        arr = user_info['email'].split('@')
+        email = arr[0]
+        domain = "@"+arr[1]
+        return render_template('User/updateinfo.html', name=user_info["name"], email=email, domain=domain)
+
     except jwt.ExpiredSignatureError:
         return jsonify({
             'result': {

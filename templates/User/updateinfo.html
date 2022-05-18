@@ -12,7 +12,7 @@
     <script type="text/javascript"
             src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
     <!-- jQuery cookie 함수-->
-    <title>MyDevDay | update_user</title>
+    <title>MyDevDay | Edit</title>
     <!--    css-->
     <link rel="stylesheet" href="/static/css/User/signup.css">
 
@@ -33,8 +33,9 @@
             <h3 id="inname">Name<span class="error nameError"></span></h3>
             <input id="nameInput" type="text" placeholder="Name" maxlength="10" value="{{ name }}">
             <h3 id="inemail">E-mail<span class="error emailError"></span></h3>
-            <input id="emailInput" type="text" placeholder="E-mail" maxlength="25" value="{{ domain }}">
-            <select id="domainBox" selected="{{ domain }}">
+            <input id="emailInput" type="text" placeholder="E-mail" maxlength="25" value="{{ email }}">
+            <select id="domainBox">
+                <option value="{{ domain }}">{{ domain }}</option>
                 <option value="@naver.com">@naver.com</option>
                 <option value="@gmail.com">@gmail.com</option>
                 <option value="@daum.com">@daum.net</option>
@@ -52,6 +53,7 @@
     </div>
 </div>
 
+<script src="/static/js/User/imgchange.js"></script>
 <script>
     $(document).ready(function () {
     });
@@ -60,26 +62,6 @@
     let name = $("#nameInput")
     let email = $("#emailInput")
 
-    {#로그인된 아이디의 회원정보를 찾아달라는 콜요청 #}
-    {#function get_data() {#}
-    {#    $.ajax({#}
-    {#        type: "POST",#}
-    {#        url: "/user/data",#}
-    {#        data: {#}
-                {#데이터는 따로 안보내고 토큰에서 아이디정보 얻어서 데이터 찾으면 될것같아요#}
-    {#        },#}
-    {##}
-    {#        success: function (response) {#}
-    {#            console.log(response)#}
-    {#            let userid = response['infodata']#}
-    {#            console.log(userid)#}
-    {#            name.val({{name}})#}
-                {#이메일은 백에서 찾아서 풀데이터 주시면 프론트에서 @에서 잘라서 사용하겠습니다.#}
-    {#            email.val({{email}})#}
-    {##}
-    {#        }#}
-    {#    })#}
-    {#}#}
 
     function update() {
         {#한글, 영문 대소문자 2-10글자#}
