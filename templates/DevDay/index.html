@@ -50,23 +50,24 @@
                             let user_id = devday_list[i]['user_id']
                             let dev_id = devday_list[i]['dev_id']
                             let title = devday_list[i]['subject']
-                            let memo = devday_list[i]['content']
+                            let memo = devday_list[i]['memo2']
                             let emoticon = devday_list[i]['emoticon']
+                            let category = devday_list[i]['category']
                             let date = devday_list[i]['date']
                             let like_count = devday_list[i]['like_count']
                             let comment_count = devday_list[i]['comment_count']
 
                             let temp_html = `<div class="card" onclick="window.location.href = 'mydev/${dev_id}'">
                                                     <div class="card-top">
-                                                        <span class="emoticon">${emoticon}</span>
                                                         <span class="card-text date">${date}</span>
+                                                        <span class="emoticon">${category}</span>
                                                     </div>
                                                     <div class="card-body">
-                                                        <h3 class="card-title">${title}</h3>
+                                                        <p class="card-title">${title}</p>
                                                         <p class="card-text">${memo}</p>
                                                     </div>
                                                     <div class="card-bottom">
-                                                        <span class="user-id">작성자명: ${user_id}</span>
+                                                        <span class="user-id">${user_id}</span>
                                                         <span><i class="bi bi-heart"></i>${like_count}</span>
                                                         <span><i class="bi bi-chat-left-dots"></i>${comment_count}</span>
                                                     </div>`
@@ -159,6 +160,7 @@
         <a href="/user/signup">회원가입</a>
     </nav>
 </header>
+<h1 class="front_title">Everyone's Development Log</h1>
 <div class="container" id="cards-box">
     <div class="card">
         <div class="card-top">
