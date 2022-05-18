@@ -187,12 +187,13 @@
         }
 
         function logout() {
+            $.removeCookie('mytoken', { path: '/' });
             /*
             $.removeCookie('mytoken');
             alert('로그아웃이 되었습니다!')
 
              */
-            delete_cookie('mytoken')
+            //delete_cookie('mytoken')
             window.location.href = '/user'
         }
 
