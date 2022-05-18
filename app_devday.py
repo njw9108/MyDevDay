@@ -7,7 +7,7 @@ from pymongo import MongoClient
 
 client = MongoClient('mongodb://mydevday:devday2205@boox.synology.me/admin', 27018)
 # db = client.mydevday
-db = client.mydevday_post
+db = client.mydevday
 
 # time
 import time

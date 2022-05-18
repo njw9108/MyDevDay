@@ -170,9 +170,132 @@
             }
 
         }
+
+        function like(devid) {
+            $.ajax({
+                type: "POST",
+                url: '/mydev/' + devid + '/like',
+                data: { },
+                success: function (response) {
+                    if (response['result']['success'] == 'true') {
+                        alert('성공 : ' + response['result']['message'])
+                    } else {
+                        alert('실패 : ' + response['result']['message'])
+                    }
+                }
+            })
+        }
+        function unlike(devid) {
+            $.ajax({
+                type: "DELETE",
+                url: '/mydev/' + devid + '/like',
+                data: { },
+                success: function (response) {
+                    if (response['result']['success'] == 'true') {
+                        alert('성공 : ' + response['result']['message'])
+                    } else {
+                        alert('실패 : ' + response['result']['message'])
+                    }
+                }
+            })
+        }
+        function getLikeCount(devid) {
+            $.ajax({
+                type: "POST",
+                url: '/mydev/' + devid + '/likecount',
+                data: { },
+                success: function (response) {
+                    if (response['result']['success'] == 'true') {
+                        alert('성공 : ' + response['result']['row'][0]['like_count'])
+                    } else {
+                        alert('실패 : ' + response['result']['message'])
+                    }
+                }
+            })
+        }
+
+        function comment_add(devid) {
+            $.ajax({
+                type: "POST",
+                url: '/mydev/' + devid + '/comment',
+                data: {
+                    'comment_give' : '댓글 추가'
+                 },
+                success: function (response) {
+                    if (response['result']['success'] == 'true') {
+                        alert('성공 : ' + response['result']['message'])
+                    } else {
+                        alert('실패 : ' + response['result']['message'])
+                    }
+                }
+            })
+        }
+        function comment_edit(devid, commentid) {
+            $.ajax({
+                type: "PUT",
+                url: '/mydev/' + devid + '/comment/' + commentid,
+                data: {
+                    'comment_give' : '댓글 수정'
+                 },
+                success: function (response) {
+                    if (response['result']['success'] == 'true') {
+                        alert('성공 : ' + response['result']['message'])
+                    } else {
+                        alert('실패 : ' + response['result']['message'])
+                    }
+                }
+            })
+        }
+        function comment_del(devid, commentid) {
+            $.ajax({
+                type: "DELETE",
+                url: '/mydev/' + devid + '/comment/' + commentid,
+                data: {},
+                success: function (response) {
+                    if (response['result']['success'] == 'true') {
+                        alert('성공 : ' + response['result']['message'])
+                    } else {
+                        alert('실패 : ' + response['result']['message'])
+                    }
+                }
+            })
+        }
+        function comment_list(devid) {
+            $.ajax({
+                type: "POST",
+                url: '/mydev/' + '{{devid}}' + '/commentlist',
+                data: { },
+                success: function (response) {
+                    if (response['result']['success'] == 'true') {
+                        alert('성공 : ' + response['result']['message'])
+                        row = response['result']['row']
+                        for (var i = 0; i < row.length; i++) {
+                            var comment_id = row[i]['comment_id']
+                            var user_id = row[i]['user_id']
+                            var date = row[i]['date']
+                            var comment = row[i]['comment']
+                            alert(`${comment_id}, ${user_id}, ${date}, ${comment}`)
+                        }
+                    } else {
+                        alert('실패 : ' + response['result']['message'])
+                    }
+                }
+            })
+        }
     </script>
 </head>
 <body>
+<div id="api_test" style="background-color:black">
+<a href="#" onclick="like('{{devid}}')">좋아요</a>
+<a href="#" onclick="unlike('{{devid}}')">좋아요해제</a>
+<a href="#" onclick="getLikeCount('{{devid}}')">좋아요갯수</a>
+&nbsp; | &nbsp;
+<a href="#" onclick="comment_add('{{devid}}')">댓글추가</a>
+<a href="#" onclick="comment_edit('{{devid}}', '6284fea627826a0d833b9226')">댓글수정</a>
+<a href="#" onclick="comment_del('{{devid}}', '6284fea627826a0d833b9226')">댓글삭제</a>
+<a href="#" onclick="comment_list('{{devid}}')">댓글목록</a>
+</div>
+<a href="/" id="titlelogo">
 <div class="header-wrap">
     <header>
         <a href="/" id="titlelogo">

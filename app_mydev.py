@@ -12,7 +12,7 @@ app = Flask(__name__)
 
 client = MongoClient('boox.synology.me', 27018, username="mydevday", password="devday2205")
 
-db = client.mydevday_post
+db = client.mydevday
 
 SECRET_KEY = 'mydevday'
 
@@ -222,3 +222,104 @@ def mydev_list():
                 'row': [],
             }
         })
+
+
+
+# 좋아요
+@mydev.route('/mydev/<devid>/like', methods=['POST'])
+def dev_post_like(devid):
+    print("좋아요 api 받음 devid=" + devid)
+    token_receive = request.cookies.get('mytoken')
+    payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+
+    datas = list(db.devday_like.find({"dev_id": devid, "user_id": payload["id"]}).sort('date', -1))
+    if (1 <= len(datas)):
+        return jsonify({
+            'result': { 'success': 'false', 'message': '이미 좋아요를 하셨습니다.' }
+        })
+    else:
+        db.devday_like.insert_one({'dev_id': devid, 'user_id': payload['id']})
+        return jsonify({
+            'result': { 'success': 'true', 'message': '좋아요 성공' }
+        })
+# 좋아요 해제
+@mydev.route('/mydev/<devid>/like', methods=['DELETE'])
+def dev_post_unlike(devid):
+    print("좋아요 삭제 api 받음 devid=" + devid)
+    token_receive = request.cookies.get('mytoken')
+    payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+    db.devday_like.delete_one({'dev_id': devid, 'user_id': payload['id']})
+    return jsonify({
+        'result': { 'success': 'true', 'message': '좋아요 삭제 성공' }
+    })
+# 좋아요 갯수
+@mydev.route('/mydev/<devid>/likecount', methods=['POST'])
+def dev_post_likecount(devid):
+    print("좋아요 갯수 요청 api 받음 devid=" + devid)
+    datas = list(db.devday_like.find({'dev_id': devid}))
+    print(len(datas))
+    return jsonify({
+        'result': { 'success': 'true', 'message': '좋아요 삭제 성공', 'row_count':1,
+            'row': [
+                { 'like_count' : len(datas) },
+            ]
+        }
+    })
+
+# 댓글 추가
+@mydev.route('/mydev/<devid>/comment', methods=['POST'])
+def dev_post_comment_add(devid):
+    print("댓글 추가 api 받음 devid=" + devid)
+    comment_receive = request.form['comment_give']
+    token_receive = request.cookies.get('mytoken')
+    payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+
+    currdate = datetime.today().strftime("%Y/%m/%d %H:%M:%S")
+
+    db.devday_comment.insert_one({'dev_id': devid, 'user_id': payload['id'], 'comment': comment_receive, 'date':currdate})
+    return jsonify({
+        'result': { 'success': 'true', 'message': '댓글 성공' }
+    })
+# 댓글 수정
+@mydev.route('/mydev/<devid>/comment/<commentid>', methods=['PUT'])
+def dev_post_comment_edit(devid, commentid):
+    print("댓글 수정 api 받음 devid=" + devid + ", commentid=" + commentid)
+    comment_receive = request.form['comment_give']
+    token_receive = request.cookies.get('mytoken')
+    payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+
+    db.devday_comment.update_one({'_id':ObjectId(commentid), 'dev_id':devid, 'user_id':payload['id']}, {
+        '$set': {'comment': comment_receive }})
+    return jsonify({
+        'result': { 'success': 'true', 'message': '댓글 수정 성공' }
+    })
+# 댓글 삭제
+@mydev.route('/mydev/<devid>/comment/<commentid>', methods=['DELETE'])
+def dev_post_comment_del(devid, commentid):
+    print("댓글 삭제 api 받음 devid=" + devid + ", commentid=" + commentid)
+    token_receive = request.cookies.get('mytoken')
+    payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+
+    db.devday_comment.delete_one({'_id':ObjectId(commentid), 'dev_id':devid, 'user_id':payload['id']})
+    return jsonify({
+        'result': { 'success': 'true', 'message': '댓글 삭제 성공' }
+    })
+# 댓글 목록
+@mydev.route('/mydev/<devid>/commentlist', methods=['POST'])
+def dev_post_commentlist(devid):
+    print("댓글 목록 api 받음 devid=" + devid)
+
+    datas = list(db.devday_comment.find({'dev_id': devid}))
+    ret_datas = [];
+    for d in datas:
+        ret_datas.append({
+            'comment_id': str(d['_id']),
+            'user_id': d['user_id'],
+            'comment': d['comment'],
+            'date': d['date'],
+        })
+
+    return jsonify({
+        'result': { 'success': 'true', 'message': '댓글 성공', 'row_count':len(datas),
+        'row': ret_datas }
+    })

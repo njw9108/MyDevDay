@@ -13,7 +13,7 @@ app = Flask(__name__)
 
 client = MongoClient('boox.synology.me', 27018, username="mydevday", password="devday2205")
 
-db = client.mydevday_user1
+db = client.mydevday
 
 SECRET_KEY = 'mydevday'
 
