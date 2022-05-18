@@ -87,7 +87,7 @@
 
         function cancel_post(url) {
             //if (confirm("작성을 그만 두시겠습니까?")) {
-                location.href = url;
+            location.href = url;
             //} else {
             //}
         }
@@ -155,7 +155,7 @@
                 $.ajax({
                     type: "DELETE",
                     url: '/mydev/write/' + '{{devid}}',
-                    data: { },
+                    data: {},
                     success: function (response) {
                         if (response['result'] == 'success') {
                             alert(response['msg'])
@@ -368,54 +368,55 @@
                     <p id="emoticon2"></p>
                 </dl>
             </div>
-            <!--
-                        <div class="like_button_wrap">
-                            <div class="heart"></div>
-                            <div class="animation-heart"></div>
-                        </div>
-
-                        <script>
-                            const heart = document.querySelector(".heart");
-                            const animationHeart = document.querySelector(".animation-heart");
-
-                            heart.addEventListener('click', () => {
-                                animationHeart.classList.add('animation');
-                                heart.classList.add('fill-color');
-                            });
-
-                            animationHeart.addEventListener('click', () => {
-                                animationHeart.classList.remove('animation');
-                                heart.classList.remove('fill-color');
-                            });
-                        </script>
-
-                        <div class="comment_wrap">
-                            <div class="write_comment">
-                                <textarea class="autosize" onkeydown="resize(this)" onkeyup="resize(this)"
-                                          placeholder="댓글을 남겨주세요."></textarea>
-                                <button>등록</button>
-                            </div>
-                            <div class="comment_list">
-                                <div class="comment">
-                                    <div class="text">잘 봤습니다!</div>
-                                    <div class="writer">njw9108</div>
-                                    <div class="date">2022.05.16 15:34:05</div>
-                                </div>
-
-                                <div class="comment">
-                                    <div class="text">잘 봤습니다!</div>
-                                    <div class="writer">njw9108</div>
-                                    <div class="date">2022.05.16 15:34:05</div>
-                                </div>
-
-                            </div>
-                        </div>
-            -->
-            <div class="bt_wrap" id = edit_del_button>
-                <a onclick="window.location.href = 'write/'+'{{devid}}'" class="on">수정 하기</a>
+            <div class="bt_wrap" id=edit_del_button>
+                <a onclick="window.location.href = 'write/'+'{{ devid }}'" class="on">수정 하기</a>
                 <a onclick="delete_post()" style='cursor:pointer;'>게시글 삭제</a>
-
             </div>
+
+            <div class="like_button_wrap">
+                <div class="heart_container">
+                    <div class="heart"></div>
+                    <div class="animation-heart"></div>
+                </div>
+                <div class="like_count">53</div>
+            </div>
+
+
+            <script>
+                const heart = document.querySelector(".heart");
+                const animationHeart = document.querySelector(".animation-heart");
+
+                heart.addEventListener('click', () => {
+                    animationHeart.classList.add('animation');
+                    heart.classList.add('fill-color');
+                });
+
+                animationHeart.addEventListener('click', () => {
+                    animationHeart.classList.remove('animation');
+                    heart.classList.remove('fill-color');
+                });
+            </script>
+
+
+            <div class="comment_wrap">
+                <div class="write_comment">
+                               <textarea class="autosize" onkeydown="resize(this)" onkeyup="resize(this)"
+                                         placeholder="댓글을 남겨주세요."></textarea>
+                    <button>등록</button>
+                </div>
+                <hr>
+                <div class="comment_list">
+                    <div class="comment">
+                        <div class="text">잘 봤습니다!잘 봤습니다!잘 봤습니다!잘 봤습니다!잘 봤습니다!잘 봤습니다!잘 봤습니다!잘 봤습니다!잘 봤습니다!잘 봤습니다!잘 봤습니다!잘
+                            봤습니다!잘 봤습니다!잘 봤습니다!잘 봤습니다!잘 봤습니다!
+                        </div>
+                        <div class="writer">작성자 : njw9108</div>
+                        <div class="date">작성 일시 : 2022.05.16 15:34:05</div>
+
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
