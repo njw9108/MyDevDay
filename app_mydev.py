@@ -258,10 +258,15 @@ def dev_post_likecount(devid):
     print("좋아요 갯수 요청 api 받음 devid=" + devid)
     datas = list(db.devday_like.find({'dev_id': devid}))
     print(len(datas))
+    token_receive = request.cookies.get('mytoken')
+    payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+    mydata = list(db.devday_like.find({'dev_id': devid, 'user_id': payload['id']}))
+    print(len(mydata))
     return jsonify({
         'result': { 'success': 'true', 'message': '좋아요 삭제 성공', 'row_count':1,
             'row': [
-                { 'like_count' : len(datas) },
+                { 'like_count' : len(datas),
+                  'mylike_count' : len(mydata) },
             ]
         }
     })
