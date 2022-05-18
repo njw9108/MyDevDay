@@ -1,19 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
 
 * {
-    padding: 0;
     margin: 0;
+    padding: 0;
+    font-family: 'Noto Sans Korean', sans-serif;
 }
 
-a {
-    text-decoration: none;
-    color: inherit;
+h1, p, div {
+    margin: 0;
+    padding: 0;
 }
+
 
 a {
     text-decoration: none;
     color: white;
-    margin-right: 10px;
 }
 
 #titlelogo {
@@ -24,7 +25,7 @@ a {
 }
 
 header {
-    height: 80px;
+    /*height: 80px;*/
     padding: 1rem;
     background: #B4DADC;
     font-weight: bold;
@@ -38,9 +39,22 @@ nav {
 }
 
 header .logo-img {
-    height: 40px;
-    margin-left: 10px;
+    height: 50px;
+    margin-right: 5px;
     /*margin-top: 20px;*/
+}
+header h1{
+    font-size: 35px;
+    font-weight: 500;
+}
+
+header small {
+    margin-left: 5px;
+    font-weight: lighter;
+}
+
+header a {
+    margin-right: 10px;
 }
 
 .board_wrap {
