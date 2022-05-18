@@ -22,7 +22,8 @@
             check_login();
             CallGetUserInfoAPI();
             getPost();
-            getLikeCount('{{devid}}')
+            getLikeCount('{{devid}}');
+            comment_list('{{devid}}');
         });
 
         function getToday() {
@@ -111,6 +112,9 @@
                         $('#for_loginuser').show();
                     } else {
                         $('#for_notloginuser').show();
+
+                        $("#comment_wrap_id").css('display', 'none');
+                        $("#like_wrap_id").css('display', 'none');
                     }
                 }
             });
@@ -175,43 +179,53 @@
             $.ajax({
                 type: "POST",
                 url: '/mydev/' + devid + '/like',
-                data: { },
+                data: {},
                 success: function (response) {
                     if (response['result']['success'] == 'true') {
-                        alert('성공 : ' + response['result']['message'])
+                        //alert('성공 : ' + response['result']['message'])
+                        getLikeCount('{{ devid }}');
                     } else {
                         alert('실패 : ' + response['result']['message'])
                     }
                 }
             })
         }
+
         function unlike(devid) {
             $.ajax({
                 type: "DELETE",
                 url: '/mydev/' + devid + '/like',
-                data: { },
+                data: {},
                 success: function (response) {
                     if (response['result']['success'] == 'true') {
-                        alert('성공 : ' + response['result']['message'])
+                        $("#animation-heart_id").css("visibility", "hidden");
+                        //alert('성공 : ' + response['result']['message'])
+                        getLikeCount('{{ devid }}');
                     } else {
                         alert('실패 : ' + response['result']['message'])
                     }
                 }
             })
+
         }
+
         function getLikeCount(devid) {
             $.ajax({
                 type: "POST",
                 url: '/mydev/' + devid + '/likecount',
-                data: { },
+                data: {},
                 success: function (response) {
                     if (response['result']['success'] == 'true') {
 
                         //alert('성공 : 모든좋아요 ' + response['result']['row'][0]['like_count'])
                         //alert('성공 : 내가한좋아요 ' + response['result']['row'][0]['mylike_count'])
-                        //alert('성공 : ' + response['result']['row'][0]['like_count'])
-                        let like_cnt = ['result']['row'][0]['like_count'];
-                        $("#like_cnt_id").val(like_cnt);
+                        let like_cnt = response['result']['row'][0]['like_count'];
+                        $("#like_cnt_id").text(like_cnt);
+
+                        let my_liek_cnt = response['result']['row'][0]['mylike_count'];
+                        if (my_liek_cnt === 1) {
+                            $("#animation-heart_id").css("visibility", "visible");
+                        }
 
                     } else {
                         alert('실패 : ' + response['result']['message'])
@@ -221,28 +235,33 @@
         }
 
         function comment_add(devid) {
+            let comment = $("#comment_text_id").val();
+
             $.ajax({
                 type: "POST",
                 url: '/mydev/' + devid + '/comment',
                 data: {
-                    'comment_give' : '댓글 추가'
-                 },
+                    'comment_give': comment,
+                },
                 success: function (response) {
                     if (response['result']['success'] == 'true') {
-                        alert('성공 : ' + response['result']['message'])
+                        //alert('성공 : ' + response['result']['message'])
+                        document.getElementById("comment_text_id").value = ''
+                        comment_list('{{devid}}');
                     } else {
                         alert('실패 : ' + response['result']['message'])
                     }
                 }
             })
         }
+
         function comment_edit(devid, commentid) {
             $.ajax({
                 type: "PUT",
                 url: '/mydev/' + devid + '/comment/' + commentid,
                 data: {
-                    'comment_give' : '댓글 수정'
-                 },
+                    'comment_give': '댓글 수정'
+                },
                 success: function (response) {
                     if (response['result']['success'] == 'true') {
                         alert('성공 : ' + response['result']['message'])
@@ -252,6 +271,7 @@
                 }
             })
         }
+
         function comment_del(devid, commentid) {
             $.ajax({
                 type: "DELETE",
@@ -266,21 +286,31 @@
                 }
             })
         }
+
         function comment_list(devid) {
             $.ajax({
                 type: "POST",
                 url: '/mydev/' + '{{devid}}' + '/commentlist',
-                data: { },
+                data: {},
                 success: function (response) {
                     if (response['result']['success'] == 'true') {
-                        alert('성공 : ' + response['result']['message'])
+                        //alert('성공 : ' + response['result']['message'])
                         row = response['result']['row']
+                        $("#comment_list_id").empty();
                         for (var i = 0; i < row.length; i++) {
                             var comment_id = row[i]['comment_id']
                             var user_id = row[i]['user_id']
                             var date = row[i]['date']
                             var comment = row[i]['comment']
-                            alert(`${comment_id}, ${user_id}, ${date}, ${comment}`)
+                            //alert(`${comment_id}, ${user_id}, ${date}, ${comment}`)
+
+                            let tempHtml = `<div class="comment">
+                                    <div class="text">${comment}</div>
+                                    <div class="writer">${user_id}</div>
+                                    <div class="date">${date}</div>
+                                </div>`;
+
+                            $("#comment_list_id").append(tempHtml);
                         }
                     } else {
                         alert('실패 : ' + response['result']['message'])
@@ -291,16 +321,14 @@
     </script>
 </head>
 <body>
+<!--
 <div id="api_test" style="background-color:black">
-<a href="#" onclick="like('{{devid}}')">좋아요</a>
-<a href="#" onclick="unlike('{{devid}}')">좋아요해제</a>
-<a href="#" onclick="getLikeCount('{{devid}}')">좋아요갯수</a>
-&nbsp; | &nbsp;
-<a href="#" onclick="comment_add('{{devid}}')">댓글추가</a>
-<a href="#" onclick="comment_edit('{{devid}}', '6284fea627826a0d833b9226')">댓글수정</a>
-<a href="#" onclick="comment_del('{{devid}}', '6284fea627826a0d833b9226')">댓글삭제</a>
-<a href="#" onclick="comment_list('{{devid}}')">댓글목록</a>
+    <a href="#" onclick="comment_add('{{ devid }}')">댓글추가</a>
+    <a href="#" onclick="comment_edit('{{ devid }}', '6284fea627826a0d833b9226')">댓글수정</a>
+    <a href="#" onclick="comment_del('{{ devid }}', '6284fea627826a0d833b9226')">댓글삭제</a>
+    <a href="#" onclick="comment_list('{{ devid }}')">댓글목록</a>
 </div>
+-->
 <div class="header-wrap">
     <header>
         <a href="/" id="titlelogo">
@@ -378,12 +406,12 @@
                 <a onclick="delete_post()" style='cursor:pointer;'>게시글 삭제</a>
             </div>
 
-            <div class="like_button_wrap">
+            <div class="like_button_wrap" id="like_wrap_id">
                 <div class="heart_container">
-                    <div class="heart"></div>
-                    <div class="animation-heart"></div>
+                    <div class="heart" onclick="like('{{ devid }}')"></div>
+                    <div class="animation-heart" id="animation-heart_id" onclick="unlike('{{ devid }}')"></div>
                 </div>
-                <div class="like_count" id="like_cnt_id">53</div>
+                <div class="like_count" id="like_cnt_id"></div>
             </div>
 
 
@@ -403,23 +431,14 @@
             </script>
 
 
-            <div class="comment_wrap">
-                <div class="write_comment">
-                               <textarea class="autosize" onkeydown="resize(this)" onkeyup="resize(this)"
-                                         placeholder="댓글을 남겨주세요."></textarea>
-                    <button>등록</button>
+            <div class="comment_wrap" id="comment_wrap_id">
+                <div class="write_comment"><textarea id="comment_text_id" class="autosize" onkeydown="resize(this)"
+                                                     onkeyup="resize(this)"
+                                                     placeholder="댓글을 남겨주세요."></textarea>
+                    <button onclick="comment_add('{{ devid }}')">등록</button>
                 </div>
                 <hr>
-                <div class="comment_list">
-                    <div class="comment">
-                        <div class="text">잘 봤습니다!잘 봤습니다!잘 봤습니다!잘 봤습니다!잘 봤습니다!잘 봤습니다!잘 봤습니다!잘 봤습니다!잘 봤습니다!잘 봤습니다!잘 봤습니다!잘
-                            봤습니다!잘 봤습니다!잘 봤습니다!잘 봤습니다!잘 봤습니다!
-                        </div>
-                        <div class="writer">작성자 : njw9108</div>
-                        <div class="date">작성 일시 : 2022.05.16 15:34:05</div>
-
-                    </div>
-                </div>
+                <div class="comment_list" id="comment_list_id"></div>
             </div>
 
         </div>
