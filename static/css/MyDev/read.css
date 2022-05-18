@@ -338,19 +338,32 @@ header a {
 
 .board_write .like_button_wrap {
     /*margin: 0;*/
-    padding: 50px;
+    padding-top: 50px;
     /*box-sizing: border-box;*/
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
+.board_write .like_button_wrap .heart_container {
+    width: 100px;
+    height: 100px;
+    display: inline-block;
+}
+
+.board_write .like_count {
+    display: inline-block;
+    font-size: 35px;
+    font-weight: bold;
+    padding-bottom: 50px;
+}
+
 .board_write .heart {
-    position: relative;
+    position: absolute;
     height: 50px;
     width: 50px;
     background: #c9c9c9;
-    display: flex;
+    display: inline-block;
     justify-content: center;
     text-align: center;
     border-radius: 0 0 0 10px;
@@ -388,14 +401,14 @@ header a {
 
 .board_write .animation-heart {
     position: absolute;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     width: 50px;
     height: 50px;
     background: #ff2727;
-    transform: rotate(-45deg);
+    display: inline-block;
+    justify-content: center;
+    align-items: center;
     border-radius: 0 0 0 10px;
+    transform: rotate(-45deg);
     cursor: pointer;
     /*animation: popup .8s linear;*/
     visibility: hidden;
@@ -447,15 +460,14 @@ header a {
 }
 
 .board_write .comment_wrap .write_comment {
-    vertical-align: middle;
+    padding: 20px;
 }
 
 .board_write .comment_wrap .write_comment textarea {
     height: 80px;
-    width: 200px;
+    width: 650px;
     background: white;
     display: inline-block;
-    padding: 0;
     font-size: 14px;
     /*width: 100%;*/
     resize: none;
@@ -475,13 +487,20 @@ header a {
     text-shadow: none;
     text-align: start;
     appearance: auto;
+    vertical-align: middle;
 }
 
 .board_write .comment_wrap .write_comment button {
     display: inline-block;
     width: 80px;
-    height: 40px;
-
+    height: 60px;
+    padding: 10px;
+    border: 1px solid #000;
+    background: #ffffff;
+    border-radius: 2px;
+    font-size: 1.4rem;
+    cursor: pointer;
+    color: #000;
 }
 
 .board_write .comment_wrap .comment_list {
@@ -493,5 +512,21 @@ header a {
     margin: 20px;
     background: white;
     padding: 30px;
+}
 
+.board_write .comment_list .text {
+    display: inline-block;
+    float: left;
+    line-height: 2;
+}
+
+.board_write .comment_list .writer {
+    color: #333333;
+    text-align: right;
+}
+
+.board_write .comment_list .date {
+    color: #888888;
+    font-size: 15px;
+    text-align: right;
 }

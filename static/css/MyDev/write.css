@@ -80,6 +80,7 @@ header a {
     border-radius: 2px;
     font-size: 1.4rem;
     cursor: pointer;
+    color: #000;
 }
 
 .bt_wrap a:first-child {
