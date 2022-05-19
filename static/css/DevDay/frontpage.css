@@ -109,6 +109,44 @@ header small {
     justify-content: space-around;
 }
 
+/*1조합*/
+/*.web {*/
+/*    background-color: #B4DADC;*/
+/*}*/
+
+/*.algorithm {*/
+/*    background-color: #ffeaa7;*/
+/*}*/
+
+/*.app {*/
+/*    background-color: #fab1a0;*/
+/*}*/
+
+/*.computer {*/
+/*    background-color: #55efc4;*/
+/*}*/
+
+/*.etc {*/
+/*    background-color: #74b9ff;*/
+/*}*/
+
+/*2조합*/
+.web{
+    background-color: #7FD9D6;
+}
+.algorithm{
+    background-color: #80CEBE;
+}
+.app{
+    background-color: #9FDEBD;
+}
+.computer{
+    background-color: #C4F2CE;
+}
+.etc{
+    background-color: #EFF4E7;
+}
+
 .card-body {
     background-color: white;
     /*width: 80%;*/
