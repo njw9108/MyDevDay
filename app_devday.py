@@ -75,7 +75,7 @@ def devday_list():
             'memo4': '',
             'memo5': '',
             'feeling': d['feeling'],
-            'emoticon': '',
+            'emoticon': d['emoticon'],
             'date': d['date'],
             'like_count': len(likedata),  # 임시
             'comment_count': len(commentdata),  # 임시

@@ -57,10 +57,10 @@
                             let like_count = devday_list[i]['like_count']
                             let comment_count = devday_list[i]['comment_count']
 
-                            let temp_html = `<div class="card ${category}" onclick="window.location.href = 'mydev/${dev_id}'">
+                            let temp_html = `<div class="card" onclick="window.location.href = 'mydev/${dev_id}'">
                                                     <div class="card-top">
                                                         <span class="card-text date">${date}</span>
-                                                        <span class="category">${category}</span>
+                                                        <span class="category ${category}">${category}</span>
                                                     </div>
                                                     <div class="card-body">
                                                         <p class="card-title">${title}</p>

@@ -101,7 +101,7 @@ header small {
 .card-top {
     background-color: white;
     /*width: 25%;*/
-    min-width: 250px;
+    min-width: 280px;
     height: 30px;
     border-radius: 10px;
     display: flex;
@@ -110,42 +110,52 @@ header small {
 }
 
 /*1조합*/
-/*.web {*/
-/*    background-color: #B4DADC;*/
-/*}*/
+.web {
+    background-color: #B4DADC;
+    border-radius: 8px;
+    padding: 0px 8px 0px 8px;
+}
 
-/*.algorithm {*/
-/*    background-color: #ffeaa7;*/
-/*}*/
+.algorithm {
+    background-color: #ffeaa7;
+    border-radius: 8px;
+    padding: 0px 8px 0px 8px;
+}
 
-/*.app {*/
-/*    background-color: #fab1a0;*/
-/*}*/
+.app {
+    background-color: #fab1a0;
+    border-radius: 8px;
+    padding: 0px 8px 0px 8px;
+}
 
-/*.computer {*/
-/*    background-color: #55efc4;*/
-/*}*/
+.computer {
+    background-color: #55efc4;
+    border-radius: 8px;
+    padding: 0px 8px 0px 8px;
+}
 
-/*.etc {*/
-/*    background-color: #74b9ff;*/
-/*}*/
+.etc {
+    background-color: #74b9ff;
+    border-radius: 8px;
+    padding: 0px 8px 0px 8px;
+}
 
 /*2조합*/
-.web{
-    background-color: #7FD9D6;
-}
-.algorithm{
-    background-color: #80CEBE;
-}
-.app{
-    background-color: #9FDEBD;
-}
-.computer{
-    background-color: #C4F2CE;
-}
-.etc{
-    background-color: #EFF4E7;
-}
+/*.web{*/
+/*    background-color: #7FD9D6;*/
+/*}*/
+/*.algorithm{*/
+/*    background-color: #80CEBE;*/
+/*}*/
+/*.app{*/
+/*    background-color: #9FDEBD;*/
+/*}*/
+/*.computer{*/
+/*    background-color: #C4F2CE;*/
+/*}*/
+/*.etc{*/
+/*    background-color: #EFF4E7;*/
+/*}*/
 
 .card-body {
     background-color: white;
