@@ -78,8 +78,8 @@
                         $("#dev_title").val(title);
                         $("#category").val(category);
                         $("#myGoal").val(goal);
-                        $("#todayLearned").val(todayLearned);
-                        $("#todoList").val(todo);
+                        $("#todayLearned").append(todayLearned);
+                        $("#todoList").append(todo);
                         $("#emotion").val(feeling);
                         $("#emoticon2").append(emoticon);
                         //$("#emoticon2").append(`&#x1F637;`);
@@ -385,14 +385,14 @@
                 <div>
                     <dt>오늘 배운 것</dt>
                 </div>
-                <textarea id="todayLearned" readonly></textarea>
+                <div id="todayLearned"></div>
             </div>
             <div class="spacer"></div>
             <div class="to-do-list">
                 <div>
                     <dt>To do List</dt>
                 </div>
-                <textarea id="todoList" readonly></textarea>
+                <div id="todoList"></div>
             </div>
 
             <div class="spacer"></div>
