@@ -11,6 +11,10 @@ h1, p, div {
     padding: 0;
 }
 
+a:hover {
+    text-decoration: none;
+    color: white;
+}
 
 a {
     text-decoration: none;
@@ -43,7 +47,8 @@ header .logo-img {
     margin-right: 5px;
     /*margin-top: 20px;*/
 }
-header h1{
+
+header h1 {
     font-size: 35px;
     font-weight: 500;
 }
@@ -316,8 +321,8 @@ header a {
 
 .board_write .emoticon section {
     font-size: 26px;
-    width: 380px;
-    height: 200px;
+    width: 400px;
+    height: auto;
     padding: 30px 20px;
     background: #B4DADC;
     text-align: center;

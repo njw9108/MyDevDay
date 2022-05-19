@@ -212,7 +212,7 @@ h3 {
 /*달력*/
 .calendar {
     width: 600px;
-    margin: 50px;
+    margin: 20px 0px 20px 5%;
     display: inline-block;
 }
 
@@ -220,6 +220,7 @@ h3 {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    min-width: 400px;
 }
 
 .year-month {
@@ -250,7 +251,7 @@ h3 {
 
 .days {
     display: flex;
-    margin: 25px 0 10px;
+    margin: 10px 0 10px;
 }
 
 .day {
@@ -268,7 +269,7 @@ h3 {
 
 .date {
     width: calc(100% / 7);
-    padding: 15px;
+    padding: 10px;
     text-align: left;
     border-bottom: 1px solid #333333;
     border-left: 1px solid #333333;
