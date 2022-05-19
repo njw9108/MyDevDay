@@ -32,7 +32,11 @@ def devday_list():
 # 글 쓰기 페이지
 @mydev.route('/mydev/write', methods=['GET'])
 def devday_write():
-    return render_template('MyDev/write.html')
+    token_receive = request.cookies.get('mytoken')
+    payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+    user_info = db.user.find_one({"id": payload["id"]})
+
+    return render_template('MyDev/write.html', goal=user_info["goal"])
 
 
 # 글 읽기 페이지
