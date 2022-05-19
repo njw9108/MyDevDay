@@ -320,6 +320,13 @@
             })
         }
     </script>
+<style>
+    div_box{
+        border-style: solid;
+        border-radius: 150px ;
+        border-color: black;
+    }
+</style>
 </head>
 <body>
 <!--
@@ -385,14 +392,28 @@
                 <div>
                     <dt>오늘 배운 것</dt>
                 </div>
-                <div id="todayLearned"></div>
+                <div    style="overflow:auto;
+                        width:100%;
+                        height:150px;
+                        border-style: solid;
+                        border-color: black;
+                        border-width: 1px;"
+                        id="todayLearned">
+
+                </div>
             </div>
             <div class="spacer"></div>
             <div class="to-do-list">
                 <div>
                     <dt>To do List</dt>
                 </div>
-                <div id="todoList"></div>
+                <div    style="overflow:auto;
+                        width:100%;
+                        height:150px;
+                        border-style: solid;
+                        border-color: black;
+                        border-width: 1px;"
+                        id="todoList"></div>
             </div>
 
             <div class="spacer"></div>
