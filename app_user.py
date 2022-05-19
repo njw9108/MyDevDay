@@ -171,10 +171,11 @@ def data():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.user.find_one({"id": payload["id"]})
-        arr = user_info['email'].split('@')
-        email = arr[0]
-        domain = "@"+arr[1]
-        return render_template('User/updateinfo.html', name=user_info["name"], email=email, domain=domain)
+        print(user_info)
+        # arr = user_info['email'].split('@')
+        # email = arr[0]
+        # domain = "@"+arr[1]
+        return render_template('User/updateinfo.html', name=user_info["name"], goal=user_info['goal'])
 
     except jwt.ExpiredSignatureError:
         return jsonify({
@@ -205,9 +206,9 @@ def update():
         try:
             payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
             name_receive = request.form['name_give']
-            email_receive = request.form['email_give']
+            goal_receive = request.form['goal_give']
 
-            db.user.update_one({'id': payload['id']}, {"$set": {'name': name_receive, 'email': email_receive}})
+            db.user.update_one({'id': payload['id']}, {"$set": {'name': name_receive, 'goal': goal_receive}})
             print("update complete")
             return jsonify({'result':'success', 'msg': '회원정보가 수정되었습니다'})
         except jwt.ExpiredSignatureError:

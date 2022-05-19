@@ -2,11 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <!--    JQuery-->
+    <!--    JQuery, bootstrap-->
     <script type="text/javascript"
-            src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
-    <!-- jQuery cookie 함수-->
+            src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script> <!-- jQuery cookie 함수-->
+
+    <script src="/static/summerNote/summernote-lite.js"></script>
+    <script src="/static/summerNote/summernote-ko-KR.js"></script>
+    <link rel="stylesheet" href="/static/summerNote/summernote-lite.css">
+    <!-- 서머노트를 위해 추가해야할 부분 -->
+
     <title>MyDevDay | write</title>
 
     <link rel="stylesheet" href="/static/css/MyDev/write.css"/>
@@ -267,6 +276,7 @@
                 }
             });
         }
+
     </script>
 </head>
 <body>
@@ -313,18 +323,18 @@
                     <dd><input id="myGoal" type="text" placeholder="나의 꿈(목표)" maxlength="30" value="{{ goal }}"></dd>
                 </dl>
             </div>
-            <div class="today-learn">
+            <div class="today-learn" , class="container">
                 <div>
                     <dt>오늘 배운 것</dt>
                 </div>
-                <textarea id="todayLearned" placeholder="오늘 배운것 요약"></textarea>
+                <textarea class="summernote" id="todayLearned" placeholder="오늘 배운것 요약" , name="editordata"></textarea>
             </div>
             <div class="spacer"></div>
-            <div class="to-do-list">
+            <div class="to-do-list", class="container">
                 <div>
                     <dt>To do List</dt>
                 </div>
-                <textarea id="todoList" placeholder="To do List"></textarea>
+                <textarea class="summernote" id="todoList" placeholder="To do List", name="editordata" ></textarea>
             </div>
 
             <div class="spacer"></div>
@@ -394,7 +404,12 @@
         </div>
     </div>
 </div>
-
+<script>
+$('.summernote').summernote({
+	  height: 450,
+	  lang: "ko-KR"
+	});
+</script>
 
 </body>
 </html>
