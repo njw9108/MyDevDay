@@ -57,6 +57,7 @@ def devday_list():
     print('devday_list')
 
     datas = list(db.post.find({}, {}).sort('date', -1))
+    print(datas[0]['date'][0:10])
 
     ret_datas = [];
     for d in datas:
@@ -76,10 +77,11 @@ def devday_list():
             'memo5': '',
             'feeling': d['feeling'],
             'emoticon': d['emoticon'],
-            'date': d['date'],
+            'date': d['date'][0:10],
             'like_count': len(likedata),  # 임시
             'comment_count': len(commentdata),  # 임시
         })
+
 
     if len(datas) >= 1:
         return jsonify({

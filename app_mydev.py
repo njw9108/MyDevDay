@@ -205,8 +205,8 @@ def mydev_list():
             'memo4': '',
             'memo5': '',
             'feeling': d['feeling'],
-            'emoticon': '',
-            'date': d['date'],
+            'emoticon': d['emoticon'],
+            'date': d['date'][0:10],
             'like_count': len(likedata),  # 임시
             'comment_count': len(commentdata),  # 임시
         })

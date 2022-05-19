@@ -101,7 +101,7 @@ header small {
 .card-top {
     background-color: white;
     /*width: 25%;*/
-    min-width: 280px;
+    min-width: 230px;
     height: 30px;
     border-radius: 10px;
     display: flex;
