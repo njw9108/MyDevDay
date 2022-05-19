@@ -56,11 +56,13 @@
                 let dev_title = $("#dev_title").val();
                 if (dev_title === "") {
                     alert("제목을 입력해주세요.");
+                    $("#dev_title").focus();
                     return;
                 }
                 let category = $("#category").val();
                 if (category === "") {
                     alert("카테고리를 선택해 주세요");
+                    $("#category").focus();
                     return;
                 }
                 let myGoal = $("#myGoal").val();
@@ -102,11 +104,13 @@
                 let dev_title = $("#dev_title").val();
                 if (dev_title === "") {
                     alert("제목을 입력해주세요.");
+                    $("#dev_title").focus();
                     return;
                 }
                 let category = $("#category").val();
                 if (category === "") {
                     alert("카테고리를 선택해 주세요");
+                    $("#category").focus();
                     return;
                 }
                 let myGoal = $("#myGoal").val();
@@ -288,7 +292,7 @@
             <div class="title">
                 <dl>
                     <dd><textarea id="dev_title" class="autosize" onkeydown="resize(this)" onkeyup="resize(this)"
-                                  placeholder="제목"></textarea></dd>
+                                  placeholder="제목" maxlength="30"></textarea></dd>
                     <form>
                         <div>
                             카테고리
@@ -306,7 +310,7 @@
             </div>
             <div class="goal">
                 <dl>
-                    <dd><input id="myGoal" type="text" placeholder="나의 꿈(목표)"></dd>
+                    <dd><input id="myGoal" type="text" placeholder="나의 꿈(목표)" maxlength="30"></dd>
                 </dl>
             </div>
             <div class="today-learn">
@@ -328,7 +332,7 @@
             <div class="emotion">
                 <dl>
                     <dt>오늘의 감정</dt>
-                    <dd><input id="emotion" type="text" placeholder="오늘 느낀 감정"></dd>
+                    <dd><input id="emotion" type="text" placeholder="오늘 느낀 감정" maxlength="30"></dd>
                 </dl>
 
                 <dl>
