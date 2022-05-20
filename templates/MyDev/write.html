@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -18,7 +17,7 @@
     <!-- 서머노트를 위해 추가해야할 부분 -->
 
     <title>MyDevDay | write</title>
-    
+
     <link rel="stylesheet" href="/static/css/MyDev/write.css"/>
     <script>
         let userName;
@@ -180,24 +179,11 @@
 
                             writeDate = date
 
-                            console.log('수정하기 데이터 get',title,category,goal,todayLearned,todo)
                             $("#dev_title").val(title);
                             $("#category").val(category);
                             $("#myGoal").val(goal);
-                            // $("#todayLearned").val(todayLearned);
-                            // $("#todoList").val(todo);
-
-                            $('#todayLearned').summernote('code', todayLearned);
-                            $('#todoList').summernote('code', todo);
-
-                            $('#summernote').summernote({
-                                // height : 400, // set editor height
-                                // minHeight : null, // set minimum height of editor
-                                // maxHeight : null, // set maximum height of editor
-                                // focus : true,
-                                lang : 'ko-KR' // 기본 메뉴언어 US->KR로 변경
-                            });
-                            
+                            $("#todayLearned").val(todayLearned);
+                            $("#todoList").val(todo);
                             $("#emotion").val(feeling);
                             $("#emoticon2").append(emoticon);
                             //$("#emoticon2").append(`&#x1F637;`);
@@ -218,6 +204,7 @@
             /*
             $.removeCookie('mytoken');
             alert('로그아웃이 되었습니다!')
+
              */
             //delete_cookie('mytoken')
             window.location.href = '/user'
@@ -285,8 +272,6 @@
                     } else {
                         let temp_html = `로그인된 사용자 정보가 없습니다.`
                         $("#for_loginuser").append(temp_html)
-		    	$('#for_loginuser').hide();
-                        $('#for_notloginuser').show();
                     }
                 }
             });

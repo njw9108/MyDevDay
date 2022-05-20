@@ -36,6 +36,9 @@ header {
     justify-content: space-between;
     align-items: center;
 }
+small{
+    width: 50px;
+}
 
 nav {
     align-self: end;
@@ -62,6 +65,12 @@ header small {
     font-weight: 700;
 }
 
+.maincontainer {
+    display: flex;
+    flex: 1;
+}
+
+/*카드들*/
 .container {
     padding: 0px;
     margin: auto;
@@ -111,7 +120,7 @@ header small {
 
 /*1조합*/
 .web {
-    background-color: #B4DADC;
+    background-color: #f7cd85;
     border-radius: 8px;
     padding: 0px 8px 0px 8px;
 }
@@ -201,4 +210,113 @@ header small {
 h3 {
     margin-bottom: 20px;
     font-size: 2rem;
+}
+
+/*달력*/
+.calendar {
+    width: 600px;
+    margin: 20px 0px 20px 5%;
+    display: inline-block;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-width: 400px;
+}
+
+.year-month {
+    font-size: 35px;
+}
+
+.nav {
+    display: flex;
+    border: 1px solid #333333;
+    border-radius: 5px;
+}
+
+.nav-btn {
+    width: 28px;
+    height: 30px;
+    border: none;
+    font-size: 16px;
+    line-height: 34px;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.go-today {
+    width: 75px;
+    border-left: 1px solid #333333;
+    border-right: 1px solid #333333;
+}
+
+.days {
+    display: flex;
+    margin: 10px 0 10px;
+}
+
+.day {
+    width: calc(100% / 7);
+    text-align: center;
+}
+
+.dates {
+    display: flex;
+    flex-flow: row wrap;
+    height: auto;
+    border-top: 1px solid #333333;
+    border-right: 1px solid #333333;
+}
+
+.date {
+    width: calc(100% / 7);
+    padding: 5px;
+    text-align: left;
+    min-height: 90px;
+    border-bottom: 1px solid #333333;
+    border-left: 1px solid #333333;
+}
+
+.day:nth-child(7n + 1),
+.date:nth-child(7n + 1) {
+    color: #D13E3E;
+}
+
+.day:nth-child(7n),
+.date:nth-child(7n) {
+    color: #396EE2;
+}
+
+.other {
+    opacity: .3;
+}
+
+.today {
+    position: relative;
+    color: #FFFFFF;
+}
+
+.today::before {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: -1;
+    display: block;
+    width: 30px;
+    height: 30px;
+    background-color: #FF0000;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    content: '';
+}
+
+.calemoticon:hover {
+    cursor: pointer;
+}
+.calemoticon{
+    display: inline-block;
+    width: auto;
+    margin-right: 2px;
 }

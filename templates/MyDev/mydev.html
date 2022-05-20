@@ -26,41 +26,45 @@
     <link rel="stylesheet" href="static/css/DevDay/frontpage.css">
     <title>MyDev list</title>
     <script>
-        $(document).ready(function () {
-            $('#for_loginuser').hide();
-            $('#for_notloginuser').hide();
-            check_login();
-            CallGetUserInfoAPI();
-            $('#cards-box').empty();
-            listing();
-        });
+    $(document).ready(function () {
+        $('#for_loginuser').hide();
+        $('#for_notloginuser').hide();
+        check_login();
+        CallGetUserInfoAPI();
+        $('#cards-box').empty();
+        listing();
+    });
 
 
-        function listing() {
-            $.ajax({
-                type: "POST",
-                url: "/mydev",
-                data: {},
-                success: function (response) {
-                    let result = response['result'];
-                    let success = result['success'];
-                    if (success == 'true') {
-                        let devday_list = result['row']
-                        for (let i = 0; i < devday_list.length; i++) {
-                            let user_id = devday_list[i]['user_id']
-                            let dev_id = devday_list[i]['dev_id']
-                            let title = devday_list[i]['subject']
-                            let memo = devday_list[i]['memo2']
-                            let emoticon = devday_list[i]['emoticon']
-                            let category = devday_list[i]['category']
-                            let date = devday_list[i]['date']
-                            let like_count = devday_list[i]['like_count']
-                            let comment_count = devday_list[i]['comment_count']
+    function listing() {
+        $.ajax({
+            type: "POST",
+            url: "/mydev",
+            data: {},
+            success: function (response) {
+                let result = response['result'];
+                let success = result['success'];
+                if (success == 'true') {
+                    let devday_list = result['row']
+                    for (let i = 0; i < devday_list.length; i++) {
+                        let user_id = devday_list[i]['user_id']
+                        let dev_id = devday_list[i]['dev_id']
+                        let title = devday_list[i]['subject']
+                        let memo = devday_list[i]['memo2']
+                        let emoticon = devday_list[i]['emoticon']
+                        let category = devday_list[i]['category']
+                        let date = devday_list[i]['date']
+                        let like_count = devday_list[i]['like_count']
+                        let comment_count = devday_list[i]['comment_count']
 
-                            let temp_html = `<div class="card" onclick="window.location.href = 'mydev/${dev_id}'">
+                        let month = devday_list[i]['month']
+                        {#console.log(month)#}
+                        let date2 = devday_list[i]['date2']
+
+                        let temp_html = `<div class="card" onclick="window.location.href = 'mydev/${dev_id}'">
                                                     <div class="card-top">
                                                         <p class="emoticon">${emoticon}</p>
-                                                        <span class="card-text date">${date}</span>
+                                                        <span class="card-text">${date}</span>
                                                         <span class="category ${category}">${category}</span>
                                                     </div>
                                                     <div class="card-body">
@@ -72,74 +76,74 @@
                                                         <span><i class="bi bi-heart"></i> ${like_count}</span>
                                                         <span><i class="bi bi-chat-left-dots"></i> ${comment_count}</span>
                                                     </div>`
-                            $('#cards-box').append(temp_html)
-                        }
+                        $('#cards-box').append(temp_html)
+
+                        let temphtml2 = `<div class="calemoticon" onclick="window.location.href = 'mydev/${dev_id}'">
+                                                    ${emoticon}
+                                                    </div>`
+                        $(".m" + `${month}` + "d" + `${date2}`).append(temphtml2)
                     }
-                    ;
+                };
 
+            }
+        })
+    }
+
+    function logout() {
+        $.removeCookie('mytoken', {path: '/'});
+        window.location.href = '/user'
+    }
+
+    function check_login() {
+        $.ajax({
+            type: 'POST',
+            url: '/user/islogin',
+            data: {},
+            success: function (response) {
+                let result = response['result'];
+                let success = result['success'];
+                let message = result['message'];
+                if (success == 'true') {
+                    $('#for_loginuser').show();
+                } else {
+                    $('#for_notloginuser').show();
                 }
-            })
-        }
+            }
+        });
+    }
 
-        function logout() {
-            $.removeCookie('mytoken', {path: '/'});
-            window.location.href = '/user'
-        }
+    function CallGetUserInfoAPI() {
+        // 사용자 정보 요청 ajax API Call하여 사용자 정보 json 데이터 받아 화면 갱신하기
+        $.ajax({
+            type: 'POST',
+            url: '/user/info',
+            async: false,
+            data: {},
+            success: function (response) {
+                let result = response['result'];
+                let success = result['success'];
+                let message = result['message'];
+                if (success == 'true') {
+                    let userinfo = result['row'][0];
+                    let user_id = userinfo['user_id']
+                    let user_name = userinfo['user_name']
 
-        function check_login() {
-            $.ajax({
-                type: 'POST',
-                url: '/user/islogin',
-                data: {},
-                success: function (response) {
-                    let result = response['result'];
-                    let success = result['success'];
-                    let message = result['message'];
-                    if (success == 'true') {
-                        $('#for_loginuser').show();
-                    } else {
-                        $('#for_notloginuser').show();
-                    }
-                }
-            });
-        }
+                    userName = user_name;
+                    userID = user_id;
 
-        function CallGetUserInfoAPI() {
-            // 사용자 정보 요청 ajax API Call하여 사용자 정보 json 데이터 받아 화면 갱신하기
-            $.ajax({
-                type: 'POST',
-                url: '/user/info',
-                async: false,
-                data: {},
-                success: function (response) {
-                    let result = response['result'];
-                    let success = result['success'];
-                    let message = result['message'];
-                    if (success == 'true') {
-                        let userinfo = result['row'][0];
-                        let user_id = userinfo['user_id']
-                        let user_name = userinfo['user_name']
-
-                        userName = user_name;
-                        userID = user_id;
-
-                        let temp_html = `
+                    let temp_html = `
                                 <a href="/user/data" id="logname">${user_id}</a>
                                 <a href="#" id="logout" onclick="logout();">로그아웃</a>`
-                        $("#for_loginuser").append(temp_html)
-                    } else {
-                        let temp_html = `로그인된 사용자 정보가 없습니다.`
-                        $("#for_loginuser").append(temp_html)
-                        $('#for_loginuser').hide();
-                        $('#for_notloginuser').show();
-                    }
+                    $("#for_loginuser").append(temp_html)
+                } else {
+                    let temp_html = `로그인된 사용자 정보가 없습니다.`
+                    $("#for_loginuser").append(temp_html)
                 }
-            });
-        }
-    </script>
-    <style>
+            }
+        });
+    }
 
-    </style>
+</script>
 </head>
 <body>
 <header>
@@ -157,37 +161,34 @@
     </nav>
 </header>
 <h1 class="front_title">내 글 목록</h1>
-<div class="container" id="cards-box">
-    <div class="card">
-        <div class="card-top">
-            <span class="emoticon"></span>
-            <span class="card-text date">2022년 5월 7일</span>
+<div class="maincontainer">
+    <div class="calendar">
+        <div class="header">
+            <div class="year-month"></div>
+            <div class="nav">
+                <button class="nav-btn go-prev" onclick="prevMonth()">&lt;</button>
+                <button class="nav-btn go-today" onclick="goToday()">Today</button>
+                <button class="nav-btn go-next" onclick="nextMonth()">&gt;</button>
+            </div>
         </div>
-        <div class="card-body">
-            <h3 class="card-title">일지 제목</h3>
-            <p class="card-text">개발이 어렵다. 어떻게 하면 더 잘할 수 있을까.</p>
-        </div>
-        <div class="card-bottom">
-            <span class="user-id">작성자명: OOO</span>
-            <span><i class="bi bi-heart"></i></span>
-            <span><i class="bi bi-chat-left-dots"></i></span>
+        <div class="main">
+            <div class="days">
+                <div class="day">일</div>
+                <div class="day">월</div>
+                <div class="day">화</div>
+                <div class="day">수</div>
+                <div class="day">목</div>
+                <div class="day">금</div>
+                <div class="day">토</div>
+            </div>
+            <div class="dates"></div>
         </div>
     </div>
-    <div class="card">
-        <div class="card-top">
-            <span class="emotion"></span>
-            <span class="card-text date">2022년 5월 7일</span>
-        </div>
-        <div class="card-body">
-            <h3 class="card-title">일지 제목</h3>
-            <p class="card-text">개발이 어렵다. 어떻게 하면 더 잘할 수 있을까.</p>
-        </div>
-        <div class="card-bottom">
-            <span class="user-id">작성자명: OOO</span>
-            <span><i class="bi bi-heart"></i></span>
-            <span><i class="bi bi-chat-left-dots"></i></span>
-        </div>
+    <script src="/static/js/MyDev/calendar.js"></script>
+    <div class="container" id="cards-box">
+
     </div>
 </div>
+
 </body>
 </html>
