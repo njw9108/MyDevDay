@@ -147,7 +147,6 @@ def edit_dev_post(devid):
     print("글 수정 api 받음")
 
     writer_receive = request.form['writer_give']
-    date_receive = request.form['date_give']
     title_receive = request.form['title_give']
     category_receive = request.form['category_give']
     goal_receive = request.form['goal_give']
@@ -156,11 +155,11 @@ def edit_dev_post(devid):
     feeling_receive = request.form['feeling_give']
     emoticon_receive = request.form['emoticon_give']
 
-    print(writer_receive, date_receive, title_receive, category_receive, goal_receive, todoList_receive,
+    print(writer_receive, title_receive, category_receive, goal_receive, todoList_receive,
           todayLearned_receive, feeling_receive, emoticon_receive)
 
     db.post.update_one({'_id': ObjectId(devid)}, {
-        '$set': {'writer': writer_receive, 'date': date_receive, 'title': title_receive, 'category': category_receive,
+        '$set': {'writer': writer_receive, 'title': title_receive, 'category': category_receive,
                  'goal': goal_receive, 'todayLearned': todayLearned_receive, 'todo': todoList_receive,
                  'feeling': feeling_receive, 'emoticon': emoticon_receive}})
 
