@@ -43,9 +43,10 @@ const renderCalendar = () => {
     // Dates 정리
     const firstDateIndex = dates.indexOf(1);
     const lastDateIndex = dates.lastIndexOf(TLDate);
+    let nowmonth = String((viewMonth + 1)).padStart(2, '0')
     dates.forEach((date, i) => {
         const condition = i >= firstDateIndex && i < lastDateIndex + 1
-            ? `m${viewMonth + 1}d${date}`
+            ? `m${(nowmonth)}d${String(date).padStart(2, '0')}`
             : 'other';
 
         const condition2 = i >= firstDateIndex && i < lastDateIndex + 1
