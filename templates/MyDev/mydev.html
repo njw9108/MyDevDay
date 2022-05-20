@@ -148,6 +148,7 @@
             date.setDate(1);
             date.setMonth(date.getMonth() - 1);
             renderCalendar();
+            $('#cards-box').empty();
             listing()
         }
 
@@ -155,12 +156,14 @@
             date.setDate(1);
             date.setMonth(date.getMonth() + 1);
             renderCalendar();
+            $('#cards-box').empty();
             listing()
         }
 
         const goToday = () => {
             date = new Date();
             renderCalendar();
+            $('#cards-box').empty();
             listing()
         }
 
