@@ -129,6 +129,8 @@
                     } else {
                         let temp_html = `로그인된 사용자 정보가 없습니다.`
                         $("#for_loginuser").append(temp_html)
+                        $("#for_loginuser").hide();
+                        $('#for_notloginuser').show();
                     }
                 }
             });
@@ -151,37 +153,7 @@
     </nav>
 </header>
 <h1 class="front_title">전체 글 보기</h1>
-<div class="container" id="cards-box">
-    <div class="card">
-        <div class="card-top">
-            <span class="emoticon"></span>
-            <span class="card-text date">2022년 5월 7일</span>
-        </div>
-        <div class="card-body">
-            <h3 class="card-title">일지 제목</h3>
-            <p class="card-text">개발이 어렵다. 어떻게 하면 더 잘할 수 있을까.</p>
-        </div>
-        <div class="card-bottom">
-            <span class="user-id">작성자명: OOO</span>
-            <span><i class="bi bi-heart"></i></span>
-            <span><i class="bi bi-chat-left-dots"></i></span>
-        </div>
-    </div>
-    <div class="card">
-        <div class="card-top">
-            <span class="emotion"></span>
-            <span class="card-text date">2022년 5월 7일</span>
-        </div>
-        <div class="card-body">
-            <h3 class="card-title">일지 제목</h3>
-            <p class="card-text">개발이 어렵다. 어떻게 하면 더 잘할 수 있을까.</p>
-        </div>
-        <div class="card-bottom">
-            <span class="user-id">작성자명: OOO</span>
-            <span><i class="bi bi-heart"></i></span>
-            <span><i class="bi bi-chat-left-dots"></i></span>
-        </div>
-    </div>
-</div>
+<div class="container" id="cards-box"></div>
+
 </body>
 </html>
