@@ -182,8 +182,8 @@
                             $("#dev_title").val(title);
                             $("#category").val(category);
                             $("#myGoal").val(goal);
-                            $("#todayLearned").val(todayLearned);
-                            $("#todoList").val(todo);
+                            $("#todayLearned").summernote('code', todayLearned)                            
+                            $("#todoList").summernote('code', todo)
                             $("#emotion").val(feeling);
                             $("#emoticon2").append(emoticon);
                             //$("#emoticon2").append(`&#x1F637;`);
