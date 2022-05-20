@@ -264,6 +264,10 @@ header a {
     font-size: 20px;
 }
 
+.board_write .today-learn #todayLearned a,
+.board_write .to-do-list #todoList a {
+    color: #a84141;
+}
 
 .board_write .emotion dl {
     display: inline-block;
