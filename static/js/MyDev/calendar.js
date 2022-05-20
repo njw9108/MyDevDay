@@ -48,7 +48,11 @@ const renderCalendar = () => {
             ? `m${viewMonth + 1}d${date}`
             : 'other';
 
-        dates[i] = `<div class="date"><span class="${condition}">${date}<br></span></div>`;
+        const condition2 = i >= firstDateIndex && i < lastDateIndex + 1
+            ? 'this'
+            : 'other2';
+
+        dates[i] = `<div class="date"><span class="${condition}"><span class="${condition2}">${date}</span><br></span></div>`;
     })
 
     // Dates 그리기
@@ -69,20 +73,3 @@ const renderCalendar = () => {
 renderCalendar();
 
 
-// 오늘날짜 이동, 전달, 다음달 이동 버튼 함수
-const prevMonth = () => {
-    date.setDate(1);
-    date.setMonth(date.getMonth() - 1);
-    renderCalendar();
-}
-
-const nextMonth = () => {
-    date.setDate(1);
-    date.setMonth(date.getMonth() + 1);
-    renderCalendar();
-}
-
-const goToday = () => {
-    date = new Date();
-    renderCalendar();
-}

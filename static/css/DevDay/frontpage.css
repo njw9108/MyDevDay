@@ -37,7 +37,7 @@ header {
     align-items: center;
 }
 small{
-    width: 50px;
+    width: 80px;
 }
 
 nav {
@@ -296,21 +296,26 @@ h3 {
 .today {
     position: relative;
     color: #FFFFFF;
+    padding: 0px 3px;
+    background-color: red;
+    border-radius: 50%;
+    display: inline-block;
+    width: auto;
 }
 
-.today::before {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    z-index: -1;
-    display: block;
-    width: 30px;
-    height: 30px;
-    background-color: #FF0000;
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    content: '';
-}
+/*.today::before {*/
+/*    position: absolute;*/
+/*    top: 50%;*/
+/*    left: 12%;*/
+/*    z-index: -1;*/
+/*    display: block;*/
+/*    width: 28px;*/
+/*    height: 28px;*/
+/*    background-color: #FF0000;*/
+/*    border-radius: 50%;*/
+/*    transform: translate(-50%, -50%);*/
+/*    content: '';*/
+/*}*/
 
 .calemoticon:hover {
     cursor: pointer;
