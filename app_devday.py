@@ -5,8 +5,7 @@ devday = Blueprint('devday', __name__)
 # mongo
 from pymongo import MongoClient
 
-client = MongoClient('mongodb://mydevday:devday2205@boox.synology.me/admin', 27018)
-# db = client.mydevday
+client = MongoClient('mydevday.shop', 27017, username="mydevday", password="devday2205")
 db = client.mydevday
 
 # time

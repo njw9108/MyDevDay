@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -182,8 +183,11 @@
                             $("#dev_title").val(title);
                             $("#category").val(category);
                             $("#myGoal").val(goal);
-                            $("#todayLearned").val(todayLearned);
-                            $("#todoList").val(todo);
+                            $("#todayLearned").summernote('code', todayLearned)                            
+                            $("#todoList").summernote('code', todo)
+				$('#summernote').summernote({
+				lang : 'ko-KR' // 기본 메뉴언어 US->KR로 변경
+			    });
                             $("#emotion").val(feeling);
                             $("#emoticon2").append(emoticon);
                             //$("#emoticon2").append(`&#x1F637;`);

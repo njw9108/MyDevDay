@@ -165,8 +165,10 @@ header small {
 /*.etc{*/
 /*    background-color: #EFF4E7;*/
 /*}*/
+/*}*/
 
 .card-body {
+    overflow: hidden;
     background-color: white;
     /*width: 80%;*/
     min-width: 280px;
