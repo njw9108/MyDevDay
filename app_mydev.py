@@ -10,8 +10,7 @@ from datetime import datetime, timedelta
 
 app = Flask(__name__)
 
-client = MongoClient('boox.synology.me', 27018, username="mydevday", password="devday2205")
-
+client = MongoClient('mydevday.shop', 27017, username="mydevday", password="devday2205")
 db = client.mydevday
 
 SECRET_KEY = 'mydevday'
