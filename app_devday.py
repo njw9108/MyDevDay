@@ -55,8 +55,20 @@ def test():
 def devday_list():
     print('devday_list')
 
-    datas = list(db.post.find({}, {}).sort('date', -1))
-    print(datas[0]['date'][0:10])
+    per_page = 6;
+    page = max(0, int(request.form['page']) - 1)
+
+    datas = list(db.post.find({}, {}).limit(per_page).skip(per_page * page).sort('date', -1))
+
+    if len(datas) <= 0:
+        return jsonify({
+            'result': {
+                'success': 'false',
+                'message': 'devday 목록이 없습니다',
+                'row_count': 0,
+                'row': [],
+            }
+        })
 
     ret_datas = [];
     for d in datas:
@@ -89,14 +101,5 @@ def devday_list():
                 'message': 'devday 목록 가져오기 성공',
                 'row_count': len(datas),
                 'row': ret_datas,
-            }
-        })
-    else:
-        return jsonify({
-            'result': {
-                'success': 'false',
-                'message': 'devday 목록이 없습니다',
-                'row_count': 0,
-                'row': [],
             }
         })
