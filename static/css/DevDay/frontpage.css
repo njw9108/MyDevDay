@@ -36,6 +36,9 @@ header {
     justify-content: space-between;
     align-items: center;
 }
+small{
+    width: 50px;
+}
 
 nav {
     align-self: end;
