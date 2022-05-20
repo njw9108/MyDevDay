@@ -98,7 +98,7 @@ def write_dev_post():
     feeling_receive = request.form['feeling_give']
     emoticon_receive = request.form['emoticon_give']
 
-    currdate = datetime.today().strftime("%Y/%m/%d %H:%M:%S")
+    currdate = datetime.today().strftime("%Y.%m.%d %H:%M:%S")
 
     print(writer_receive, currdate, title_receive, category_receive, goal_receive, todoList_receive,
           todayLearned_receive, feeling_receive, emoticon_receive)
@@ -289,7 +289,7 @@ def dev_post_comment_add(devid):
     token_receive = request.cookies.get('mytoken')
     payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
 
-    currdate = datetime.today().strftime("%Y/%m/%d %H:%M:%S")
+    currdate = datetime.today().strftime("%Y.%m.%d %H:%M:%S")
 
     db.devday_comment.insert_one({'dev_id': devid, 'user_id': payload['id'], 'comment': comment_receive, 'date':currdate})
     return jsonify({
