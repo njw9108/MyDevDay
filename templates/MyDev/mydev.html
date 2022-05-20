@@ -78,7 +78,9 @@
                                                     </div>`
                         $('#cards-box').append(temp_html)
 
-                        let temphtml2 = `${emoticon}`
+                        let temphtml2 = `<div class="calemoticon" onclick="window.location.href = 'mydev/${dev_id}'">
+                                                    ${emoticon}
+                                                    </div>`
                         $(".m" + `${month}` + "d" + `${date2}`).append(temphtml2)
                     }
                 };
