@@ -43,12 +43,17 @@ const renderCalendar = () => {
     // Dates 정리
     const firstDateIndex = dates.indexOf(1);
     const lastDateIndex = dates.lastIndexOf(TLDate);
+    let nowmonth = String((viewMonth + 1)).padStart(2, '0')
     dates.forEach((date, i) => {
         const condition = i >= firstDateIndex && i < lastDateIndex + 1
-            ? `m${viewMonth + 1}d${date}`
+            ? `m${(nowmonth)}d${String(date).padStart(2, '0')}`
             : 'other';
 
-        dates[i] = `<div class="date"><span class="${condition}">${date}<br></span></div>`;
+        const condition2 = i >= firstDateIndex && i < lastDateIndex + 1
+            ? 'this'
+            : 'other2';
+
+        dates[i] = `<div class="date"><span class="${condition}"><span class="${condition2}">${date}</span><br></span></div>`;
     })
 
     // Dates 그리기
@@ -69,20 +74,3 @@ const renderCalendar = () => {
 renderCalendar();
 
 
-// 오늘날짜 이동, 전달, 다음달 이동 버튼 함수
-const prevMonth = () => {
-    date.setDate(1);
-    date.setMonth(date.getMonth() - 1);
-    renderCalendar();
-}
-
-const nextMonth = () => {
-    date.setDate(1);
-    date.setMonth(date.getMonth() + 1);
-    renderCalendar();
-}
-
-const goToday = () => {
-    date = new Date();
-    renderCalendar();
-}
