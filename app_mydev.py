@@ -208,8 +208,8 @@ def mydev_list():
             'date': d['date'][0:10],
             'month': d['date'][6:7],
             'date2': d['date'][8:10],
-            'like_count': len(likedata),  # 임시
-            'comment_count': len(commentdata),  # 임시
+            'like_count': len(likedata),
+            'comment_count': len(commentdata),
         })
 
     if len(datas) >= 1:
