@@ -285,6 +285,8 @@
                     } else {
                         let temp_html = `로그인된 사용자 정보가 없습니다.`
                         $("#for_loginuser").append(temp_html)
+		    	$('#for_loginuser').hide();
+                        $('#for_notloginuser').show();
                     }
                 }
             });
