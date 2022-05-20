@@ -48,7 +48,7 @@ const renderCalendar = () => {
             ? `m${viewMonth + 1}d${date}`
             : 'other';
 
-        dates[i] = `<div class="date"><span class="${condition}">${date}</span></div>`;
+        dates[i] = `<div class="date"><span class="${condition}">${date}<br></span></div>`;
     })
 
     // Dates 그리기

@@ -57,6 +57,10 @@
                         let like_count = devday_list[i]['like_count']
                         let comment_count = devday_list[i]['comment_count']
 
+                        let month = devday_list[i]['month']
+                        {#console.log(month)#}
+                        let date2 = devday_list[i]['date2']
+
                         let temp_html = `<div class="card" onclick="window.location.href = 'mydev/${dev_id}'">
                                                     <div class="card-top">
                                                         <p class="emoticon">${emoticon}</p>
@@ -73,9 +77,11 @@
                                                         <span><i class="bi bi-chat-left-dots"></i> ${comment_count}</span>
                                                     </div>`
                         $('#cards-box').append(temp_html)
+
+                        let temphtml2 = `${emoticon}`
+                        $(".m" + `${month}` + "d" + `${date2}`).append(temphtml2)
                     }
-                }
-                ;
+                };
 
             }
         })
