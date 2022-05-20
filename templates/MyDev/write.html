@@ -10,7 +10,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!--    JQuery, bootstrap-->
     <script type="text/javascript"
-            src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script> <!-- jQuery cookie 함수-->
+            src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <!-- jQuery cookie 함수-->
 
     <script src="/static/summerNote/summernote-lite.js"></script>
     <script src="/static/summerNote/summernote-ko-KR.js"></script>
@@ -183,11 +184,16 @@
                             $("#dev_title").val(title);
                             $("#category").val(category);
                             $("#myGoal").val(goal);
-                            $("#todayLearned").summernote('code', todayLearned)                            
+                            $("#todayLearned").summernote('code', todayLearned)
                             $("#todoList").summernote('code', todo)
-				$('#summernote').summernote({
-				lang : 'ko-KR' // 기본 메뉴언어 US->KR로 변경
-			    });
+                            $('#todayLearned').summernote({
+                                lang: 'ko-KR',
+                                placeholder: '오늘 배운것을 정리해주세요.',
+                            });
+                            $('#todoList').summernote({
+                                lang: 'ko-KR',
+                                placeholder: '내일 할 업무를 정리해주세요.',
+                            });
                             $("#emotion").val(feeling);
                             $("#emoticon2").append(emoticon);
                             //$("#emoticon2").append(`&#x1F637;`);
@@ -276,6 +282,8 @@
                     } else {
                         let temp_html = `로그인된 사용자 정보가 없습니다.`
                         $("#for_loginuser").append(temp_html)
+                        $("#for_loginuser").hide();
+                        $('#for_notloginuser').show();
                     }
                 }
             });
@@ -334,11 +342,11 @@
                 <textarea class="summernote" id="todayLearned" placeholder="오늘 배운것 요약" , name="editordata"></textarea>
             </div>
             <div class="spacer"></div>
-            <div class="to-do-list", class="container">
+            <div class="to-do-list" , class="container">
                 <div>
                     <dt>To do List</dt>
                 </div>
-                <textarea class="summernote" id="todoList" placeholder="To do List", name="editordata" ></textarea>
+                <textarea class="summernote" id="todoList" placeholder="To do List" , name="editordata"></textarea>
             </div>
 
             <div class="spacer"></div>
@@ -409,10 +417,10 @@
     </div>
 </div>
 <script>
-$('.summernote').summernote({
-	  height: 450,
-	  lang: "ko-KR"
-	});
+    $('.summernote').summernote({
+        height: 450,
+        lang: "ko-KR"
+    });
 </script>
 
 </body>
