@@ -207,16 +207,13 @@ def mydev_list():
             'feeling': d['feeling'],
             'emoticon': d['emoticon'],
             'date': d['date'][0:10],
-            'month': d['date'][6:7],
+            'month': d['date'][5:7],
             'date2': d['date'][8:10],
             'like_count': len(likedata),  # 임시
             'comment_count': len(commentdata),  # 임시
         })
 
     if len(datas) >= 1:
-        print(ret_datas[0]['date'])
-        print(ret_datas[0]['month'])
-        print(ret_datas[0]['date2'])
         return jsonify({
             'result': {
                 'success': 'true',
