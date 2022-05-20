@@ -45,7 +45,7 @@ const renderCalendar = () => {
     const lastDateIndex = dates.lastIndexOf(TLDate);
     dates.forEach((date, i) => {
         const condition = i >= firstDateIndex && i < lastDateIndex + 1
-            ? 'this'
+            ? `m${viewMonth + 1}d${date}`
             : 'other';
 
         dates[i] = `<div class="date"><span class="${condition}">${date}</span></div>`;
@@ -69,6 +69,7 @@ const renderCalendar = () => {
 renderCalendar();
 
 
+// 오늘날짜 이동, 전달, 다음달 이동 버튼 함수
 const prevMonth = () => {
     date.setDate(1);
     date.setMonth(date.getMonth() - 1);
