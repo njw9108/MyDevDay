@@ -167,6 +167,7 @@ header small {
 /*}*/
 
 .card-body {
+    overflow: hidden;
     background-color: white;
     /*width: 80%;*/
     min-width: 280px;
