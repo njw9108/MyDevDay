@@ -219,6 +219,9 @@ h3 {
     width: 600px;
     margin: 20px 0px 20px 5%;
     display: inline-block;
+    position: sticky;
+    top: 30px;
+    height: 180px;
 }
 
 .header {
