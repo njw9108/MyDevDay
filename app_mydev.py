@@ -47,6 +47,7 @@ def devday_read(devid):
     else:
         return render_template('MyDev/read.html', devid=devid)
 
+
 # 글 수정 페이지
 @mydev.route('/mydev/write/<devid>', methods=['GET'])
 def devday_edit(devid):
@@ -89,7 +90,7 @@ def devday_calendar(date):
 def write_dev_post():
     print("글 작성 api 받음")
     writer_receive = request.form['writer_give']
-    #date_receive = request.form['date_give']
+    # date_receive = request.form['date_give']
     title_receive = request.form['title_give']
     category_receive = request.form['category_give']
     goal_receive = request.form['goal_give']
@@ -149,7 +150,7 @@ def edit_dev_post(devid):
     print("글 수정 api 받음")
 
     writer_receive = request.form['writer_give']
-    #date_receive = request.form['date_give']
+    # date_receive = request.form['date_give']
     title_receive = request.form['title_give']
     category_receive = request.form['category_give']
     goal_receive = request.form['goal_give']
@@ -168,6 +169,7 @@ def edit_dev_post(devid):
 
     return jsonify({'result': 'success', 'msg': '수정 완료'})
 
+
 # 글 삭제 요청(Delete)
 @mydev.route('/mydev/write/<devid>', methods=['DELETE'])
 def delete_dev_post(devid):
@@ -177,15 +179,15 @@ def delete_dev_post(devid):
 
     return jsonify({'result': 'success', 'msg': '삭제 완료'})
 
+
 # 내가 쓴글 데이터 요청 API
 @mydev.route('/mydev', methods=['POST'])
 def mydev_list():
-    print('mydev_list')
-
     token_receive = request.cookies.get('mytoken')
     payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
 
-    print(payload["id"])
+    year_receive = request.form['year_give']
+    month_receive = request.form['month_give']
 
     datas = list(db.post.find({"writer": payload["id"]}).sort('date', -1))
 
@@ -194,25 +196,27 @@ def mydev_list():
         likedata = list(db.devday_like.find({'dev_id': str(d['_id'])}))
         commentdata = list(db.devday_comment.find({'dev_id': str(d['_id'])}))
 
-        ret_datas.append({
-            'user_id': d['writer'],
-            'dev_id': str(d['_id']),
-            'subject': d['title'],
-            'content': '',
-            'category': d['category'],
-            'memo1': d['goal'],
-            'memo2': d['todayLearned'],
-            'memo3': d['todo'],
-            'memo4': '',
-            'memo5': '',
-            'feeling': d['feeling'],
-            'emoticon': d['emoticon'],
-            'date': d['date'][0:10],
-            'month': d['date'][5:7],
-            'date2': d['date'][8:10],
-            'like_count': len(likedata),
-            'comment_count': len(commentdata),
-        })
+        if d['date'][0:7] == year_receive + "." + month_receive.zfill(2):
+            ret_datas.append({
+                'user_id': d['writer'],
+                'dev_id': str(d['_id']),
+                'subject': d['title'],
+                'content': '',
+                'category': d['category'],
+                'memo1': d['goal'],
+                'memo2': d['todayLearned'],
+                'memo3': d['todo'],
+                'memo4': '',
+                'memo5': '',
+                'feeling': d['feeling'],
+                'emoticon': d['emoticon'],
+                'date': d['date'][0:10],
+                'year': d['date'][0:4],
+                'month': d['date'][5:7],
+                'date2': d['date'][8:10],
+                'like_count': len(likedata),
+                'comment_count': len(commentdata),
+            })
 
     if len(datas) >= 1:
         return jsonify({
@@ -234,7 +238,6 @@ def mydev_list():
         })
 
 
-
 # 좋아요
 @mydev.route('/mydev/<devid>/like', methods=['POST'])
 def dev_post_like(devid):
@@ -245,13 +248,15 @@ def dev_post_like(devid):
     datas = list(db.devday_like.find({"dev_id": devid, "user_id": payload["id"]}).sort('date', -1))
     if (1 <= len(datas)):
         return jsonify({
-            'result': { 'success': 'false', 'message': '이미 좋아요를 하셨습니다.' }
+            'result': {'success': 'false', 'message': '이미 좋아요를 하셨습니다.'}
         })
     else:
         db.devday_like.insert_one({'dev_id': devid, 'user_id': payload['id']})
         return jsonify({
-            'result': { 'success': 'true', 'message': '좋아요 성공' }
+            'result': {'success': 'true', 'message': '좋아요 성공'}
         })
+
+
 # 좋아요 해제
 @mydev.route('/mydev/<devid>/like', methods=['DELETE'])
 def dev_post_unlike(devid):
@@ -260,8 +265,10 @@ def dev_post_unlike(devid):
     payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
     db.devday_like.delete_one({'dev_id': devid, 'user_id': payload['id']})
     return jsonify({
-        'result': { 'success': 'true', 'message': '좋아요 삭제 성공' }
+        'result': {'success': 'true', 'message': '좋아요 삭제 성공'}
     })
+
+
 # 좋아요 갯수
 @mydev.route('/mydev/<devid>/likecount', methods=['POST'])
 def dev_post_likecount(devid):
@@ -273,13 +280,14 @@ def dev_post_likecount(devid):
     mydata = list(db.devday_like.find({'dev_id': devid, 'user_id': payload['id']}))
     print(len(mydata))
     return jsonify({
-        'result': { 'success': 'true', 'message': '좋아요 삭제 성공', 'row_count':1,
-            'row': [
-                { 'like_count' : len(datas),
-                  'mylike_count' : len(mydata) },
-            ]
-        }
+        'result': {'success': 'true', 'message': '좋아요 삭제 성공', 'row_count': 1,
+                   'row': [
+                       {'like_count': len(datas),
+                        'mylike_count': len(mydata)},
+                   ]
+                   }
     })
+
 
 # 댓글 추가
 @mydev.route('/mydev/<devid>/comment', methods=['POST'])
@@ -291,10 +299,13 @@ def dev_post_comment_add(devid):
 
     currdate = datetime.today().strftime("%Y.%m.%d %H:%M:%S")
 
-    db.devday_comment.insert_one({'dev_id': devid, 'user_id': payload['id'], 'comment': comment_receive, 'date':currdate})
+    db.devday_comment.insert_one(
+        {'dev_id': devid, 'user_id': payload['id'], 'comment': comment_receive, 'date': currdate})
     return jsonify({
-        'result': { 'success': 'true', 'message': '댓글 성공' }
+        'result': {'success': 'true', 'message': '댓글 성공'}
     })
+
+
 # 댓글 수정
 @mydev.route('/mydev/<devid>/comment/<commentid>', methods=['PUT'])
 def dev_post_comment_edit(devid, commentid):
@@ -303,11 +314,13 @@ def dev_post_comment_edit(devid, commentid):
     token_receive = request.cookies.get('mytoken')
     payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
 
-    db.devday_comment.update_one({'_id':ObjectId(commentid), 'dev_id':devid, 'user_id':payload['id']}, {
-        '$set': {'comment': comment_receive }})
+    db.devday_comment.update_one({'_id': ObjectId(commentid), 'dev_id': devid, 'user_id': payload['id']}, {
+        '$set': {'comment': comment_receive}})
     return jsonify({
-        'result': { 'success': 'true', 'message': '댓글 수정 성공' }
+        'result': {'success': 'true', 'message': '댓글 수정 성공'}
     })
+
+
 # 댓글 삭제
 @mydev.route('/mydev/<devid>/comment/<commentid>', methods=['DELETE'])
 def dev_post_comment_del(devid, commentid):
@@ -315,10 +328,12 @@ def dev_post_comment_del(devid, commentid):
     token_receive = request.cookies.get('mytoken')
     payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
 
-    db.devday_comment.delete_one({'_id':ObjectId(commentid), 'dev_id':devid, 'user_id':payload['id']})
+    db.devday_comment.delete_one({'_id': ObjectId(commentid), 'dev_id': devid, 'user_id': payload['id']})
     return jsonify({
-        'result': { 'success': 'true', 'message': '댓글 삭제 성공' }
+        'result': {'success': 'true', 'message': '댓글 삭제 성공'}
     })
+
+
 # 댓글 목록
 @mydev.route('/mydev/<devid>/commentlist', methods=['POST'])
 def dev_post_commentlist(devid):
@@ -335,6 +350,6 @@ def dev_post_commentlist(devid):
         })
 
     return jsonify({
-        'result': { 'success': 'true', 'message': '댓글 성공', 'row_count':len(datas),
-        'row': ret_datas }
+        'result': {'success': 'true', 'message': '댓글 성공', 'row_count': len(datas),
+                   'row': ret_datas}
     })

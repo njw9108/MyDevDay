@@ -107,7 +107,7 @@ def user_valid():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.user.find_one({"id": payload["id"]})
-        print(user_info)
+        # print(user_info)
         return jsonify({
             'result' : {
                 'success': 'true',

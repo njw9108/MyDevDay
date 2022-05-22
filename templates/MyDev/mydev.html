@@ -40,7 +40,8 @@
             $.ajax({
                 type: "POST",
                 url: "/mydev",
-                data: {},
+                data: {year_give: date.getFullYear(),
+                    month_give: date.getMonth() + 1},
                 success: function (response) {
                     let result = response['result'];
                     let success = result['success'];
@@ -57,6 +58,7 @@
                             let like_count = devday_list[i]['like_count']
                             let comment_count = devday_list[i]['comment_count']
 
+                            let year = devday_list[i]['year']
                             let month = devday_list[i]['month']
                             let date2 = devday_list[i]['date2']
 
@@ -80,7 +82,7 @@
                             let calemoadd = `<div class="calemoticon" onclick="window.location.href = 'mydev/${dev_id}'">
                                                     ${emoticon}
                                                     </div>`
-                            $(".m" + `${month}` + "d" + `${date2}`).append(calemoadd)
+                            $(".y" + `${year}` + "m" + `${month}` + "d" + `${date2}`).append(calemoadd)
                         }
                     }
                     ;

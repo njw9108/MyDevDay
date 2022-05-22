@@ -46,7 +46,7 @@ const renderCalendar = () => {
     let nowmonth = String((viewMonth + 1)).padStart(2, '0')
     dates.forEach((date, i) => {
         const condition = i >= firstDateIndex && i < lastDateIndex + 1
-            ? `m${(nowmonth)}d${String(date).padStart(2, '0')}`
+            ? `y${viewYear}m${(nowmonth)}d${String(date).padStart(2, '0')}`
             : 'other';
 
         const condition2 = i >= firstDateIndex && i < lastDateIndex + 1
