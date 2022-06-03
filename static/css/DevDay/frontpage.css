@@ -176,6 +176,7 @@ header small {
     padding: 10px;
     margin: 10px;
     border-radius: 10px;
+    max-width: 280px;
 }
 
 .card-title {
